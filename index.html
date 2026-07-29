@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Music in da house - Secondary School Music Interactive</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Outfit', 'sans-serif'],
+                        display: ['Fredoka', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            purple: '#7C3AED',
+                            pink: '#EC4899',
+                            cyan: '#06B6D4',
+                            amber: '#F59E0B',
+                            dark: '#0F172A'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .guitar-string { stroke: #94A3B8; stroke-linecap: round; }
+        .ukulele-string { stroke: #CBD5E1; stroke-linecap: round; }
+        .fret-line { stroke: #64748B; stroke-width: 2; }
+        .nut-line { stroke: #F8FAFC; stroke-width: 5; }
+        .dark .nut-line { stroke: #F8FAFC; }
+        html:not(.dark) .nut-line { stroke: #334155; }
+        .finger-dot { fill: #EC4899; stroke: #FFFFFF; stroke-width: 2; }
+        .piano-key-white { fill: #FFFFFF; stroke: #CBD5E1; stroke-width: 1; rx: 0 0 4 4; cursor: pointer; transition: all 0.15s ease; }
+        .dark .piano-key-white { fill: #F8FAFC; stroke: #475569; }
+        .piano-key-black { fill: #1E293B; stroke: #0F172A; stroke-width: 1; rx: 0 0 3 3; cursor: pointer; transition: all 0.15s ease; }
+        .piano-key-active { fill: #38BDF8 !important; }
+        .piano-key-black.piano-key-active { fill: #0284C7 !important; }
+        /* Custom compact scrollbar */
+        ::-webkit-scrollbar { width: 5px; height: 5px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #64748B; border-radius: 9999px; }
+    </style>
+</head>
+<body class="bg-slate-100 text-slate-800 dark:bg-slate-950 dark:text-slate-100 font-sans min-h-screen flex flex-col justify-between transition-colors duration-300">
+
+    <!-- Compact Top Header -->
+    <header class="bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200 dark:border-slate-800 sticky top-0 z-50 py-2 transition-colors duration-300">
+        <div class="max-w-5xl mx-auto px-3 sm:px-4 flex items-center justify-between">
+            <div class="flex items-center gap-2.5">
+                <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-tr from-purple-600 to-pink-500 flex items-center justify-center text-white shadow-md shadow-purple-500/20">
+                    <i class="fa-solid fa-music text-base"></i>
+                </div>
+                <div>
+                    <h1 class="font-display font-bold text-lg leading-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-amber-500 dark:from-purple-400 dark:via-pink-400 dark:to-amber-300">
+                        Music in da house <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700/50 font-normal ml-1">Sec Music</span>
+                    </h1>
+                    <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Interactive Chords & Percussion</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-2">
+                <!-- Theme Toggle Button -->
+                <button id="themeToggleBtn" onclick="toggleTheme()" class="flex items-center gap-1.5 text-xs bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 transition">
+                    <i class="fa-solid fa-sun text-amber-500 hidden dark:inline"></i>
+                    <i class="fa-solid fa-moon text-indigo-600 dark:hidden"></i>
+                    <span id="themeText" class="font-medium text-[11px] hidden sm:inline">Light</span>
+                </button>
+                <!-- Audio Status Button -->
+                <button id="soundUnlockBtn" class="flex items-center gap-1.5 text-xs bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 transition">
+                    <i class="fa-solid fa-volume-high text-pink-500" id="audioStatusIcon"></i>
+                    <span id="audioStatusText" class="text-[11px] hidden sm:inline">Audio Ready</span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Compact Workspace -->
+    <main class="max-w-5xl mx-auto w-full px-2.5 sm:px-4 py-3 flex-1 flex flex-col gap-3.5">
+        
+        <!-- SECTION 1: INSTRUMENT SELECTOR -->
+        <section class="bg-white dark:bg-slate-900/90 rounded-xl p-2.5 sm:p-3 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+            <div class="flex items-center justify-between mb-2">
+                <div class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-pink-500 animate-pulse"></span>
+                    <h2 class="text-[11px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Step 1: Choose Instrument</h2>
+                </div>
+                <span id="currentInstBadge" class="text-[11px] px-2 py-0.5 rounded bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700/50 font-medium">Guitar Selected</span>
+            </div>
+            <div class="grid grid-cols-3 gap-2">
+                <!-- Guitar Button -->
+                <button onclick="selectInstrument('guitar')" id="btnInstGuitar" class="inst-btn rounded-lg p-2 sm:p-2.5 border-2 border-purple-500 bg-purple-50 dark:bg-gradient-to-b dark:from-purple-900/40 dark:to-slate-900 transition-all flex items-center justify-center sm:justify-start gap-2 text-left">
+                    <div class="text-xl sm:text-2xl">🎸</div>
+                    <div>
+                        <div class="font-display font-bold text-sm text-slate-900 dark:text-white leading-none">Guitar</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 hidden sm:block mt-0.5">6-String Acoustic</div>
+                    </div>
+                </button>
+                <!-- Ukulele Button -->
+                <button onclick="selectInstrument('ukulele')" id="btnInstUkulele" class="inst-btn rounded-lg p-2 sm:p-2.5 border-2 border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 transition-all flex items-center justify-center sm:justify-start gap-2 text-left">
+                    <div class="text-xl sm:text-2xl">🪕</div>
+                    <div>
+                        <div class="font-display font-bold text-sm text-slate-900 dark:text-white leading-none">Ukulele</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 hidden sm:block mt-0.5">4-String Standard</div>
+                    </div>
+                </button>
+                <!-- Piano Button -->
+                <button onclick="selectInstrument('piano')" id="btnInstPiano" class="inst-btn rounded-lg p-2 sm:p-2.5 border-2 border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 transition-all flex items-center justify-center sm:justify-start gap-2 text-left">
+                    <div class="text-xl sm:text-2xl">🎹</div>
+                    <div>
+                        <div class="font-display font-bold text-sm text-slate-900 dark:text-white leading-none">Piano</div>
+                        <div class="text-[10px] text-slate-500 dark:text-slate-400 hidden sm:block mt-0.5">Keyboard Keys</div>
+                    </div>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 2: CHORD PROGRESSION SELECTOR -->
+        <section class="bg-white dark:bg-slate-900/90 rounded-xl p-2.5 sm:p-3 border border-slate-200 dark:border-slate-800 shadow-sm transition-colors">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-2.5">
+                <div class="flex items-center gap-1.5">
+                    <span class="w-2 h-2 rounded-full bg-cyan-500 animate-pulse"></span>
+                    <h2 class="text-[11px] uppercase tracking-wider font-bold text-slate-500 dark:text-slate-400">Step 2: Choose Progression</h2>
+                </div>
+                
+                <!-- Play Progression Controls -->
+                <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-950 p-1 rounded-lg border border-slate-200 dark:border-slate-800 self-start sm:self-auto">
+                    <button id="btnPlayProgression" onclick="togglePlayProgression()" class="px-2.5 py-1 rounded-md bg-pink-600 hover:bg-pink-500 text-white font-bold text-xs flex items-center gap-1.5 transition shadow-sm">
+                        <i id="playProgIcon" class="fa-solid fa-play text-[10px]"></i>
+                        <span id="playProgText">Play All</span>
+                    </button>
+                    
+                    <div class="flex items-center gap-1 border-x border-slate-300 dark:border-slate-800 px-2 text-xs">
+                        <span class="bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 font-mono font-bold px-1.5 py-0.5 rounded border border-purple-200 dark:border-purple-700/50 text-[10px]">4/4 Meter</span>
+                    </div>
+                    <div class="flex items-center gap-1 px-1 text-xs text-slate-500 dark:text-slate-400">
+                        <i class="fa-solid fa-gauge-high text-[11px]"></i>
+                        <span id="bpmDisplay" class="font-mono text-pink-600 dark:text-pink-400 font-bold w-12 text-center text-[11px]">90 BPM</span>
+                        <input type="range" id="bpmSlider" min="50" max="150" value="90" oninput="updateBPM(this.value)" class="w-14 accent-pink-500 cursor-pointer">
+                    </div>
+                </div>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+                <!-- Progression 1 -->
+                <button onclick="selectProgression(0)" id="btnProg0" class="prog-btn p-2.5 rounded-lg border-2 border-pink-500 bg-pink-50 dark:bg-gradient-to-br dark:from-pink-950/40 dark:to-slate-900 text-left transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="text-[9px] font-bold text-pink-600 dark:text-pink-400 uppercase tracking-wider">Pop Standard</div>
+                        <div class="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white">C – G – Am – F</div>
+                    </div>
+                </button>
+                <!-- Progression 2 -->
+                <button onclick="selectProgression(1)" id="btnProg1" class="prog-btn p-2.5 rounded-lg border-2 border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 text-left transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">50s Classic</div>
+                        <div class="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white">C – Am – F – G</div>
+                    </div>
+                </button>
+                <!-- Progression 3 -->
+                <button onclick="selectProgression(2)" id="btnProg2" class="prog-btn p-2.5 rounded-lg border-2 border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 text-left transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Sensitive Pop</div>
+                        <div class="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white">Am – F – C – G</div>
+                    </div>
+                </button>
+                <!-- Progression 4 -->
+                <button onclick="selectProgression(3)" id="btnProg3" class="prog-btn p-2.5 rounded-lg border-2 border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 text-left transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="text-[9px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Acoustic Ballad</div>
+                        <div class="font-display font-bold text-sm sm:text-base text-slate-900 dark:text-white">Am – F – C – Em</div>
+                    </div>
+                </button>
+            </div>
+        </section>
+
+        <!-- SECTION 3: CHORD CHARTS & DIAGRAMS DISPLAY -->
+        <section class="bg-white dark:bg-slate-900/90 rounded-xl p-3 border border-slate-200 dark:border-slate-800 shadow-md flex-1 flex flex-col transition-colors">
+            <div class="flex items-center justify-between mb-2.5 border-b border-slate-200 dark:border-slate-800 pb-2">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-diagram-project text-pink-500"></i>
+                    <h3 id="diagramsTitle" class="font-display font-bold text-base text-slate-900 dark:text-white">
+                        Chord Charts for <span class="text-pink-500">Guitar</span>
+                    </h3>
+                </div>
+                <div class="flex items-center gap-2">
+                    <div class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 hidden sm:flex">
+                        <i class="fa-solid fa-hand-pointer text-cyan-500"></i>
+                        <span>Click chord card to play:</span>
+                    </div>
+                    <select id="strumCountSelect" onchange="updateStrumCount(this.value)" class="bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-pink-600 dark:text-pink-400 text-xs font-bold rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-pink-500 cursor-pointer">
+                        <option value="1">1x Strum</option>
+                        <option value="4" selected>4x Strum</option>
+                        <option value="8">8x Strum</option>
+                    </select>
+                </div>
+            </div>
+            <!-- Compact Grid of 4 Chords -->
+            <div id="chordGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5 flex-1">
+                <!-- Dynamic Cards injected by JavaScript -->
+            </div>
+        </section>
+
+        <!-- SECTION 4: CAJON INSTRUMENT BUTTON & EMBEDDED BEAT STUDIO -->
+        <section class="bg-gradient-to-r from-amber-500/10 via-purple-500/10 to-pink-500/10 border border-amber-300 dark:border-amber-500/30 rounded-xl p-3 shadow-sm transition-colors">
+            <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 rounded-xl bg-amber-500 text-white flex items-center justify-center text-xl shadow-md shrink-0">
+                        🪘
+                    </div>
+                    <div>
+                        <h3 class="font-display font-bold text-base text-slate-900 dark:text-white flex items-center gap-2">
+                            Cajon Box Drum Studio
+                            <span class="text-[10px] px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700/50 font-normal">Rhythm Instrument</span>
+                        </h3>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">Explore different percussion beats, bass strokes, slaps, and tap grooves!</p>
+                    </div>
+                </div>
+                <button onclick="toggleCajonStudio()" class="w-full sm:w-auto px-4 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-amber-500/20 shrink-0">
+                    <i class="fa-solid fa-drum text-sm"></i>
+                    <span id="cajonToggleText">Open Cajon Beats</span>
+                </button>
+            </div>
+
+            <!-- Cajon Beat Studio Container (Expandable) -->
+            <div id="cajonStudioBox" class="hidden mt-3 pt-3 border-t border-amber-200 dark:border-amber-900/40">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                    <!-- Beat Selector -->
+                    <div class="bg-white/80 dark:bg-slate-950/80 p-3 rounded-lg border border-slate-200 dark:border-slate-800">
+                        <div class="flex items-center justify-between mb-2">
+                            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Select Cajon Rhythm Beat</span>
+                            <button id="btnPlayCajon" onclick="togglePlayCajonBeat()" class="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold flex items-center gap-1.5 transition">
+                                <i id="cajonPlayIcon" class="fa-solid fa-play"></i>
+                                <span id="cajonPlayText">Play Groove</span>
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-2 gap-1.5" id="cajonBeatButtons">
+                            <!-- Injected by JS -->
+                        </div>
+                    </div>
+
+                    <!-- Interactive Touch Pads & 2-Row Music Notation Grid -->
+                    <div class="bg-white/80 dark:bg-slate-950/80 p-3 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col justify-between gap-2">
+                        <div>
+                            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1 block">Interactive Cajon Sound Pads</span>
+                            <div class="grid grid-cols-2 gap-2 my-1">
+                                <button onclick="playCajonSound('bass')" class="p-2.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border-2 border-amber-500/50 text-center transition group active:scale-95 shadow-sm">
+                                    <div class="text-xs font-bold text-amber-700 dark:text-amber-300">Bass Stroke (Center)</div>
+                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Deep Boom 💥</div>
+                                </button>
+                                <button onclick="playCajonSound('slap')" class="p-2.5 rounded-lg bg-orange-500/15 hover:bg-orange-500/25 border-2 border-orange-500/50 text-center transition group active:scale-95 shadow-sm">
+                                    <div class="text-xs font-bold text-orange-700 dark:text-orange-300">Slap Stroke (Corner)</div>
+                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Sharp Pop ⚡</div>
+                                </button>
+                                <button onclick="playCajonSound('tone')" class="p-2.5 rounded-lg bg-yellow-500/15 hover:bg-yellow-500/25 border-2 border-yellow-500/50 text-center transition group active:scale-95 shadow-sm">
+                                    <div class="text-xs font-bold text-yellow-700 dark:text-yellow-300">Open Tone (Edge)</div>
+                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Warm Ring 🔔</div>
+                                </button>
+                                <button onclick="playCajonSound('tap')" class="p-2.5 rounded-lg bg-slate-500/15 hover:bg-slate-500/25 border-2 border-slate-400/50 text-center transition group active:scale-95 shadow-sm">
+                                    <div class="text-xs font-bold text-slate-700 dark:text-slate-300">Soft Tap (Touch)</div>
+                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Ghost Note 🤫</div>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- 2-Row Music Notation & Step Indicator -->
+                        <div class="mt-1 bg-slate-100 dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-[11px] font-bold text-slate-600 dark:text-slate-300">2-Row Rhythm Score (Click note to toggle)</span>
+                                <span id="cajonStepCounter" class="text-[10px] font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/50 px-2 py-0.5 rounded border border-amber-300 dark:border-amber-800">Beat 1 · Step 1/8</span>
+                            </div>
+                            <!-- 2-Row Notation Table (1st row Bass, 2nd row Slap) -->
+                            <div id="cajonNotationGrid" class="w-full overflow-x-auto">
+                                <!-- Dynamically rendered 2 rows: 1st row Bass, 2nd row Slap -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="max-w-5xl mx-auto w-full px-4 py-2.5 text-center text-xs text-slate-600 dark:text-slate-400 border-t border-slate-200 dark:border-slate-900 transition-colors">
+        All work is prepared by <a href="mailto:jia_feng_koh@moe.edu.sg" class="text-pink-600 dark:text-pink-400 underline hover:text-pink-500 font-medium">jia_feng_koh@moe.edu.sg</a>, all rights reserved.
+    </footer>
+
+    <script>
+        // ==========================================
+        // DATA STRUCTURES FOR CHORDS, KEYS & CAJON
+        // ==========================================
+        const CHORD_DATA = {
+            "C": {
+                name: "C Major",
+                mood: "Bright / Happy",
+                frequencies: [130.81, 164.81, 196.00, 261.63, 329.63],
+                guitar: { frets: ['X', 3, 2, 0, 1, 0], fingers: ['', '3', '2', '', '1', ''] },
+                ukulele: { frets: [0, 0, 0, 3], fingers: ['', '', '', '3'] },
+                pianoKeys: ['C4', 'E4', 'G4']
+            },
+            "G": {
+                name: "G Major",
+                mood: "Warm / Uplifting",
+                frequencies: [98.00, 123.47, 146.83, 196.00, 246.94, 392.00],
+                guitar: { frets: [3, 2, 0, 0, 0, 3], fingers: ['2', '1', '', '', '', '3'] },
+                ukulele: { frets: [0, 2, 3, 2], fingers: ['', '1', '3', '2'] },
+                pianoKeys: ['G3', 'B3', 'D4']
+            },
+            "Am": {
+                name: "A Minor",
+                mood: "Somber / Emotional",
+                frequencies: [110.00, 164.81, 220.00, 261.63, 329.63],
+                guitar: { frets: ['X', 0, 2, 2, 1, 0], fingers: ['', '', '2', '3', '1', ''] },
+                ukulele: { frets: [2, 0, 0, 0], fingers: ['2', '', '', ''] },
+                pianoKeys: ['A3', 'C4', 'E4']
+            },
+            "F": {
+                name: "F Major",
+                mood: "Strong / Heroic",
+                frequencies: [174.61, 220.00, 261.63, 349.23],
+                guitar: { frets: ['X', 'X', 3, 2, 1, 1], fingers: ['', '', '3', '2', '1', '1'] },
+                ukulele: { frets: [2, 0, 1, 0], fingers: ['2', '', '1', ''] },
+                pianoKeys: ['F3', 'A3', 'C4']
+            },
+            "Em": {
+                name: "E Minor",
+                mood: "Melancholic / Deep",
+                frequencies: [82.41, 123.47, 164.81, 196.00, 246.94, 329.63],
+                guitar: { frets: [0, 2, 2, 0, 0, 0], fingers: ['', '2', '3', '', '', ''] },
+                ukulele: { frets: [0, 4, 3, 2], fingers: ['', '3', '2', '1'] },
+                pianoKeys: ['E3', 'G3', 'B3']
+            }
+        };
+
+        const PIANO_LAYOUT = [
+            { note: 'C3', isBlack: false },
+            { note: 'C#3', isBlack: true },
+            { note: 'D3', isBlack: false },
+            { note: 'D#3', isBlack: true },
+            { note: 'E3', isBlack: false },
+            { note: 'F3', isBlack: false },
+            { note: 'F#3', isBlack: true },
+            { note: 'G3', isBlack: false },
+            { note: 'G#3', isBlack: true },
+            { note: 'A3', isBlack: false },
+            { note: 'A#3', isBlack: true },
+            { note: 'B3', isBlack: false },
+            { note: 'C4', isBlack: false },
+            { note: 'C#4', isBlack: true },
+            { note: 'D4', isBlack: false },
+            { note: 'D#4', isBlack: true },
+            { note: 'E4', isBlack: false },
+            { note: 'F4', isBlack: false },
+            { note: 'F#4', isBlack: true },
+            { note: 'G4', isBlack: false },
+            { note: 'G#4', isBlack: true },
+            { note: 'A4', isBlack: false }
+        ];
+
+        const PIANO_NOTES = {
+            'C3': 130.81, 'C#3': 138.59, 'D3': 146.83, 'D#3': 155.56, 'E3': 164.81,
+            'F3': 174.61, 'F#3': 185.00, 'G3': 196.00, 'G#3': 207.65, 'A3': 220.00,
+            'A#3': 233.08, 'B3': 246.94, 'C4': 261.63, 'C#4': 277.18, 'D4': 293.66,
+            'D#4': 311.13, 'E4': 329.63, 'F4': 349.23, 'F#4': 369.99, 'G4': 392.00,
+            'G#4': 415.30, 'A4': 440.00
+        };
+
+        const CAJON_BEATS = [
+            { name: "Basic Rock 4/4", bass: [1, 0, 0, 0, 1, 0, 0, 0], slap: [0, 0, 1, 0, 0, 0, 1, 0] },
+            { name: "Pop Syncopated", bass: [1, 0, 0, 1, 0, 0, 1, 0], slap: [0, 0, 1, 0, 0, 1, 0, 0] },
+            { name: "Ballad Groove", bass: [1, 0, 0, 0, 0, 0, 1, 0], slap: [0, 0, 1, 0, 0, 0, 1, 0] },
+            { name: "Funk Drive", bass: [1, 0, 1, 0, 0, 1, 0, 0], slap: [0, 1, 0, 1, 1, 0, 1, 1] }
+        ];
+
+        const PROGRESSIONS = [
+            { id: 0, name: "Pop Standard", chords: ["C", "G", "Am", "F"] },
+            { id: 1, name: "50s Classic", chords: ["C", "Am", "F", "G"] },
+            { id: 2, name: "Sensitive Pop", chords: ["Am", "F", "C", "G"] },
+            { id: 3, name: "Acoustic Ballad", chords: ["Am", "F", "C", "Em"] }
+        ];
+
+        // State Variables
+        let currentInstrument = 'guitar';
+        let currentProgressionIndex = 0;
+        let strumCount = 4;
+        let bpm = 90;
+        let isPlayingProgression = false;
+        let progressionInterval = null;
+        let activeChordIndex = null;
+        let singleChordTimeouts = [];
+
+        // Cajon State
+        let activeCajonBeatIndex = 0;
+        let isPlayingCajon = false;
+        let cajonInterval = null;
+        let currentCajonStep = 0;
+
+        // Audio Context Engine
+        let audioCtx = null;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContext = window.AudioContext || window.webkitAudioContext;
+                audioCtx = new AudioContext();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+            const statusText = document.getElementById('audioStatusText');
+            const statusIcon = document.getElementById('audioStatusIcon');
+            if (statusText) statusText.innerText = "Audio Active";
+            if (statusIcon) statusIcon.className = "fa-solid fa-volume-high text-emerald-500";
+        }
+
+        document.body.addEventListener('click', () => { initAudio(); }, { once: true });
+
+        // Synthesize Instrument Notes
+        function playTone(freq, duration = 1.8, instType = 'guitar', delay = 0) {
+            if (!audioCtx) initAudio();
+            if (!audioCtx) return;
+
+            const startTime = audioCtx.currentTime + delay;
+            const osc1 = audioCtx.createOscillator();
+            const osc2 = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+            const filter = audioCtx.createBiquadFilter();
+
+            if (instType === 'guitar') {
+                osc1.type = 'triangle';
+                osc2.type = 'sawtooth';
+                osc1.frequency.setValueAtTime(freq, startTime);
+                osc2.frequency.setValueAtTime(freq * 1.001, startTime);
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(2200, startTime);
+                filter.frequency.exponentialRampToValueAtTime(300, startTime + duration);
+
+                gainNode.gain.setValueAtTime(0, startTime);
+                gainNode.gain.linearRampToValueAtTime(0.35, startTime + 0.015);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+            } 
+            else if (instType === 'ukulele') {
+                osc1.type = 'triangle';
+                osc2.type = 'sine';
+                osc1.frequency.setValueAtTime(freq * 1.5, startTime);
+                osc2.frequency.setValueAtTime(freq * 1.5, startTime);
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(3000, startTime);
+                filter.frequency.exponentialRampToValueAtTime(400, startTime + duration);
+
+                gainNode.gain.setValueAtTime(0, startTime);
+                gainNode.gain.linearRampToValueAtTime(0.4, startTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.8);
+            } 
+            else { // Piano
+                osc1.type = 'sine';
+                osc2.type = 'triangle';
+                osc1.frequency.setValueAtTime(freq, startTime);
+                osc2.frequency.setValueAtTime(freq * 2, startTime);
+                filter.type = 'lowpass';
+                filter.frequency.setValueAtTime(2500, startTime);
+
+                gainNode.gain.setValueAtTime(0, startTime);
+                gainNode.gain.linearRampToValueAtTime(0.4, startTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration);
+            }
+
+            osc1.connect(filter);
+            osc2.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc1.start(startTime);
+            osc2.start(startTime);
+            osc1.stop(startTime + duration + 0.1);
+            osc2.stop(startTime + duration + 0.1);
+        }
+
+        // Synthesize Cajon Drum Strokes
+        function playCajonSound(type) {
+            if (!audioCtx) initAudio();
+            if (!audioCtx) return;
+
+            const now = audioCtx.currentTime;
+
+            if (type === 'bass') {
+                // Deep resonant center hit (200% Louder: 2.1 Gain)
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.frequency.setValueAtTime(130, now);
+                osc.frequency.exponentialRampToValueAtTime(38, now + 0.12);
+
+                gain.gain.setValueAtTime(2.1, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.35);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.36);
+            } 
+            else if (type === 'slap') {
+                // High snappy corner slap with noise
+                const bufferSize = audioCtx.sampleRate * 0.08;
+                const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+                const data = buffer.getChannelData(0);
+                for (let i = 0; i < bufferSize; i++) {
+                    data[i] = Math.random() * 2 - 1;
+                }
+                const noise = audioCtx.createBufferSource();
+                noise.buffer = buffer;
+
+                const filter = audioCtx.createBiquadFilter();
+                filter.type = 'highpass';
+                filter.frequency.value = 1200;
+
+                const gain = audioCtx.createGain();
+                gain.gain.setValueAtTime(0.6, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+
+                noise.connect(filter);
+                filter.connect(gain);
+                gain.connect(audioCtx.destination);
+                noise.start(now);
+            }
+            else if (type === 'tone') {
+                // Open Tone Edge Hit
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(220, now);
+                osc.frequency.exponentialRampToValueAtTime(110, now + 0.15);
+
+                gain.gain.setValueAtTime(0.5, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.22);
+            }
+            else if (type === 'tap') {
+                // Soft Ghost Tap
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(180, now);
+
+                gain.gain.setValueAtTime(0.2, now);
+                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.06);
+            }
+        }
+
+        // Play Chord with strum delay
+        function playChordSound(chordKey) {
+            initAudio();
+            const chord = CHORD_DATA[chordKey];
+            if (!chord) return;
+
+            const freqs = chord.frequencies;
+            const strumDelay = currentInstrument === 'piano' ? 0.015 : 0.03;
+
+            freqs.forEach((freq, index) => {
+                playTone(freq, 1.2, currentInstrument, index * strumDelay);
+            });
+        }
+
+        function updateStrumCount(val) {
+            strumCount = parseInt(val, 10);
+            renderChordGrid();
+        }
+
+        // Play single chord N times rhythmically (1x, 4x, or 8x)
+        function playChordNTimes(chordKey, cardIndex) {
+            initAudio();
+            singleChordTimeouts.forEach(t => clearTimeout(t));
+            singleChordTimeouts = [];
+
+            const beatDurationMs = (60 / bpm) * 1000;
+
+            for (let beat = 0; beat < strumCount; beat++) {
+                const timeoutId = setTimeout(() => {
+                    playChordSound(chordKey);
+                    updateBeatUI(cardIndex, beat % 4);
+                }, beat * beatDurationMs);
+                singleChordTimeouts.push(timeoutId);
+            }
+
+            const clearId = setTimeout(() => {
+                updateBeatUI(cardIndex, -1);
+            }, strumCount * beatDurationMs);
+            singleChordTimeouts.push(clearId);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            if (html.classList.contains('dark')) {
+                html.classList.remove('dark');
+                document.getElementById('themeText').innerText = "Dark";
+            } else {
+                html.classList.add('dark');
+                document.getElementById('themeText').innerText = "Light";
+            }
+            renderChordGrid();
+        }
+
+        function selectInstrument(inst) {
+            currentInstrument = inst;
+            ['guitar', 'ukulele', 'piano'].forEach(i => {
+                const btn = document.getElementById(`btnInst${i.charAt(0).toUpperCase() + i.slice(1)}`);
+                if (i === inst) {
+                    btn.className = "inst-btn rounded-lg p-2 sm:p-2.5 border-2 border-purple-500 bg-purple-50 dark:bg-gradient-to-b dark:from-purple-900/40 dark:to-slate-900 transition-all shadow-md";
+                } else {
+                    btn.className = "inst-btn rounded-lg p-2 sm:p-2.5 border-2 border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 transition-all opacity-80 hover:opacity-100";
+                }
+            });
+
+            const names = { guitar: "Guitar (6-String)", ukulele: "Ukulele (4-String)", piano: "Piano (Keyboard)" };
+            document.getElementById('currentInstBadge').innerText = `${names[inst]} Selected`;
+            document.getElementById('diagramsTitle').innerHTML = `Chord Charts for <span class="text-pink-500 capitalize">${inst}</span>`;
+
+            renderChordGrid();
+        }
+
+        function selectProgression(index) {
+            currentProgressionIndex = index;
+            PROGRESSIONS.forEach((p, idx) => {
+                const btn = document.getElementById(`btnProg${idx}`);
+                if (idx === index) {
+                    btn.className = "prog-btn p-2.5 rounded-lg border-2 border-pink-500 bg-pink-50 dark:bg-gradient-to-br dark:from-pink-950/40 dark:to-slate-900 text-left transition-all shadow-sm scale-[1.01]";
+                } else {
+                    btn.className = "prog-btn p-2.5 rounded-lg border-2 border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-900/60 text-left transition-all opacity-80 hover:opacity-100";
+                }
+            });
+
+            renderChordGrid();
+            playChordNTimes(PROGRESSIONS[index].chords[0], 0);
+        }
+
+        function updateBPM(val) {
+            bpm = parseInt(val);
+            document.getElementById('bpmDisplay').innerText = `${bpm} BPM`;
+            if (isPlayingProgression) {
+                stopProgression();
+                startProgression();
+            }
+            if (isPlayingCajon) {
+                stopCajonBeat();
+                startCajonBeat();
+            }
+        }
+
+        function togglePlayProgression() {
+            if (isPlayingProgression) stopProgression();
+            else startProgression();
+        }
+
+        function startProgression() {
+            initAudio();
+            singleChordTimeouts.forEach(t => clearTimeout(t));
+
+            isPlayingProgression = true;
+            document.getElementById('playProgIcon').className = "fa-solid fa-square text-[10px]";
+            document.getElementById('playProgText').innerText = "Stop";
+            document.getElementById('btnPlayProgression').classList.replace('bg-pink-600', 'bg-red-600');
+
+            let totalBeatCount = 0;
+            const beatIntervalMs = (60 / bpm) * 1000;
+
+            const executeBeat = () => {
+                activeChordIndex = Math.floor(totalBeatCount / 4);
+                const activeBeatInChord = totalBeatCount % 4;
+                const chordKey = PROGRESSIONS[currentProgressionIndex].chords[activeChordIndex];
+                
+                playChordSound(chordKey);
+                highlightActiveCard();
+                updateBeatUI(activeChordIndex, activeBeatInChord);
+
+                totalBeatCount = (totalBeatCount + 1) % 16;
+            };
+
+            executeBeat();
+            progressionInterval = setInterval(executeBeat, beatIntervalMs);
+        }
+
+        function stopProgression() {
+            isPlayingProgression = false;
+            if (progressionInterval) clearInterval(progressionInterval);
+            document.getElementById('playProgIcon').className = "fa-solid fa-play text-[10px]";
+            document.getElementById('playProgText').innerText = "Play All";
+            document.getElementById('btnPlayProgression').classList.replace('bg-red-600', 'bg-pink-600');
+            
+            activeChordIndex = null;
+            highlightActiveCard();
+            updateBeatUI(-1, -1);
+        }
+
+        function updateBeatUI(chordCardIdx, beatIdx) {
+            for (let c = 0; c < 4; c++) {
+                for (let b = 0; b < 4; b++) {
+                    const dot = document.getElementById(`beatDot_${c}_${b}`);
+                    if (dot) {
+                        if (c === chordCardIdx && b === beatIdx) {
+                            dot.className = "w-2.5 h-2.5 rounded-full bg-pink-500 shadow scale-125 transition-all";
+                        } else {
+                            dot.className = "w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all";
+                        }
+                    }
+                }
+            }
+        }
+
+        function highlightActiveCard() {
+            const cards = document.querySelectorAll('.chord-card');
+            cards.forEach((card, idx) => {
+                if (idx === activeChordIndex) {
+                    card.classList.add('border-pink-500', 'ring-2', 'ring-pink-500/40');
+                } else {
+                    card.classList.remove('border-pink-500', 'ring-2', 'ring-pink-500/40');
+                }
+            });
+        }
+
+        // ==========================================
+        // CAJON STUDIO LOGIC (2-ROW NOTATION SYSTEM)
+        // ==========================================
+        function toggleCajonStudio() {
+            const box = document.getElementById('cajonStudioBox');
+            const txt = document.getElementById('cajonToggleText');
+            if (box.classList.contains('hidden')) {
+                box.classList.remove('hidden');
+                txt.innerText = "Hide Cajon Beats";
+                renderCajonBeatButtons();
+                renderCajonNotation();
+            } else {
+                box.classList.add('hidden');
+                txt.innerText = "Open Cajon Beats";
+                if (isPlayingCajon) stopCajonBeat();
+            }
+        }
+
+        function renderCajonBeatButtons() {
+            const container = document.getElementById('cajonBeatButtons');
+            if (!container) return;
+            container.innerHTML = "";
+            CAJON_BEATS.forEach((beat, idx) => {
+                const btn = document.createElement('button');
+                const isSelected = (idx === activeCajonBeatIndex);
+                btn.className = `p-2 rounded-md text-xs font-bold border text-left transition ${
+                    isSelected 
+                    ? 'bg-amber-500 text-white border-amber-600 shadow-sm' 
+                    : 'bg-slate-100 dark:bg-slate-900 text-slate-700 dark:text-slate-300 border-slate-200 dark:border-slate-800 hover:border-amber-400'
+                }`;
+                btn.onclick = () => selectCajonBeat(idx);
+                btn.innerText = beat.name;
+                container.appendChild(btn);
+            });
+        }
+
+        function selectCajonBeat(idx) {
+            activeCajonBeatIndex = idx;
+            renderCajonBeatButtons();
+            renderCajonNotation();
+            if (isPlayingCajon) {
+                stopCajonBeat();
+                startCajonBeat();
+            }
+        }
+
+        // Render 2-Row Music Notation Grid (1st Row: Bass Stroke, 2nd Row: Slap Stroke)
+        function renderCajonNotation() {
+            const container = document.getElementById('cajonNotationGrid');
+            if (!container) return;
+
+            const beatData = CAJON_BEATS[activeCajonBeatIndex];
+            const stepLabels = ['1', '&', '2', '&', '3', '&', '4', '&'];
+
+            let html = `<div class="grid grid-cols-9 gap-1 text-center font-mono text-[10px] items-center min-w-[300px]">`;
+            
+            // Header Labels
+            html += `<div class="text-left font-bold text-slate-400">Stroke</div>`;
+            stepLabels.forEach((lbl) => {
+                html += `<div class="font-bold text-slate-500 dark:text-slate-400">${lbl}</div>`;
+            });
+
+            // ROW 1: BASS STROKE (First Row)
+            html += `<div class="text-left font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">💥 Bass</div>`;
+            for (let step = 0; step < 8; step++) {
+                const hasBass = beatData.bass[step] === 1;
+                html += `
+                    <button id="cajonNote_bass_${step}" onclick="toggleCajonStepNote('bass', ${step})" 
+                            class="h-7 rounded flex items-center justify-center font-bold transition-all border ${
+                                hasBass 
+                                ? 'bg-amber-500 text-white border-amber-600 shadow-sm' 
+                                : 'bg-slate-200 dark:bg-slate-800/80 text-slate-400 border-slate-300 dark:border-slate-700 hover:bg-amber-100 dark:hover:bg-amber-900/30'
+                            }">
+                        ${hasBass ? '💥' : '·'}
+                    </button>`;
+            }
+
+            // ROW 2: SLAP STROKE (Second Row)
+            html += `<div class="text-left font-bold text-orange-600 dark:text-orange-400 flex items-center gap-1">⚡ Slap</div>`;
+            for (let step = 0; step < 8; step++) {
+                const hasSlap = beatData.slap[step] === 1;
+                html += `
+                    <button id="cajonNote_slap_${step}" onclick="toggleCajonStepNote('slap', ${step})" 
+                            class="h-7 rounded flex items-center justify-center font-bold transition-all border ${
+                                hasSlap 
+                                ? 'bg-orange-500 text-white border-orange-600 shadow-sm' 
+                                : 'bg-slate-200 dark:bg-slate-800/80 text-slate-400 border-slate-300 dark:border-slate-700 hover:bg-orange-100 dark:hover:bg-orange-900/30'
+                            }">
+                        ${hasSlap ? '⚡' : '·'}
+                    </button>`;
+            }
+
+            html += `</div>`;
+            container.innerHTML = html;
+        }
+
+        // Toggle interactive step note in notation grid
+        function toggleCajonStepNote(type, step) {
+            const beatData = CAJON_BEATS[activeCajonBeatIndex];
+            beatData[type][step] = beatData[type][step] === 1 ? 0 : 1;
+            renderCajonNotation();
+        }
+
+        function togglePlayCajonBeat() {
+            if (isPlayingCajon) stopCajonBeat();
+            else startCajonBeat();
+        }
+
+        function startCajonBeat() {
+            initAudio();
+            isPlayingCajon = true;
+            document.getElementById('cajonPlayIcon').className = "fa-solid fa-square";
+            document.getElementById('cajonPlayText').innerText = "Stop";
+
+            const stepIntervalMs = ((60 / bpm) * 1000) / 2; // 8th notes
+            currentCajonStep = 0;
+
+            const executeCajonStep = () => {
+                const beatData = CAJON_BEATS[activeCajonBeatIndex];
+                const playBass = beatData.bass[currentCajonStep] === 1;
+                const playSlap = beatData.slap[currentCajonStep] === 1;
+
+                if (playBass) playCajonSound('bass');
+                if (playSlap) playCajonSound('slap');
+
+                // Update Beat Counter Display
+                const currentBeatNum = Math.floor(currentCajonStep / 2) + 1;
+                const currentBeatSub = currentCajonStep % 2 === 0 ? '' : ' &';
+                const counterElem = document.getElementById('cajonStepCounter');
+                if (counterElem) {
+                    counterElem.innerText = `Beat ${currentBeatNum}${currentBeatSub} · Step ${currentCajonStep + 1}/8`;
+                }
+
+                // Highlight notes and active column progress in both rows
+                for (let i = 0; i < 8; i++) {
+                    const bassElem = document.getElementById(`cajonNote_bass_${i}`);
+                    const slapElem = document.getElementById(`cajonNote_slap_${i}`);
+                    const isCurrent = (i === currentCajonStep);
+
+                    if (bassElem) {
+                        const hasNote = beatData.bass[i] === 1;
+                        if (isCurrent) {
+                            bassElem.className = `h-7 rounded flex items-center justify-center font-bold transition-all border scale-110 z-10 shadow-lg ${
+                                hasNote 
+                                ? 'bg-amber-400 text-slate-900 border-amber-300 ring-2 ring-amber-400 animate-pulse' 
+                                : 'bg-amber-200 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200 border-amber-400'
+                            }`;
+                        } else {
+                            bassElem.className = `h-7 rounded flex items-center justify-center font-bold transition-all border ${
+                                hasNote 
+                                ? 'bg-amber-500 text-white border-amber-600 shadow-sm' 
+                                : 'bg-slate-200 dark:bg-slate-800/80 text-slate-400 border-slate-300 dark:border-slate-700'
+                            }`;
+                        }
+                    }
+
+                    if (slapElem) {
+                        const hasNote = beatData.slap[i] === 1;
+                        if (isCurrent) {
+                            slapElem.className = `h-7 rounded flex items-center justify-center font-bold transition-all border scale-110 z-10 shadow-lg ${
+                                hasNote 
+                                ? 'bg-orange-400 text-slate-900 border-orange-300 ring-2 ring-orange-400 animate-pulse' 
+                                : 'bg-orange-200 dark:bg-orange-900/60 text-orange-800 dark:text-orange-200 border-orange-400'
+                            }`;
+                        } else {
+                            slapElem.className = `h-7 rounded flex items-center justify-center font-bold transition-all border ${
+                                hasNote 
+                                ? 'bg-orange-500 text-white border-orange-600 shadow-sm' 
+                                : 'bg-slate-200 dark:bg-slate-800/80 text-slate-400 border-slate-300 dark:border-slate-700'
+                            }`;
+                        }
+                    }
+                }
+
+                currentCajonStep = (currentCajonStep + 1) % 8;
+            };
+
+            executeCajonStep();
+            cajonInterval = setInterval(executeCajonStep, stepIntervalMs);
+        }
+
+        function stopCajonBeat() {
+            isPlayingCajon = false;
+            if (cajonInterval) clearInterval(cajonInterval);
+            document.getElementById('cajonPlayIcon').className = "fa-solid fa-play";
+            document.getElementById('cajonPlayText').innerText = "Play Groove";
+            renderCajonNotation();
+        }
+
+        // ==========================================
+        // DIAGRAM RENDERERS (SVG & HTML)
+        // ==========================================
+        function renderGuitarSVG(chordData) {
+            const strings = 6, frets = 4;
+            const width = 120, height = 130;
+            const startX = 20, startY = 25;
+            const gridWidth = 80, gridHeight = 85;
+            const stringSpacing = gridWidth / (strings - 1);
+            const fretSpacing = gridHeight / frets;
+
+            let svgHtml = `<svg viewBox="0 0 ${width} ${height}" class="w-full h-auto max-h-[130px] mx-auto select-none">`;
+            svgHtml += `<line x1="${startX - 2}" y1="${startY}" x2="${startX + gridWidth + 2}" y2="${startY}" class="nut-line" />`;
+
+            for (let i = 1; i <= frets; i++) {
+                const y = startY + (i * fretSpacing);
+                svgHtml += `<line x1="${startX}" y1="${y}" x2="${startX + gridWidth}" y2="${y}" class="fret-line" />`;
+            }
+
+            for (let i = 0; i < strings; i++) {
+                const x = startX + (i * stringSpacing);
+                svgHtml += `<line x1="${x}" y1="${startY}" x2="${x}" y2="${startY + gridHeight}" class="guitar-string" stroke-width="${1 + (strings - i) * 0.3}" />`;
+            }
+
+            chordData.guitar.frets.forEach((fret, i) => {
+                const x = startX + (i * stringSpacing);
+                if (fret === 'X') {
+                    svgHtml += `<text x="${x}" y="${startY - 6}" text-anchor="middle" fill="#EF4444" font-size="10" font-weight="bold">✕</text>`;
+                } else if (fret === 0) {
+                    svgHtml += `<text x="${x}" y="${startY - 6}" text-anchor="middle" fill="#10B981" font-size="10" font-weight="bold">○</text>`;
+                } else {
+                    const y = startY + (fret * fretSpacing) - (fretSpacing / 2);
+                    const fingerNum = chordData.guitar.fingers[i] || '';
+                    svgHtml += `<circle cx="${x}" cy="${y}" r="7" class="finger-dot" />`;
+                    if (fingerNum) {
+                        svgHtml += `<text x="${x}" y="${y + 3}" text-anchor="middle" fill="#FFFFFF" font-size="8" font-weight="bold">${fingerNum}</text>`;
+                    }
+                }
+            });
+
+            svgHtml += `</svg>`;
+            return svgHtml;
+        }
+
+        function renderUkuleleSVG(chordData) {
+            const strings = 4, frets = 4;
+            const width = 110, height = 130;
+            const startX = 25, startY = 25;
+            const gridWidth = 60, gridHeight = 85;
+            const stringSpacing = gridWidth / (strings - 1);
+            const fretSpacing = gridHeight / frets;
+
+            let svgHtml = `<svg viewBox="0 0 ${width} ${height}" class="w-full h-auto max-h-[130px] mx-auto select-none">`;
+            svgHtml += `<line x1="${startX - 2}" y1="${startY}" x2="${startX + gridWidth + 2}" y2="${startY}" class="nut-line" />`;
+
+            for (let i = 1; i <= frets; i++) {
+                const y = startY + (i * fretSpacing);
+                svgHtml += `<line x1="${startX}" y1="${y}" x2="${startX + gridWidth}" y2="${y}" class="fret-line" />`;
+            }
+
+            for (let i = 0; i < strings; i++) {
+                const x = startX + (i * stringSpacing);
+                svgHtml += `<line x1="${x}" y1="${startY}" x2="${x}" y2="${startY + gridHeight}" class="ukulele-string" stroke-width="1.8" />`;
+            }
+
+            chordData.ukulele.frets.forEach((fret, i) => {
+                const x = startX + (i * stringSpacing);
+                if (fret === 'X') {
+                    svgHtml += `<text x="${x}" y="${startY - 6}" text-anchor="middle" fill="#EF4444" font-size="10" font-weight="bold">✕</text>`;
+                } else if (fret === 0) {
+                    svgHtml += `<text x="${x}" y="${startY - 6}" text-anchor="middle" fill="#10B981" font-size="10" font-weight="bold">○</text>`;
+                } else {
+                    const y = startY + (fret * fretSpacing) - (fretSpacing / 2);
+                    const fingerNum = chordData.ukulele.fingers[i] || '';
+                    svgHtml += `<circle cx="${x}" cy="${y}" r="7" class="finger-dot" />`;
+                    if (fingerNum) {
+                        svgHtml += `<text x="${x}" y="${y + 3}" text-anchor="middle" fill="#FFFFFF" font-size="8" font-weight="bold">${fingerNum}</text>`;
+                    }
+                }
+            });
+
+            svgHtml += `</svg>`;
+            return svgHtml;
+        }
+
+        function renderPianoKeyboardSVG(chordData) {
+            const whiteKeys = PIANO_LAYOUT.filter(k => !k.isBlack);
+            const activeKeys = chordData.pianoKeys;
+
+            const whiteKeyWidth = 13;
+            const whiteKeyHeight = 65;
+            const blackKeyWidth = 8;
+            const blackKeyHeight = 38;
+
+            const totalWidth = whiteKeys.length * whiteKeyWidth;
+            let svgHtml = `<svg viewBox="0 0 ${totalWidth} ${whiteKeyHeight + 12}" class="w-full h-auto max-h-[120px] mx-auto select-none my-auto">`;
+
+            let currentWhiteIdx = 0;
+            PIANO_LAYOUT.forEach((k) => {
+                if (!k.isBlack) {
+                    const x = currentWhiteIdx * whiteKeyWidth;
+                    const isActive = activeKeys.includes(k.note);
+                    const activeClass = isActive ? "piano-key-active" : "";
+                    
+                    svgHtml += `<rect x="${x}" y="0" width="${whiteKeyWidth - 1}" height="${whiteKeyHeight}" class="piano-key-white ${activeClass}" onclick="playSinglePianoNote('${k.note}')" />`;
+                    if (isActive) {
+                        svgHtml += `<circle cx="${x + whiteKeyWidth/2 - 0.5}" cy="${whiteKeyHeight - 10}" r="3" fill="#0284C7" />`;
+                    }
+                    currentWhiteIdx++;
+                }
+            });
+
+            currentWhiteIdx = 0;
+            PIANO_LAYOUT.forEach((k) => {
+                if (!k.isBlack) {
+                    currentWhiteIdx++;
+                } else {
+                    const x = (currentWhiteIdx * whiteKeyWidth) - (blackKeyWidth / 2);
+                    const isActive = activeKeys.includes(k.note);
+                    const activeClass = isActive ? "piano-key-active" : "";
+                    svgHtml += `<rect x="${x}" y="0" width="${blackKeyWidth}" height="${blackKeyHeight}" class="piano-key-black ${activeClass}" onclick="playSinglePianoNote('${k.note}')" />`;
+                }
+            });
+
+            svgHtml += `</svg>`;
+            return svgHtml;
+        }
+
+        function playSinglePianoNote(note) {
+            initAudio();
+            const freq = PIANO_NOTES[note];
+            if (freq) playTone(freq, 1.2, 'piano');
+        }
+
+        function renderChordGrid() {
+            const container = document.getElementById('chordGrid');
+            if (!container) return;
+            const chords = PROGRESSIONS[currentProgressionIndex].chords;
+
+            container.innerHTML = "";
+
+            chords.forEach((chordKey, idx) => {
+                const data = CHORD_DATA[chordKey];
+                if (!data) return;
+
+                const card = document.createElement('div');
+                const isActive = (idx === activeChordIndex);
+                
+                card.className = `chord-card bg-slate-50 dark:bg-slate-900 border-2 ${
+                    isActive ? 'border-pink-500 ring-2 ring-pink-500/40' : 'border-slate-200 dark:border-slate-800'
+                } rounded-xl p-3 flex flex-col justify-between transition-all cursor-pointer shadow-sm group hover:border-pink-400`;
+                
+                card.onclick = () => {
+                    if (isPlayingProgression) stopProgression();
+                    playChordNTimes(chordKey, idx);
+                };
+
+                let diagramContent = "";
+                if (currentInstrument === 'guitar') diagramContent = renderGuitarSVG(data);
+                else if (currentInstrument === 'ukulele') diagramContent = renderUkuleleSVG(data);
+                else diagramContent = renderPianoKeyboardSVG(data);
+
+                card.innerHTML = `
+                    <div>
+                        <div class="flex items-center justify-between mb-1">
+                            <div>
+                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Chord ${idx + 1}</span>
+                                <h4 class="font-display font-bold text-xl text-slate-900 dark:text-white group-hover:text-pink-500 transition-colors">${data.name}</h4>
+                            </div>
+                            <button class="w-7 h-7 rounded-lg bg-pink-100 dark:bg-pink-500/20 text-pink-600 dark:text-pink-400 flex items-center justify-center group-hover:bg-pink-500 group-hover:text-white transition">
+                                <i class="fa-solid fa-volume-high text-xs"></i>
+                            </button>
+                        </div>
+
+                        <!-- 4 Beat Indicators -->
+                        <div class="flex items-center justify-between bg-white dark:bg-slate-950 px-2 py-1 rounded border border-slate-200 dark:border-slate-800 my-1">
+                            <span class="text-[9px] font-mono text-slate-400 font-bold">4 Beats:</span>
+                            <div class="flex items-center gap-1">
+                                <span id="beatDot_${idx}_0" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></span>
+                                <span id="beatDot_${idx}_1" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></span>
+                                <span id="beatDot_${idx}_2" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></span>
+                                <span id="beatDot_${idx}_3" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Diagram Container -->
+                    <div class="bg-white dark:bg-slate-950 rounded-lg p-2 border border-slate-200 dark:border-slate-800/80 flex items-center justify-center my-1.5 min-h-[120px]">
+                        ${diagramContent}
+                    </div>
+
+                    <!-- Footer Details -->
+                    <div class="text-[10px] text-slate-500 dark:text-slate-400 flex items-center justify-between border-t border-slate-200 dark:border-slate-800/80 pt-1.5">
+                        <span class="text-pink-600 dark:text-pink-400 font-bold">${strumCount}x Strum →</span>
+                        <span class="font-mono text-[9px] text-slate-400">${data.mood}</span>
+                    </div>
+                `;
+
+                container.appendChild(card);
+            });
+        }
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            selectInstrument('guitar');
+            selectProgression(0);
+        });
+    </script>
+</body>
+</html>
