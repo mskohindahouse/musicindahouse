@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en"> <!-- Removed 'dark' class for light mode default -->
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -76,7 +76,7 @@
                 <button id="themeToggleBtn" onclick="toggleTheme()" class="flex items-center gap-1.5 text-xs bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 transition">
                     <i class="fa-solid fa-sun text-amber-500 hidden dark:inline"></i>
                     <i class="fa-solid fa-moon text-indigo-600 dark:hidden"></i>
-                    <span id="themeText" class="font-medium text-[11px] hidden sm:inline">Dark</span> <!-- Default text to Dark since light mode is active -->
+                    <span id="themeText" class="font-medium text-[11px] hidden sm:inline">Dark</span>
                 </button>
                 <!-- Audio Status Button -->
                 <button id="soundUnlockBtn" onclick="initAudio()" class="flex items-center gap-1.5 text-xs bg-slate-200 hover:bg-slate-300 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 px-2.5 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700 transition">
@@ -98,8 +98,8 @@
                         <i class="fa-solid fa-microphone-lines text-sm group-hover:scale-110 transition-transform"></i>
                     </div>
                     <div>
-                        <h2 class="font-display font-bold text-[13px] text-slate-900 dark:text-white leading-tight">Instrument Tuner (Live Mic)</h2>
-                        <p class="text-[10px] text-slate-500 dark:text-slate-400">Tune using your device microphone or play reference pitches</p>
+                        <h2 class="font-display font-bold text-[13px] text-slate-900 dark:text-white leading-tight">Instrument Tuner</h2>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400">Play reference tones or use Live Microphone Tuning</p>
                     </div>
                 </div>
                 <div class="text-slate-400 border border-slate-200 dark:border-slate-700 rounded-full w-6 h-6 flex items-center justify-center bg-white dark:bg-slate-800">
@@ -109,39 +109,52 @@
             
             <!-- Collapsible Tuner Content -->
             <div id="tunerContent" class="hidden border-t border-slate-200 dark:border-slate-800 p-3 bg-slate-50 dark:bg-slate-900/50">
-                <div class="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between mb-3">
+                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mb-3">
                     <div class="flex bg-slate-200 dark:bg-slate-800 rounded-lg p-1 border border-slate-300 dark:border-slate-700">
                         <button id="tunerTabGuitar" onclick="switchTunerMode('guitar')" class="px-3 py-1 rounded-md text-xs font-bold bg-indigo-500 text-white shadow-sm transition-all">Guitar</button>
                         <button id="tunerTabUkulele" onclick="switchTunerMode('ukulele')" class="px-3 py-1 rounded-md text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all">Ukulele</button>
                     </div>
-                    
-                    <button id="btnMicToggle" onclick="toggleMicTuner()" class="px-3 py-1.5 rounded-md text-xs font-bold bg-rose-500 hover:bg-rose-600 text-white shadow-sm transition-all flex items-center gap-2">
-                        <i id="micToggleIcon" class="fa-solid fa-microphone"></i> 
-                        <span id="micToggleText">Enable Mic Tuner</span>
+
+                    <!-- Live Mic Toggle Button -->
+                    <button id="btnMicTuner" onclick="toggleMicTuner()" class="w-full sm:w-auto px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm">
+                        <i id="micTunerIcon" class="fa-solid fa-microphone"></i>
+                        <span id="micTunerText">Start Live Mic Tuner</span>
                     </button>
                 </div>
 
-                <!-- Live Tuning Visualizer -->
-                <div id="tunerVisualizer" class="hidden flex-col items-center mb-4 p-4 bg-white dark:bg-slate-950 rounded-xl border border-slate-200 dark:border-slate-800 shadow-inner">
-                    <div class="text-xs text-slate-500 font-bold uppercase tracking-widest mb-1">Detected Pitch</div>
-                    <div class="flex items-end gap-2 h-10">
-                        <div id="tunerNote" class="text-4xl font-display font-bold text-slate-900 dark:text-white leading-none">-</div>
-                        <div id="tunerCents" class="text-sm font-mono text-slate-500 mb-1 w-12 font-medium"></div>
-                    </div>
-                    <!-- Tuning Meter -->
-                    <div class="w-full max-w-sm mt-3 relative h-6 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden flex items-center border border-slate-200 dark:border-slate-700">
-                        <div class="absolute left-1/2 top-0 bottom-0 w-[2px] bg-slate-400 dark:bg-slate-500 z-10"></div>
-                        <div class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-5 h-5 rounded-full bg-emerald-500 shadow-[0_0_10px_rgba(16,185,129,0.8)] z-20 transition-opacity duration-200" id="tunerPerfectIndicator" style="opacity: 0;"></div>
-                        <div id="tunerNeedle" class="absolute left-[50%] top-1 bottom-1 w-2 bg-rose-500 rounded-full transition-transform duration-75 z-30" style="transform: translateX(-50%);"></div>
-                        <div class="w-full flex justify-between px-3 text-[9px] text-slate-400 font-bold z-40 pointer-events-none">
-                            <span>FLAT</span>
-                            <span>SHARP</span>
+                <!-- Live Mic Tuner Display Panel -->
+                <div id="liveMicPanel" class="hidden mb-3.5 p-3 rounded-xl bg-slate-900 text-white border border-emerald-500/30 shadow-inner">
+                    <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <div class="text-center sm:text-left">
+                            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold flex items-center justify-center sm:justify-start gap-1.5">
+                                <span id="micPulseDot" class="w-2 h-2 rounded-full bg-emerald-500 animate-ping"></span>
+                                Live Mic Input Pitch
+                            </div>
+                            <div class="flex items-baseline gap-2 justify-center sm:justify-start mt-0.5">
+                                <span id="micNoteDisplay" class="font-display font-extrabold text-3xl text-emerald-400">--</span>
+                                <span id="micFreqDisplay" class="font-mono text-sm text-slate-300">0.0 Hz</span>
+                            </div>
+                        </div>
+
+                        <!-- Meter Visual Indicator -->
+                        <div class="w-full sm:w-64 flex flex-col items-center">
+                            <div class="w-full flex justify-between text-[10px] font-mono text-slate-400 mb-1">
+                                <span>Flat (-50c)</span>
+                                <span id="micStatusBadge" class="font-bold text-emerald-400">Play a string...</span>
+                                <span>Sharp (+50c)</span>
+                            </div>
+                            <div class="w-full h-3 bg-slate-800 rounded-full relative overflow-hidden border border-slate-700">
+                                <!-- Center Perfect Alignment Line -->
+                                <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-emerald-400 z-10"></div>
+                                <!-- Moving Needle Bar -->
+                                <div id="micNeedle" class="absolute top-0 bottom-0 left-1/2 w-1.5 bg-emerald-400 -translate-x-1/2 transition-all duration-100 rounded-full"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
                 <div class="text-center mb-3">
-                    <span class="text-[10px] text-slate-500 dark:text-slate-400"><i class="fa-solid fa-info-circle mr-1"></i>Click a string to play reference tone, or tune using mic.</span>
+                    <span class="text-[10px] text-slate-500 dark:text-slate-400"><i class="fa-solid fa-info-circle mr-1"></i>Click string buttons for reference tone or start Live Mic Tuner for automatic pitch detection.</span>
                 </div>
 
                 <!-- Guitar Tuning Strings (E A D G B E) -->
@@ -307,7 +320,7 @@
             </div>
         </section>
 
-        <!-- SECTION 3: CHORD CHARTS & DIAGRAMS DISPLAY (Sized cleanly without vertical flex stretching) -->
+        <!-- SECTION 3: CHORD CHARTS & DIAGRAMS DISPLAY -->
         <section class="bg-white dark:bg-slate-900/90 rounded-xl p-3.5 border border-slate-200 dark:border-slate-800 shadow-md flex-none transition-colors">
             <div class="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-800 pb-2.5">
                 <div class="flex items-center gap-2">
@@ -316,19 +329,21 @@
                         Chord Charts for <span class="text-pink-500">Piano</span>
                     </h3>
                 </div>
+            </div>
+
+            <!-- Finger Number Legend Banner -->
+            <div class="mb-3 px-3 py-1.5 bg-slate-50 dark:bg-slate-950/70 rounded-lg border border-slate-200 dark:border-slate-800/80 flex flex-wrap items-center justify-between text-[11px] text-slate-500 dark:text-slate-400 gap-2">
                 <div class="flex items-center gap-2">
-                    <div class="text-[11px] text-slate-500 dark:text-slate-400 flex items-center gap-1 hidden sm:flex">
-                        <i class="fa-solid fa-hand-pointer text-cyan-500"></i>
-                        <span>Click chord card to play:</span>
-                    </div>
-                    <select id="strumCountSelect" onchange="updateStrumCount(this.value)" class="bg-slate-100 dark:bg-slate-950 border border-slate-300 dark:border-slate-700 text-pink-600 dark:text-pink-400 text-xs font-bold rounded-lg px-2 py-1 focus:outline-none focus:ring-1 focus:ring-pink-500 cursor-pointer">
-                        <option value="1">1x Strum</option>
-                        <option value="4" selected>4x Strum</option>
-                        <option value="8">8x Strum</option>
-                    </select>
+                    <span class="font-bold text-pink-600 dark:text-pink-400 uppercase text-[10px] tracking-wider"><i class="fa-solid fa-hand-pointer mr-1"></i> Finger Legend:</span>
+                    <span class="inline-flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-bold flex items-center justify-center">1</span> Index</span>
+                    <span class="inline-flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-bold flex items-center justify-center">2</span> Middle</span>
+                    <span class="inline-flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-bold flex items-center justify-center">3</span> Ring</span>
+                    <span class="inline-flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-bold flex items-center justify-center">4</span> Pinky</span>
+                    <span class="inline-flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-amber-500 text-white text-[9px] font-bold flex items-center justify-center">T</span> Thumb</span>
                 </div>
             </div>
-            <!-- Grid of 4 Chords with solid readable spacing -->
+
+            <!-- Grid of 4 Chords -->
             <div id="chordGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
                 <!-- Dynamic Cards injected by JavaScript -->
             </div>
@@ -361,7 +376,7 @@
                     <!-- Beat Selector -->
                     <div class="bg-white/80 dark:bg-slate-950/80 p-3 rounded-lg border border-slate-200 dark:border-slate-800">
                         <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider">Select Cajon Rhythm Beat</span>
+                            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-0">Select Cajon Rhythm Beat</span>
                             <button id="btnPlayCajon" onclick="togglePlayCajonBeat()" class="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold flex items-center gap-1.5 transition">
                                 <i id="cajonPlayIcon" class="fa-solid fa-play"></i>
                                 <span id="cajonPlayText">Play Groove</span>
@@ -399,12 +414,11 @@
                         <!-- 2-Row Music Notation & Step Indicator -->
                         <div class="mt-1 bg-slate-100 dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
                             <div class="flex items-center justify-between mb-2">
-                                <span class="text-[11px] font-bold text-slate-600 dark:text-slate-300">2-Row Rhythm Score (Click note to toggle)</span>
+                                <span class="text-[11px] font-bold text-slate-600 dark:text-slate-300">2-Row Rhythm Score (Click step to toggle)</span>
                                 <span id="cajonStepCounter" class="text-[10px] font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/50 px-2 py-0.5 rounded border border-amber-300 dark:border-amber-800">Beat 1 · Step 1/8</span>
                             </div>
-                            <!-- 2-Row Notation Table (1st row Bass, 2nd row Slap) -->
+                            <!-- 2-Row Notation Table -->
                             <div id="cajonNotationGrid" class="w-full overflow-x-auto">
-                                <!-- Dynamically rendered 2 rows: 1st row Bass, 2nd row Slap -->
                             </div>
                         </div>
                     </div>
@@ -420,231 +434,384 @@
 
     <script>
         // ==========================================
-        // DATA STRUCTURES FOR CHORDS, KEYS & CAJON
+        // CHORD DATA STRUCTURES (STANDARD FINGERING)
         // ==========================================
         const CHORD_DATA = {
             "C": {
                 name: "C Major",
                 mood: "Bright / Happy",
                 frequencies: [130.81, 164.81, 196.00, 261.63, 329.63],
-                guitar: { frets: ['X', 3, 2, 0, 1, 0], fingers: ['', '3', '2', '', '1', ''] },
-                ukulele: { frets: [0, 0, 0, 3], fingers: ['', '', '', '3'] },
-                pianoKeys: ['C4', 'E4', 'G4']
+                guitar: { 
+                    frets: ['X', 3, 2, 0, 1, 0], 
+                    fingers: ['', '3', '2', '', '1', '']
+                },
+                ukulele: { 
+                    frets: [0, 0, 0, 3], 
+                    fingers: ['', '', '', '3']
+                },
+                pianoKeys: ['C4', 'E4', 'G4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "G": {
                 name: "G Major",
                 mood: "Warm / Uplifting",
                 frequencies: [98.00, 123.47, 146.83, 196.00, 246.94, 392.00],
-                guitar: { frets: [3, 2, 0, 0, 0, 3], fingers: ['2', '1', '', '', '', '3'] },
-                ukulele: { frets: [0, 2, 3, 2], fingers: ['', '1', '3', '2'] },
-                pianoKeys: ['G3', 'B3', 'D4']
+                guitar: { 
+                    frets: [3, 2, 0, 0, 0, 3], 
+                    fingers: ['2', '1', '', '', '', '3']
+                },
+                ukulele: { 
+                    frets: [0, 2, 3, 2], 
+                    fingers: ['', '1', '3', '2']
+                },
+                pianoKeys: ['G3', 'B3', 'D4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Am": {
                 name: "A Minor",
                 mood: "Somber / Emotional",
                 frequencies: [110.00, 164.81, 220.00, 261.63, 329.63],
-                guitar: { frets: ['X', 0, 2, 2, 1, 0], fingers: ['', '', '2', '3', '1', ''] },
-                ukulele: { frets: [2, 0, 0, 0], fingers: ['2', '', '', ''] },
-                pianoKeys: ['A3', 'C4', 'E4']
+                guitar: { 
+                    frets: ['X', 0, 2, 2, 1, 0], 
+                    fingers: ['', '', '2', '3', '1', '']
+                },
+                ukulele: { 
+                    frets: [2, 0, 0, 0], 
+                    fingers: ['2', '', '', '']
+                },
+                pianoKeys: ['A3', 'C4', 'E4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "F": {
                 name: "F Major",
                 mood: "Strong / Heroic",
                 frequencies: [174.61, 220.00, 261.63, 349.23],
-                guitar: { frets: ['X', 'X', 3, 2, 1, 1], fingers: ['', '', '3', '2', '1', '1'] },
-                ukulele: { frets: [2, 0, 1, 0], fingers: ['2', '', '1', ''] },
-                pianoKeys: ['F3', 'A3', 'C4']
+                guitar: { 
+                    frets: ['X', 'X', 3, 2, 1, 1], 
+                    fingers: ['', '', '3', '2', '1', '1']
+                },
+                ukulele: { 
+                    frets: [2, 0, 1, 0], 
+                    fingers: ['2', '', '1', '']
+                },
+                pianoKeys: ['F3', 'A3', 'C4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Em": {
                 name: "E Minor",
                 mood: "Melancholic / Deep",
                 frequencies: [82.41, 123.47, 164.81, 196.00, 246.94, 329.63],
-                guitar: { frets: [0, 2, 2, 0, 0, 0], fingers: ['', '2', '3', '', '', ''] },
-                ukulele: { frets: [0, 4, 3, 2], fingers: ['', '3', '2', '1'] },
-                pianoKeys: ['E3', 'G3', 'B3']
+                guitar: { 
+                    frets: [0, 2, 2, 0, 0, 0], 
+                    fingers: ['', '2', '3', '', '', '']
+                },
+                ukulele: { 
+                    frets: [0, 4, 3, 2], 
+                    fingers: ['', '3', '2', '1']
+                },
+                pianoKeys: ['E3', 'G3', 'B3'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "D": {
                 name: "D Major",
                 mood: "Triumphant / Bright",
                 frequencies: [146.83, 220.00, 293.66, 369.99],
-                guitar: { frets: ['X', 'X', 0, 2, 3, 2], fingers: ['', '', '', '1', '3', '2'] },
-                ukulele: { frets: [2, 2, 2, 0], fingers: ['1', '2', '3', ''] },
-                pianoKeys: ['D3', 'F#3', 'A3']
+                guitar: { 
+                    frets: ['X', 'X', 0, 2, 3, 2], 
+                    fingers: ['', '', '', '1', '3', '2']
+                },
+                ukulele: { 
+                    frets: [2, 2, 2, 0], 
+                    fingers: ['1', '2', '3', '']
+                },
+                pianoKeys: ['D3', 'F#3', 'A3'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "A": {
                 name: "A Major",
                 mood: "Joyful / Upbeat",
                 frequencies: [110.00, 164.81, 220.00, 277.18, 329.63],
-                guitar: { frets: ['X', 0, 2, 2, 2, 0], fingers: ['', '', '1', '2', '3', ''] },
-                ukulele: { frets: [2, 1, 0, 0], fingers: ['2', '1', '', ''] },
-                pianoKeys: ['A3', 'C#4', 'E4']
+                guitar: { 
+                    frets: ['X', 0, 2, 2, 2, 0], 
+                    fingers: ['', '', '1', '2', '3', '']
+                },
+                ukulele: { 
+                    frets: [2, 1, 0, 0], 
+                    fingers: ['2', '1', '', '']
+                },
+                pianoKeys: ['A3', 'C#4', 'E4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "E": {
                 name: "E Major",
                 mood: "Energetic / Powerful",
                 frequencies: [82.41, 123.47, 164.81, 207.65, 246.94, 329.63],
-                guitar: { frets: [0, 2, 2, 1, 0, 0], fingers: ['', '2', '3', '1', '', ''] },
-                ukulele: { frets: [4, 4, 4, 2], fingers: ['3', '4', '2', '1'] },
-                pianoKeys: ['E3', 'G#3', 'B3']
+                guitar: { 
+                    frets: [0, 2, 2, 1, 0, 0], 
+                    fingers: ['', '2', '3', '1', '', '']
+                },
+                ukulele: { 
+                    frets: [4, 4, 4, 2], 
+                    fingers: ['3', '4', '2', '1']
+                },
+                pianoKeys: ['E3', 'G#3', 'B3'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Bm": {
                 name: "B Minor",
                 mood: "Serious / Reflective",
                 frequencies: [123.47, 185.00, 246.94, 293.66, 369.99],
-                guitar: { frets: ['X', 2, 4, 4, 3, 2], fingers: ['', '1', '3', '4', '2', '1'] },
-                ukulele: { frets: [4, 2, 2, 2], fingers: ['3', '1', '1', '1'] },
-                pianoKeys: ['B3', 'D4', 'F#4']
+                guitar: { 
+                    frets: ['X', 2, 4, 4, 3, 2], 
+                    fingers: ['', '1', '3', '4', '2', '1']
+                },
+                ukulele: { 
+                    frets: [4, 2, 2, 2], 
+                    fingers: ['3', '1', '1', '1']
+                },
+                pianoKeys: ['B3', 'D4', 'F#4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "F#m": {
                 name: "F# Minor",
                 mood: "Dark / Somber",
                 frequencies: [92.50, 138.59, 185.00, 220.00, 277.18, 369.99],
-                guitar: { frets: [2, 4, 4, 2, 2, 2], fingers: ['1', '3', '4', '1', '1', '1'] },
-                ukulele: { frets: [2, 1, 2, 0], fingers: ['2', '1', '3', ''] },
-                pianoKeys: ['F#3', 'A3', 'C#4']
+                guitar: { 
+                    frets: [2, 4, 4, 2, 2, 2], 
+                    fingers: ['1', '3', '4', '1', '1', '1']
+                },
+                ukulele: { 
+                    frets: [2, 1, 2, 0], 
+                    fingers: ['2', '1', '3', '']
+                },
+                pianoKeys: ['F#3', 'A3', 'C#4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "C#m": {
                 name: "C# Minor",
                 mood: "Moody / Emotional",
                 frequencies: [138.59, 207.65, 277.18, 329.63, 415.30],
-                guitar: { frets: ['X', 4, 6, 6, 5, 4], fingers: ['', '1', '3', '4', '2', '1'] },
-                ukulele: { frets: [6, 4, 4, 4], fingers: ['3', '1', '1', '1'] },
-                pianoKeys: ['C#4', 'E4', 'G#4']
+                guitar: { 
+                    frets: ['X', 4, 6, 6, 5, 4], 
+                    fingers: ['', '1', '3', '4', '2', '1']
+                },
+                ukulele: { 
+                    frets: [6, 4, 4, 4], 
+                    fingers: ['3', '1', '1', '1']
+                },
+                pianoKeys: ['C#4', 'E4', 'G#4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "B": {
                 name: "B Major",
                 mood: "Vibrant / Radiant",
                 frequencies: [123.47, 185.00, 246.94, 308.25, 369.99],
-                guitar: { frets: ['X', 2, 4, 4, 4, 2], fingers: ['', '1', '2', '3', '4', '1'] },
-                ukulele: { frets: [4, 3, 2, 2], fingers: ['3', '2', '1', '1'] },
-                pianoKeys: ['B3', 'D#4', 'F#4']
+                guitar: { 
+                    frets: ['X', 2, 4, 4, 4, 2], 
+                    fingers: ['', '1', '2', '3', '4', '1']
+                },
+                ukulele: { 
+                    frets: [4, 3, 2, 2], 
+                    fingers: ['3', '2', '1', '1']
+                },
+                pianoKeys: ['B3', 'D#4', 'F#4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "G#m": {
                 name: "G# Minor",
                 mood: "Introspective / Gentle",
                 frequencies: [103.83, 155.56, 207.65, 246.94, 311.13, 415.30],
-                guitar: { frets: [4, 6, 6, 4, 4, 4], fingers: ['1', '3', '4', '1', '1', '1'] },
-                ukulele: { frets: [4, 3, 4, 2], fingers: ['3', '2', '4', '1'] },
-                pianoKeys: ['G#3', 'B3', 'D#4']
+                guitar: { 
+                    frets: [4, 6, 6, 4, 4, 4], 
+                    fingers: ['1', '3', '4', '1', '1', '1']
+                },
+                ukulele: { 
+                    frets: [4, 3, 4, 2], 
+                    fingers: ['3', '2', '4', '1']
+                },
+                pianoKeys: ['G#3', 'B3', 'D#4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Dm": {
                 name: "D Minor",
                 mood: "Melancholic / Graceful",
                 frequencies: [146.83, 220.00, 293.66, 349.23],
-                guitar: { frets: ['X', 'X', 0, 2, 3, 1], fingers: ['', '', '', '2', '3', '1'] },
-                ukulele: { frets: [2, 2, 1, 0], fingers: ['2', '3', '1', ''] },
-                pianoKeys: ['D3', 'F3', 'A3']
+                guitar: { 
+                    frets: ['X', 'X', 0, 2, 3, 1], 
+                    fingers: ['', '', '', '2', '3', '1']
+                },
+                ukulele: { 
+                    frets: [2, 2, 1, 0], 
+                    fingers: ['2', '3', '1', '']
+                },
+                pianoKeys: ['D3', 'F3', 'A3'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Bb": {
                 name: "Bb Major",
                 mood: "Warm / Regal",
                 frequencies: [116.54, 174.61, 233.08, 293.66, 349.23],
-                guitar: { frets: ['X', 1, 3, 3, 3, 1], fingers: ['', '1', '2', '3', '4', '1'] },
-                ukulele: { frets: [3, 2, 1, 1], fingers: ['3', '2', '1', '1'] },
-                pianoKeys: ['A#3', 'D4', 'F4']
+                guitar: { 
+                    frets: ['X', 1, 3, 3, 3, 1], 
+                    fingers: ['', '1', '2', '3', '4', '1']
+                },
+                ukulele: { 
+                    frets: [3, 2, 1, 1], 
+                    fingers: ['3', '2', '1', '1']
+                },
+                pianoKeys: ['A#3', 'D4', 'F4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Gm": {
                 name: "G Minor",
                 mood: "Dramatic / Stirring",
                 frequencies: [98.00, 146.83, 196.00, 233.08, 293.66, 392.00],
-                guitar: { frets: [3, 5, 5, 3, 3, 3], fingers: ['1', '3', '4', '1', '1', '1'] },
-                ukulele: { frets: [0, 2, 3, 1], fingers: ['', '2', '3', '1'] },
-                pianoKeys: ['G3', 'A#3', 'D4']
+                guitar: { 
+                    frets: [3, 5, 5, 3, 3, 3], 
+                    fingers: ['1', '3', '4', '1', '1', '1']
+                },
+                ukulele: { 
+                    frets: [0, 2, 3, 1], 
+                    fingers: ['', '2', '3', '1']
+                },
+                pianoKeys: ['G3', 'A#3', 'D4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Eb": {
                 name: "Eb Major",
                 mood: "Lush / Expressive",
                 frequencies: [155.56, 233.08, 311.13, 392.00],
-                guitar: { frets: ['X', 'X', 1, 3, 4, 3], fingers: ['', '', '1', '2', '4', '3'] },
-                ukulele: { frets: [0, 3, 3, 1], fingers: ['', '2', '3', '1'] },
-                pianoKeys: ['D#3', 'G3', 'A#3']
+                guitar: { 
+                    frets: ['X', 'X', 1, 3, 4, 3], 
+                    fingers: ['', '', '1', '2', '4', '3']
+                },
+                ukulele: { 
+                    frets: [0, 3, 3, 1], 
+                    fingers: ['', '2', '3', '1']
+                },
+                pianoKeys: ['D#3', 'G3', 'A#3'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Ab": {
                 name: "Ab Major",
                 mood: "Noble / Peaceful",
                 frequencies: [103.83, 155.56, 207.65, 261.63, 311.13, 415.30],
-                guitar: { frets: [4, 6, 6, 5, 4, 4], fingers: ['1', '3', '4', '2', '1', '1'] },
-                ukulele: { frets: [5, 3, 4, 3], fingers: ['3', '1', '2', '1'] },
-                pianoKeys: ['G#3', 'C4', 'D#4']
+                guitar: { 
+                    frets: [4, 6, 6, 5, 4, 4], 
+                    fingers: ['1', '3', '4', '2', '1', '1']
+                },
+                ukulele: { 
+                    frets: [5, 3, 4, 3], 
+                    fingers: ['3', '1', '2', '1']
+                },
+                pianoKeys: ['G#3', 'C4', 'D#4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Cm": {
                 name: "C Minor",
                 mood: "Plaintive / Mysterious",
                 frequencies: [130.81, 196.00, 261.63, 311.13, 392.00],
-                guitar: { frets: ['X', 3, 5, 5, 4, 3], fingers: ['', '1', '3', '4', '2', '1'] },
-                ukulele: { frets: [0, 3, 3, 3], fingers: ['', '1', '2', '3'] },
-                pianoKeys: ['C3', 'D#3', 'G3']
+                guitar: { 
+                    frets: ['X', 3, 5, 5, 4, 3], 
+                    fingers: ['', '1', '3', '4', '2', '1']
+                },
+                ukulele: { 
+                    frets: [0, 3, 3, 3], 
+                    fingers: ['', '1', '2', '3']
+                },
+                pianoKeys: ['C3', 'D#3', 'G3'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Db": {
                 name: "Db Major",
                 mood: "Dreamy / Elegant",
                 frequencies: [138.59, 207.65, 277.18, 349.23, 415.30],
-                guitar: { frets: ['X', 4, 6, 6, 6, 4], fingers: ['', '1', '2', '3', '4', '1'] },
-                ukulele: { frets: [1, 1, 1, 4], fingers: ['1', '1', '1', '4'] },
-                pianoKeys: ['C#3', 'F3', 'G#3']
+                guitar: { 
+                    frets: ['X', 4, 6, 6, 6, 4], 
+                    fingers: ['', '1', '2', '3', '4', '1']
+                },
+                ukulele: { 
+                    frets: [1, 1, 1, 4], 
+                    fingers: ['1', '1', '1', '4']
+                },
+                pianoKeys: ['C#3', 'F3', 'G#3'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "F#": {
                 name: "F# Major",
                 mood: "Brilliant / Crisp",
                 frequencies: [92.50, 138.59, 185.00, 233.08, 277.18, 369.99],
-                guitar: { frets: [2, 4, 4, 3, 2, 2], fingers: ['1', '3', '4', '2', '1', '1'] },
-                ukulele: { frets: [3, 1, 2, 1], fingers: ['3', '1', '2', '1'] },
-                pianoKeys: ['F#3', 'A#3', 'C#4']
+                guitar: { 
+                    frets: [2, 4, 4, 3, 2, 2], 
+                    fingers: ['1', '3', '4', '2', '1', '1']
+                },
+                ukulele: { 
+                    frets: [3, 1, 2, 1], 
+                    fingers: ['3', '1', '2', '1']
+                },
+                pianoKeys: ['F#3', 'A#3', 'C#4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "D#m": {
                 name: "D# Minor",
                 mood: "Deep / Reflective",
                 frequencies: [155.56, 233.08, 311.13, 369.99, 466.16],
-                guitar: { frets: ['X', 'X', 1, 3, 4, 2], fingers: ['', '', '1', '3', '4', '2'] },
-                ukulele: { frets: [3, 3, 2, 1], fingers: ['3', '4', '2', '1'] },
-                pianoKeys: ['D#3', 'F#3', 'A#3']
+                guitar: { 
+                    frets: ['X', 'X', 1, 3, 4, 2], 
+                    fingers: ['', '', '1', '3', '4', '2']
+                },
+                ukulele: { 
+                    frets: [3, 3, 2, 1], 
+                    fingers: ['3', '4', '2', '1']
+                },
+                pianoKeys: ['D#3', 'F#3', 'A#3'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Fm": {
                 name: "F Minor",
                 mood: "Solemn / Intense",
                 frequencies: [87.31, 130.81, 174.61, 207.65, 261.63, 349.23],
-                guitar: { frets: [1, 3, 3, 1, 1, 1], fingers: ['1', '3', '4', '1', '1', '1'] },
-                ukulele: { frets: [1, 0, 1, 3], fingers: ['1', '', '2', '4'] },
-                pianoKeys: ['F3', 'G#3', 'C4']
+                guitar: { 
+                    frets: [1, 3, 3, 1, 1, 1], 
+                    fingers: ['1', '3', '4', '1', '1', '1']
+                },
+                ukulele: { 
+                    frets: [1, 0, 1, 3], 
+                    fingers: ['1', '', '2', '4']
+                },
+                pianoKeys: ['F3', 'G#3', 'C4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "Bbm": {
                 name: "Bb Minor",
                 mood: "Dark / Sorrowful",
                 frequencies: [116.54, 174.61, 233.08, 277.18, 349.23],
-                guitar: { frets: ['X', 1, 3, 3, 2, 1], fingers: ['', '1', '3', '4', '2', '1'] },
-                ukulele: { frets: [3, 1, 1, 1], fingers: ['3', '1', '1', '1'] },
-                pianoKeys: ['A#3', 'C#4', 'F4']
+                guitar: { 
+                    frets: ['X', 1, 3, 3, 2, 1], 
+                    fingers: ['', '1', '3', '4', '2', '1']
+                },
+                ukulele: { 
+                    frets: [3, 1, 1, 1], 
+                    fingers: ['3', '1', '1', '1']
+                },
+                pianoKeys: ['A#3', 'C#4', 'F4'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             },
             "C#": {
                 name: "C# Major",
                 mood: "Sparkling / Light",
                 frequencies: [138.59, 207.65, 277.18, 349.23, 415.30],
-                guitar: { frets: ['X', 4, 6, 6, 6, 4], fingers: ['', '1', '2', '3', '4', '1'] },
-                ukulele: { frets: [1, 1, 1, 4], fingers: ['1', '1', '1', '4'] },
-                pianoKeys: ['C#3', 'F3', 'G#3']
+                guitar: { 
+                    frets: ['X', 4, 6, 6, 6, 4], 
+                    fingers: ['', '1', '2', '3', '4', '1']
+                },
+                ukulele: { 
+                    frets: [1, 1, 1, 4], 
+                    fingers: ['1', '1', '1', '4']
+                },
+                pianoKeys: ['C#3', 'F3', 'G#3'],
+                pianoFingers: { rh: "1 - 3 - 5", lh: "5 - 3 - 1" }
             }
-        };
-
-        const PIANO_LAYOUT = [
-            { note: 'C3', isBlack: false }, { note: 'C#3', isBlack: true },
-            { note: 'D3', isBlack: false }, { note: 'D#3', isBlack: true },
-            { note: 'E3', isBlack: false }, { note: 'F3', isBlack: false },
-            { note: 'F#3', isBlack: true }, { note: 'G3', isBlack: false },
-            { note: 'G#3', isBlack: true }, { note: 'A3', isBlack: false },
-            { note: 'A#3', isBlack: true }, { note: 'B3', isBlack: false },
-            { note: 'C4', isBlack: false }, { note: 'C#4', isBlack: true },
-            { note: 'D4', isBlack: false }, { note: 'D#4', isBlack: true },
-            { note: 'E4', isBlack: false }, { note: 'F4', isBlack: false },
-            { note: 'F#4', isBlack: true }, { note: 'G4', isBlack: false },
-            { note: 'G#4', isBlack: true }, { note: 'A4', isBlack: false }
-        ];
-
-        const PIANO_NOTES = {
-            'C3': 130.81, 'C#3': 138.59, 'D3': 146.83, 'D#3': 155.56, 'E3': 164.81,
-            'F3': 174.61, 'F#3': 185.00, 'G3': 196.00, 'G#3': 207.65, 'A3': 220.00,
-            'A#3': 233.08, 'B3': 246.94, 'C4': 261.63, 'C#4': 277.18, 'D4': 293.66,
-            'D#4': 311.13, 'E4': 329.63, 'F4': 349.23, 'F#4': 369.99, 'G4': 392.00,
-            'G#4': 415.30, 'A4': 440.00
         };
 
         const CAJON_BEATS = [
@@ -677,15 +844,13 @@
         };
 
         // State Variables
-        let currentInstrument = 'piano'; // Changed default from 'guitar' to 'piano'
+        let currentInstrument = 'piano';
         let currentProgressionIndex = 0;
         let currentKey = "C";
-        let strumCount = 4;
         let bpm = 90;
         let isPlayingProgression = false;
         let progressionInterval = null;
         let activeChordIndex = null;
-        let singleChordTimeouts = [];
         let currentTunerMode = 'guitar';
 
         // Cajon State
@@ -693,6 +858,30 @@
         let isPlayingCajon = false;
         let cajonInterval = null;
         let currentCajonStep = 0;
+
+        // Live Microphone Pitch Detection State
+        let isMicTunerActive = false;
+        let micStream = null;
+        let micAudioCtx = null;
+        let micAnalyser = null;
+        let micAnimationId = null;
+
+        const TUNER_STRINGS = {
+            guitar: [
+                { id: 'str_guitar_E2', note: 'E2', freq: 82.41, label: '6th (Low E)' },
+                { id: 'str_guitar_A2', note: 'A2', freq: 110.00, label: '5th (A)' },
+                { id: 'str_guitar_D3', note: 'D3', freq: 146.83, label: '4th (D)' },
+                { id: 'str_guitar_G3', note: 'G3', freq: 196.00, label: '3rd (G)' },
+                { id: 'str_guitar_B3', note: 'B3', freq: 246.94, label: '2nd (B)' },
+                { id: 'str_guitar_E4', note: 'E4', freq: 329.63, label: '1st (High E)' }
+            ],
+            ukulele: [
+                { id: 'str_ukulele_G4', note: 'G4', freq: 392.00, label: '4th (G)' },
+                { id: 'str_ukulele_C4', note: 'C4', freq: 261.63, label: '3rd (C)' },
+                { id: 'str_ukulele_E4', note: 'E4', freq: 329.63, label: '2nd (E)' },
+                { id: 'str_ukulele_A4', note: 'A4', freq: 440.00, label: '1st (A)' }
+            ]
+        };
 
         // Audio Context Engine
         let audioCtx = null;
@@ -747,6 +936,184 @@
                 panelG.classList.add('hidden');
                 panelG.classList.remove('grid');
             }
+        }
+
+        async function toggleMicTuner() {
+            if (isMicTunerActive) {
+                stopMicTuner();
+            } else {
+                await startMicTuner();
+            }
+        }
+
+        async function startMicTuner() {
+            try {
+                micStream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } 
+                });
+                
+                micAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const source = micAudioCtx.createMediaStreamSource(micStream);
+                micAnalyser = micAudioCtx.createAnalyser();
+                micAnalyser.fftSize = 2048;
+                source.connect(micAnalyser);
+
+                isMicTunerActive = true;
+                
+                document.getElementById('btnMicTuner').className = "w-full sm:w-auto px-3.5 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm";
+                document.getElementById('micTunerIcon').className = "fa-solid fa-microphone-slash";
+                document.getElementById('micTunerText').innerText = "Stop Mic Tuner";
+                document.getElementById('liveMicPanel').classList.remove('hidden');
+
+                processMicAudio();
+            } catch (err) {
+                alert("Microphone access is required for the Live Mic Tuner. Please check browser permissions.");
+                console.error("Mic tuner error:", err);
+            }
+        }
+
+        function stopMicTuner() {
+            isMicTunerActive = false;
+            if (micAnimationId) cancelAnimationFrame(micAnimationId);
+            if (micStream) {
+                micStream.getTracks().forEach(track => track.stop());
+                micStream = null;
+            }
+            if (micAudioCtx) {
+                micAudioCtx.close();
+                micAudioCtx = null;
+            }
+
+            document.getElementById('btnMicTuner').className = "w-full sm:w-auto px-3.5 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm";
+            document.getElementById('micTunerIcon').className = "fa-solid fa-microphone";
+            document.getElementById('micTunerText').innerText = "Start Live Mic Tuner";
+            document.getElementById('liveMicPanel').classList.add('hidden');
+            
+            clearTunerHighlights();
+        }
+
+        function processMicAudio() {
+            if (!isMicTunerActive || !micAnalyser) return;
+
+            const buffer = new Float32Array(micAnalyser.fftSize);
+            micAnalyser.getFloatTimeDomainData(buffer);
+
+            const pitch = autoCorrelatePitch(buffer, micAudioCtx.sampleRate);
+
+            if (pitch !== -1 && pitch >= 60 && pitch <= 1000) {
+                updateMicTunerUI(pitch);
+            } else {
+                document.getElementById('micNoteDisplay').innerText = "--";
+                document.getElementById('micFreqDisplay').innerText = "Listening...";
+                document.getElementById('micStatusBadge').innerText = "Play a string...";
+                document.getElementById('micStatusBadge').className = "font-bold text-slate-400";
+                document.getElementById('micNeedle').style.left = "50%";
+                document.getElementById('micNeedle').className = "absolute top-0 bottom-0 w-1.5 bg-slate-500 left-1/2 -translate-x-1/2 rounded-full";
+                clearTunerHighlights();
+            }
+
+            micAnimationId = requestAnimationFrame(processMicAudio);
+        }
+
+        // Time-Domain Autocorrelation Pitch Detection
+        function autoCorrelatePitch(buf, sampleRate) {
+            let rms = 0;
+            for (let i = 0; i < buf.length; i++) {
+                rms += buf[i] * buf[i];
+            }
+            rms = Math.sqrt(rms / buf.length);
+            if (rms < 0.012) return -1; // Volume below noise threshold
+
+            let r1 = 0, r2 = buf.length - 1, thres = 0.2;
+            for (let i = 0; i < buf.length / 2; i++) {
+                if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+            }
+            for (let i = 1; i < buf.length / 2; i++) {
+                if (Math.abs(buf[buf.length - i]) < thres) { r2 = buf.length - i; break; }
+            }
+
+            const slicedBuf = buf.slice(r1, r2);
+            const c = new Float32Array(slicedBuf.length);
+            for (let i = 0; i < slicedBuf.length; i++) {
+                for (let j = 0; j < slicedBuf.length - i; j++) {
+                    c[i] += slicedBuf[j] * slicedBuf[j + i];
+                }
+            }
+
+            let d = 0;
+            while (c[d] > c[d + 1]) d++;
+            let maxval = -1, maxpos = -1;
+            for (let i = d; i < slicedBuf.length; i++) {
+                if (c[i] > maxval) {
+                    maxval = c[i];
+                    maxpos = i;
+                }
+            }
+            let T0 = maxpos;
+
+            // Parabolic Interpolation
+            const x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+            const a = (x1 + x3 - 2 * x2) / 2;
+            const b = (x3 - x1) / 2;
+            if (a) T0 = T0 - b / (2 * a);
+
+            return sampleRate / T0;
+        }
+
+        function updateMicTunerUI(freq) {
+            const strings = TUNER_STRINGS[currentTunerMode];
+            let closestString = strings[0];
+            let minDiff = Math.abs(freq - strings[0].freq);
+
+            strings.forEach(s => {
+                const diff = Math.abs(freq - s.freq);
+                if (diff < minDiff) {
+                    minDiff = diff;
+                    closestString = s;
+                }
+            });
+
+            // Calculate cents difference: 1200 * log2(f1 / f2)
+            const cents = Math.round(1200 * (Math.log2(freq / closestString.freq)));
+            const boundedCents = Math.max(-50, Math.min(50, cents));
+
+            document.getElementById('micNoteDisplay').innerText = closestString.note;
+            document.getElementById('micFreqDisplay').innerText = `${freq.toFixed(1)} Hz`;
+
+            // Needle percentage mapping: -50c -> 0%, 0c -> 50%, +50c -> 100%
+            const needlePercent = 50 + (boundedCents);
+            const needle = document.getElementById('micNeedle');
+            needle.style.left = `${needlePercent}%`;
+
+            const statusBadge = document.getElementById('micStatusBadge');
+
+            if (Math.abs(cents) <= 5) {
+                statusBadge.innerText = "In Tune! 🎯";
+                statusBadge.className = "font-bold text-emerald-400";
+                needle.className = "absolute top-0 bottom-0 w-2 bg-emerald-400 left-1/2 -translate-x-1/2 rounded-full shadow-lg shadow-emerald-500/50";
+            } else if (cents < 0) {
+                statusBadge.innerText = `Too Low (Tune Up ⬆️ ${Math.abs(cents)}c)`;
+                statusBadge.className = "font-bold text-cyan-400";
+                needle.className = "absolute top-0 bottom-0 w-2 bg-cyan-400 left-1/2 -translate-x-1/2 rounded-full";
+            } else {
+                statusBadge.innerText = `Too High (Tune Down ⬇️ ${cents}c)`;
+                statusBadge.className = "font-bold text-amber-400";
+                needle.className = "absolute top-0 bottom-0 w-2 bg-amber-400 left-1/2 -translate-x-1/2 rounded-full";
+            }
+
+            // Highlight corresponding string button
+            clearTunerHighlights();
+            const targetBtn = document.getElementById(closestString.id);
+            if (targetBtn) {
+                targetBtn.classList.add('ring-2', 'ring-emerald-400', 'border-emerald-500', 'bg-emerald-500/10');
+            }
+        }
+
+        function clearTunerHighlights() {
+            const allBtns = document.querySelectorAll('.tuner-string-btn');
+            allBtns.forEach(b => {
+                b.classList.remove('ring-2', 'ring-emerald-400', 'border-emerald-500', 'bg-emerald-500/10');
+            });
         }
 
         function playTuningNote(freq, type) {
@@ -902,37 +1269,11 @@
             });
         }
 
-        function updateStrumCount(val) {
-            strumCount = parseInt(val, 10);
-            renderChordGrid();
-        }
-
-        function playChordNTimes(chordKey, cardIndex) {
-            initAudio();
-            singleChordTimeouts.forEach(t => clearTimeout(t));
-            singleChordTimeouts = [];
-
-            const beatDurationMs = (60 / bpm) * 1000;
-
-            for (let beat = 0; beat < strumCount; beat++) {
-                const timeoutId = setTimeout(() => {
-                    playChordSound(chordKey);
-                    updateBeatUI(cardIndex, beat % 4);
-                }, beat * beatDurationMs);
-                singleChordTimeouts.push(timeoutId);
-            }
-
-            const clearId = setTimeout(() => {
-                updateBeatUI(cardIndex, -1);
-            }, strumCount * beatDurationMs);
-            singleChordTimeouts.push(clearId);
-        }
-
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('dark')) {
                 html.classList.remove('dark');
-                document.getElementById('themeText').innerText = "Dark"; // Change text to opposite action
+                document.getElementById('themeText').innerText = "Dark";
             } else {
                 html.classList.add('dark');
                 document.getElementById('themeText').innerText = "Light";
@@ -970,9 +1311,6 @@
             });
 
             renderChordGrid();
-            
-            singleChordTimeouts.forEach(t => clearTimeout(t));
-            singleChordTimeouts = [];
             updateBeatUI(-1, -1);
 
             if (isPlayingProgression) {
@@ -998,8 +1336,6 @@
                 stopProgression();
                 startProgression();
             } else {
-                singleChordTimeouts.forEach(t => clearTimeout(t));
-                singleChordTimeouts = [];
                 updateBeatUI(-1, -1);
             }
         }
@@ -1024,7 +1360,6 @@
 
         function startProgression() {
             initAudio();
-            singleChordTimeouts.forEach(t => clearTimeout(t));
 
             isPlayingProgression = true;
             document.getElementById('playProgIcon').className = "fa-solid fa-square text-[10px]";
@@ -1135,6 +1470,11 @@
             }
         }
 
+        function toggleCajonStep(type, stepIndex) {
+            CAJON_BEATS[activeCajonBeatIndex][type][stepIndex] = CAJON_BEATS[activeCajonBeatIndex][type][stepIndex] ? 0 : 1;
+            renderCajonNotation();
+        }
+
         function renderCajonNotation() {
             const container = document.getElementById('cajonNotationGrid');
             if (!container) return;
@@ -1142,51 +1482,30 @@
             const beatData = CAJON_BEATS[activeCajonBeatIndex];
             const stepLabels = ['1', '&', '2', '&', '3', '&', '4', '&'];
 
-            let html = `<div class="grid grid-cols-9 gap-1 text-center font-mono text-[10px] items-center min-w-[300px]">`;
+            let html = `<div class="grid grid-cols-9 gap-1 text-center font-mono text-[10px] items-center min-w-[320px]">`;
             
-            html += `<div class="text-left font-bold text-slate-400">Stroke</div>`;
-            stepLabels.forEach((lbl) => {
-                html += `<div class="font-bold text-slate-500 dark:text-slate-400">${lbl}</div>`;
+            html += `<div class="text-left font-bold text-slate-500 dark:text-slate-400">Step</div>`;
+            stepLabels.forEach((lbl, i) => {
+                const isCurrent = (i === currentCajonStep && isPlayingCajon);
+                html += `<div class="font-bold p-1 rounded ${isCurrent ? 'bg-amber-500 text-white' : 'text-slate-600 dark:text-slate-400'}">${lbl}</div>`;
             });
 
             // ROW 1: BASS STROKE
-            html += `<div class="text-left font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">💥 Bass</div>`;
-            for (let step = 0; step < 8; step++) {
-                const hasBass = beatData.bass[step] === 1;
-                html += `
-                    <button id="cajonNote_bass_${step}" onclick="toggleCajonStepNote('bass', ${step})" 
-                            class="h-7 rounded flex items-center justify-center font-bold transition-all border ${
-                                hasBass 
-                                ? 'bg-amber-500 text-white border-amber-600 shadow-sm' 
-                                : 'bg-slate-200 dark:bg-slate-800/80 text-slate-400 border-slate-300 dark:border-slate-700 hover:bg-amber-100 dark:hover:bg-amber-900/30'
-                            }">
-                        ${hasBass ? '💥' : '·'}
-                    </button>`;
-            }
+            html += `<div class="text-left font-bold text-amber-600 dark:text-amber-400">Bass</div>`;
+            beatData.bass.forEach((val, i) => {
+                const activeClass = val ? 'bg-amber-500 text-white font-bold' : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500';
+                html += `<button onclick="toggleCajonStep('bass', ${i})" class="h-7 rounded border border-amber-300 dark:border-amber-800/50 flex items-center justify-center ${activeClass} hover:opacity-80 transition text-xs">${val ? '💥' : '-'}</button>`;
+            });
 
             // ROW 2: SLAP STROKE
-            html += `<div class="text-left font-bold text-orange-600 dark:text-orange-400 flex items-center gap-1">⚡ Slap</div>`;
-            for (let step = 0; step < 8; step++) {
-                const hasSlap = beatData.slap[step] === 1;
-                html += `
-                    <button id="cajonNote_slap_${step}" onclick="toggleCajonStepNote('slap', ${step})" 
-                            class="h-7 rounded flex items-center justify-center font-bold transition-all border ${
-                                hasSlap 
-                                ? 'bg-orange-500 text-white border-orange-600 shadow-sm' 
-                                : 'bg-slate-200 dark:bg-slate-800/80 text-slate-400 border-slate-300 dark:border-slate-700 hover:bg-orange-100 dark:hover:bg-orange-900/30'
-                            }">
-                        ${hasSlap ? '⚡' : '·'}
-                    </button>`;
-            }
+            html += `<div class="text-left font-bold text-orange-600 dark:text-orange-400">Slap</div>`;
+            beatData.slap.forEach((val, i) => {
+                const activeClass = val ? 'bg-orange-500 text-white font-bold' : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500';
+                html += `<button onclick="toggleCajonStep('slap', ${i})" class="h-7 rounded border border-orange-300 dark:border-orange-800/50 flex items-center justify-center ${activeClass} hover:opacity-80 transition text-xs">${val ? '⚡' : '-'}</button>`;
+            });
 
             html += `</div>`;
             container.innerHTML = html;
-        }
-
-        function toggleCajonStepNote(type, step) {
-            const beatData = CAJON_BEATS[activeCajonBeatIndex];
-            beatData[type][step] = beatData[type][step] === 1 ? 0 : 1;
-            renderCajonNotation();
         }
 
         function togglePlayCajonBeat() {
@@ -1197,72 +1516,28 @@
         function startCajonBeat() {
             initAudio();
             isPlayingCajon = true;
-            document.getElementById('cajonPlayIcon').className = "fa-solid fa-square";
-            document.getElementById('cajonPlayText').innerText = "Stop";
-
-            const stepIntervalMs = ((60 / bpm) * 1000) / 2;
             currentCajonStep = 0;
+            
+            document.getElementById('cajonPlayIcon').className = "fa-solid fa-square";
+            document.getElementById('cajonPlayText').innerText = "Stop Groove";
+            document.getElementById('btnPlayCajon').classList.replace('bg-amber-500', 'bg-red-600');
 
-            const executeCajonStep = () => {
+            const stepIntervalMs = (60 / bpm / 2) * 1000; // 8th notes
+
+            const executeStep = () => {
                 const beatData = CAJON_BEATS[activeCajonBeatIndex];
-                const playBass = beatData.bass[currentCajonStep] === 1;
-                const playSlap = beatData.slap[currentCajonStep] === 1;
+                if (beatData.bass[currentCajonStep]) playCajonSound('bass');
+                if (beatData.slap[currentCajonStep]) playCajonSound('slap');
 
-                if (playBass) playCajonSound('bass');
-                if (playSlap) playCajonSound('slap');
+                const stepNum = Math.floor(currentCajonStep / 2) + 1;
+                document.getElementById('cajonStepCounter').innerText = `Beat ${stepNum} · Step ${currentCajonStep + 1}/8`;
 
-                const currentBeatNum = Math.floor(currentCajonStep / 2) + 1;
-                const currentBeatSub = currentCajonStep % 2 === 0 ? '' : ' &';
-                const counterElem = document.getElementById('cajonStepCounter');
-                if (counterElem) {
-                    counterElem.innerText = `Beat ${currentBeatNum}${currentBeatSub} · Step ${currentCajonStep + 1}/8`;
-                }
-
-                for (let i = 0; i < 8; i++) {
-                    const bassElem = document.getElementById(`cajonNote_bass_${i}`);
-                    const slapElem = document.getElementById(`cajonNote_slap_${i}`);
-                    const isCurrent = (i === currentCajonStep);
-
-                    if (bassElem) {
-                        const hasNote = beatData.bass[i] === 1;
-                        if (isCurrent) {
-                            bassElem.className = `h-7 rounded flex items-center justify-center font-bold transition-all border scale-110 z-10 shadow-lg ${
-                                hasNote 
-                                ? 'bg-amber-400 text-slate-900 border-amber-300 ring-2 ring-amber-400 animate-pulse' 
-                                : 'bg-amber-200 dark:bg-amber-900/60 text-amber-800 dark:text-amber-200 border-amber-400'
-                            }`;
-                        } else {
-                            bassElem.className = `h-7 rounded flex items-center justify-center font-bold transition-all border ${
-                                hasNote 
-                                ? 'bg-amber-500 text-white border-amber-600 shadow-sm' 
-                                : 'bg-slate-200 dark:bg-slate-800/80 text-slate-400 border-slate-300 dark:border-slate-700'
-                            }`;
-                        }
-                    }
-
-                    if (slapElem) {
-                        const hasNote = beatData.slap[i] === 1;
-                        if (isCurrent) {
-                            slapElem.className = `h-7 rounded flex items-center justify-center font-bold transition-all border scale-110 z-10 shadow-lg ${
-                                hasNote 
-                                ? 'bg-orange-400 text-slate-900 border-orange-300 ring-2 ring-orange-400 animate-pulse' 
-                                : 'bg-orange-200 dark:bg-orange-900/60 text-orange-800 dark:text-orange-200 border-orange-400'
-                            }`;
-                        } else {
-                            slapElem.className = `h-7 rounded flex items-center justify-center font-bold transition-all border ${
-                                hasNote 
-                                ? 'bg-orange-500 text-white border-orange-600 shadow-sm' 
-                                : 'bg-slate-200 dark:bg-slate-800/80 text-slate-400 border-slate-300 dark:border-slate-700'
-                            }`;
-                        }
-                    }
-                }
-
+                renderCajonNotation();
                 currentCajonStep = (currentCajonStep + 1) % 8;
             };
 
-            executeCajonStep();
-            cajonInterval = setInterval(executeCajonStep, stepIntervalMs);
+            executeStep();
+            cajonInterval = setInterval(executeStep, stepIntervalMs);
         }
 
         function stopCajonBeat() {
@@ -1270,241 +1545,200 @@
             if (cajonInterval) clearInterval(cajonInterval);
             document.getElementById('cajonPlayIcon').className = "fa-solid fa-play";
             document.getElementById('cajonPlayText').innerText = "Play Groove";
+            document.getElementById('btnPlayCajon').classList.replace('bg-red-600', 'bg-amber-500');
+            currentCajonStep = 0;
             renderCajonNotation();
         }
 
         // ==========================================
-        // DIAGRAM RENDERERS (SVG & HTML)
-        // Enlarged & Highly Readable Dimensions
+        // SVG CHORD DIAGRAM RENDERERS
         // ==========================================
-        function renderGuitarSVG(chordData) {
-            const strings = 6, frets = 4;
-            const width = 140, height = 155;
-            const startX = 25, startY = 28;
-            const gridWidth = 90, gridHeight = 105;
-            const stringSpacing = gridWidth / (strings - 1);
-            const fretSpacing = gridHeight / frets;
-
-            let svgHtml = `<svg viewBox="0 0 ${width} ${height}" class="w-full h-auto max-h-[165px] mx-auto select-none">`;
-            svgHtml += `<line x1="${startX - 3}" y1="${startY}" x2="${startX + gridWidth + 3}" y2="${startY}" class="nut-line" />`;
-
-            for (let i = 1; i <= frets; i++) {
-                const y = startY + (i * fretSpacing);
-                svgHtml += `<line x1="${startX}" y1="${y}" x2="${startX + gridWidth}" y2="${y}" class="fret-line" />`;
+        function generateDiagramSVG(chordKey) {
+            const chord = CHORD_DATA[chordKey] || CHORD_DATA["C"];
+            if (currentInstrument === 'piano') {
+                return generatePianoSVG(chord.pianoKeys);
+            } else if (currentInstrument === 'ukulele') {
+                return generateFretboardSVG(chord.ukulele.frets, chord.ukulele.fingers, 4);
+            } else {
+                return generateFretboardSVG(chord.guitar.frets, chord.guitar.fingers, 6);
             }
-
-            for (let i = 0; i < strings; i++) {
-                const x = startX + (i * stringSpacing);
-                svgHtml += `<line x1="${x}" y1="${startY}" x2="${x}" y2="${startY + gridHeight}" class="guitar-string" stroke-width="${1.2 + (strings - i) * 0.35}" />`;
-            }
-
-            chordData.guitar.frets.forEach((fret, i) => {
-                const x = startX + (i * stringSpacing);
-                if (fret === 'X') {
-                    svgHtml += `<text x="${x}" y="${startY - 8}" text-anchor="middle" fill="#EF4444" font-size="12" font-weight="bold">✕</text>`;
-                } else if (fret === 0) {
-                    svgHtml += `<text x="${x}" y="${startY - 8}" text-anchor="middle" fill="#10B981" font-size="12" font-weight="bold">○</text>`;
-                } else {
-                    const y = startY + (fret * fretSpacing) - (fretSpacing / 2);
-                    const fingerNum = chordData.guitar.fingers[i] || '';
-                    svgHtml += `<circle cx="${x}" cy="${y}" r="8.5" class="finger-dot" />`;
-                    if (fingerNum) {
-                        svgHtml += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" fill="#FFFFFF" font-size="9.5" font-weight="bold">${fingerNum}</text>`;
-                    }
-                }
-            });
-
-            svgHtml += `</svg>`;
-            return svgHtml;
         }
 
-        function renderUkuleleSVG(chordData) {
-            const strings = 4, frets = 4;
-            const width = 130, height = 155;
-            const startX = 30, startY = 28;
-            const gridWidth = 70, gridHeight = 105;
-            const stringSpacing = gridWidth / (strings - 1);
-            const fretSpacing = gridHeight / frets;
+        function generatePianoSVG(activeKeys) {
+            const keys = [
+                { note: 'C3', type: 'white', x: 10 },
+                { note: 'C#3', type: 'black', x: 26 },
+                { note: 'D3', type: 'white', x: 34 },
+                { note: 'D#3', type: 'black', x: 52 },
+                { note: 'E3', type: 'white', x: 58 },
+                { note: 'F3', type: 'white', x: 82 },
+                { note: 'F#3', type: 'black', x: 98 },
+                { note: 'G3', type: 'white', x: 106 },
+                { note: 'G#3', type: 'black', x: 124 },
+                { note: 'A3', type: 'white', x: 130 },
+                { note: 'A#3', type: 'black', x: 148 },
+                { note: 'B3', type: 'white', x: 154 },
+                { note: 'C4', type: 'white', x: 178 },
+                { note: 'C#4', type: 'black', x: 194 },
+                { note: 'D4', type: 'white', x: 202 },
+                { note: 'D#4', type: 'black', x: 220 },
+                { note: 'E4', type: 'white', x: 226 },
+                { note: 'F4', type: 'white', x: 250 },
+                { note: 'F#4', type: 'black', x: 266 },
+                { note: 'G4', type: 'white', x: 274 },
+                { note: 'G#4', type: 'black', x: 292 },
+                { note: 'A4', type: 'white', x: 298 }
+            ];
 
-            let svgHtml = `<svg viewBox="0 0 ${width} ${height}" class="w-full h-auto max-h-[165px] mx-auto select-none">`;
-            svgHtml += `<line x1="${startX - 3}" y1="${startY}" x2="${startX + gridWidth + 3}" y2="${startY}" class="nut-line" />`;
+            let whiteKeysSvg = '';
+            let blackKeysSvg = '';
 
-            for (let i = 1; i <= frets; i++) {
-                const y = startY + (i * fretSpacing);
-                svgHtml += `<line x1="${startX}" y1="${y}" x2="${startX + gridWidth}" y2="${y}" class="fret-line" />`;
-            }
-
-            for (let i = 0; i < strings; i++) {
-                const x = startX + (i * stringSpacing);
-                svgHtml += `<line x1="${x}" y1="${startY}" x2="${x}" y2="${startY + gridHeight}" class="ukulele-string" stroke-width="2.2" />`;
-            }
-
-            chordData.ukulele.frets.forEach((fret, i) => {
-                const x = startX + (i * stringSpacing);
-                if (fret === 'X') {
-                    svgHtml += `<text x="${x}" y="${startY - 8}" text-anchor="middle" fill="#EF4444" font-size="12" font-weight="bold">✕</text>`;
-                } else if (fret === 0) {
-                    svgHtml += `<text x="${x}" y="${startY - 8}" text-anchor="middle" fill="#10B981" font-size="12" font-weight="bold">○</text>`;
-                } else {
-                    const y = startY + (fret * fretSpacing) - (fretSpacing / 2);
-                    const fingerNum = chordData.ukulele.fingers[i] || '';
-                    svgHtml += `<circle cx="${x}" cy="${y}" r="8.5" class="finger-dot" />`;
-                    if (fingerNum) {
-                        svgHtml += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" fill="#FFFFFF" font-size="9.5" font-weight="bold">${fingerNum}</text>`;
-                    }
-                }
-            });
-
-            svgHtml += `</svg>`;
-            return svgHtml;
-        }
-
-        function renderPianoKeyboardSVG(chordData) {
-            const whiteKeys = PIANO_LAYOUT.filter(k => !k.isBlack);
-            const activeKeys = chordData.pianoKeys;
-
-            const whiteKeyWidth = 16;
-            const whiteKeyHeight = 78;
-            const blackKeyWidth = 9.5;
-            const blackKeyHeight = 46;
-
-            const totalWidth = whiteKeys.length * whiteKeyWidth;
-            let svgHtml = `<svg viewBox="0 0 ${totalWidth} ${whiteKeyHeight + 12}" class="w-full h-auto max-h-[145px] mx-auto select-none my-auto">`;
-
-            let currentWhiteIdx = 0;
-            PIANO_LAYOUT.forEach((k) => {
-                if (!k.isBlack) {
-                    const x = currentWhiteIdx * whiteKeyWidth;
-                    const isActive = activeKeys.includes(k.note);
-                    const activeClass = isActive ? "piano-key-active" : "";
-                    
-                    svgHtml += `<rect x="${x}" y="0" width="${whiteKeyWidth - 1}" height="${whiteKeyHeight}" class="piano-key-white ${activeClass}" onclick="playSinglePianoNote('${k.note}')" />`;
+            keys.forEach(k => {
+                const isActive = activeKeys.includes(k.note);
+                if (k.type === 'white') {
+                    const fillClass = isActive ? 'piano-key-active' : 'piano-key-white';
+                    whiteKeysSvg += `<rect x="${k.x}" y="10" width="22" height="110" class="${fillClass}" onclick="playTone(${getNoteFreq(k.note)}, 1.2, 'piano')"/>`;
                     if (isActive) {
-                        svgHtml += `<circle cx="${x + whiteKeyWidth/2 - 0.5}" cy="${whiteKeyHeight - 12}" r="3.5" fill="#0284C7" />`;
+                        whiteKeysSvg += `<circle cx="${k.x + 11}" cy="100" r="4.5" fill="#0284C7"/>`;
                     }
-                    currentWhiteIdx++;
-                }
-            });
-
-            currentWhiteIdx = 0;
-            PIANO_LAYOUT.forEach((k) => {
-                if (!k.isBlack) {
-                    currentWhiteIdx++;
                 } else {
-                    const x = (currentWhiteIdx * whiteKeyWidth) - (blackKeyWidth / 2);
-                    const isActive = activeKeys.includes(k.note);
-                    const activeClass = isActive ? "piano-key-active" : "";
-                    svgHtml += `<rect x="${x}" y="0" width="${blackKeyWidth}" height="${blackKeyHeight}" class="piano-key-black ${activeClass}" onclick="playSinglePianoNote('${k.note}')" />`;
+                    const fillClass = isActive ? 'piano-key-active' : 'piano-key-black';
+                    blackKeysSvg += `<rect x="${k.x}" y="10" width="14" height="68" class="${fillClass}" onclick="playTone(${getNoteFreq(k.note)}, 1.2, 'piano')"/>`;
+                    if (isActive) {
+                        blackKeysSvg += `<circle cx="${k.x + 7}" cy="60" r="3.5" fill="#38BDF8"/>`;
+                    }
                 }
             });
 
-            svgHtml += `</svg>`;
-            return svgHtml;
+            return `
+                <svg viewBox="0 0 330 130" class="w-full h-auto max-h-[150px]">
+                    ${whiteKeysSvg}
+                    ${blackKeysSvg}
+                </svg>
+            `;
         }
 
-        function playSinglePianoNote(note) {
-            initAudio();
-            const freq = PIANO_NOTES[note];
-            if (freq) playTone(freq, 1.2, 'piano');
+        function getNoteFreq(note) {
+            const notes = {
+                'C3': 130.81, 'C#3': 138.59, 'D3': 146.83, 'D#3': 155.56, 'E3': 164.81,
+                'F3': 174.61, 'F#3': 185.00, 'G3': 196.00, 'G#3': 207.65, 'A3': 220.00,
+                'A#3': 233.08, 'B3': 246.94, 'C4': 261.63, 'C#4': 277.18, 'D4': 293.66,
+                'D#4': 311.13, 'E4': 329.63, 'F4': 349.23, 'F#4': 369.99, 'G4': 392.00,
+                'G#4': 415.30, 'A4': 440.00
+            };
+            return notes[note] || 261.63;
+        }
+
+        function generateFretboardSVG(frets, fingers, numStrings) {
+            const width = 160;
+            const height = 140;
+            const startX = 25;
+            const endX = 135;
+            const startY = 30;
+            const numFrets = 4;
+            const fretSpacing = 24;
+
+            const stringSpacing = (endX - startX) / (numStrings - 1);
+
+            let svg = `<svg viewBox="0 0 ${width} ${height}" class="w-full h-auto max-h-[150px]">`;
+
+            // Nut Line
+            svg += `<line x1="${startX}" y1="${startY}" x2="${endX}" y2="${startY}" class="nut-line" />`;
+
+            // Fret Lines
+            for (let i = 1; i <= numFrets; i++) {
+                const y = startY + (i * fretSpacing);
+                svg += `<line x1="${startX}" y1="${y}" x2="${endX}" y2="${y}" class="fret-line" />`;
+            }
+
+            // Strings
+            for (let i = 0; i < numStrings; i++) {
+                const x = startX + (i * stringSpacing);
+                const stringClass = numStrings === 4 ? 'ukulele-string' : 'guitar-string';
+                svg += `<line x1="${x}" y1="${startY}" x2="${x}" y2="${startY + (numFrets * fretSpacing)}" class="${stringClass}" stroke-width="${1.5 + (i * 0.4)}" />`;
+            }
+
+            // Finger Dots & Muted/Open String Indicators
+            frets.forEach((fret, stringIdx) => {
+                const x = startX + (stringIdx * stringSpacing);
+                
+                if (fret === 'X') {
+                    svg += `<text x="${x}" y="${startY - 8}" text-anchor="middle" font-size="11" font-weight="bold" fill="#EF4444">✕</text>`;
+                } else if (fret === 0) {
+                    svg += `<circle cx="${x}" cy="${startY - 10}" r="4" fill="none" stroke="#10B981" stroke-width="2"/>`;
+                } else if (typeof fret === 'number' && fret > 0) {
+                    const y = startY + (fret * fretSpacing) - (fretSpacing / 2);
+                    const fingerNum = fingers[stringIdx] || '';
+                    svg += `<circle cx="${x}" cy="${y}" r="8.5" class="finger-dot" />`;
+                    if (fingerNum) {
+                        svg += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">${fingerNum}</text>`;
+                    }
+                }
+            });
+
+            svg += `</svg>`;
+            return svg;
+        }
+
+        function generateFingeringText(chordKey) {
+            const chord = CHORD_DATA[chordKey] || CHORD_DATA["C"];
+            if (currentInstrument === 'piano') {
+                return `<div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium text-center">Fingering (RH/LH): <span class="font-mono font-bold text-purple-600 dark:text-purple-400">${chord.pianoFingers.rh} / ${chord.pianoFingers.lh}</span></div>`;
+            } else if (currentInstrument === 'ukulele') {
+                return `<div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium text-center">Fret Position: <span class="font-mono font-bold text-pink-600 dark:text-pink-400">[ ${chord.ukulele.frets.join(' - ')} ]</span></div>`;
+            } else {
+                return `<div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium text-center">Fret Position: <span class="font-mono font-bold text-pink-600 dark:text-pink-400">[ ${chord.guitar.frets.join(' - ')} ]</span></div>`;
+            }
         }
 
         function renderChordGrid() {
-            const container = document.getElementById('chordGrid');
-            if (!container) return;
+            const grid = document.getElementById('chordGrid');
+            if (!grid) return;
+
+            grid.innerHTML = "";
             const baseChords = PROGRESSIONS[currentProgressionIndex].chords;
 
-            container.innerHTML = "";
-
-            baseChords.forEach((baseChordKey, idx) => {
+            baseChords.forEach((baseChordKey, cardIdx) => {
                 const chordKey = TRANSPOSE_MAP[currentKey][baseChordKey];
-                const data = CHORD_DATA[chordKey];
-                if (!data) return;
+                const chord = CHORD_DATA[chordKey] || CHORD_DATA["C"];
 
                 const card = document.createElement('div');
-                const isActive = (idx === activeChordIndex);
-                
-                card.className = `chord-card bg-slate-50 dark:bg-slate-900 border-2 ${
-                    isActive ? 'border-pink-500 ring-2 ring-pink-500/40' : 'border-slate-200 dark:border-slate-800'
-                } rounded-xl p-3.5 flex flex-col justify-between transition-all cursor-pointer shadow-sm group hover:border-pink-400 min-h-[300px]`;
-                
-                card.onclick = () => {
-                    if (isPlayingProgression) stopProgression();
-                    playChordNTimes(chordKey, idx);
-                };
+                card.className = `chord-card bg-slate-50 dark:bg-slate-950/80 rounded-xl p-3 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between ${cardIdx === activeChordIndex ? 'border-pink-500 ring-2 ring-pink-500/40' : ''}`;
 
-                let diagramContent = "";
-                if (currentInstrument === 'guitar') diagramContent = renderGuitarSVG(data);
-                else if (currentInstrument === 'ukulele') diagramContent = renderUkuleleSVG(data);
-                else diagramContent = renderPianoKeyboardSVG(data);
-
-                card.innerHTML = `
+                let cardHtml = `
                     <div>
-                        <div class="flex items-center justify-between mb-1">
+                        <div class="flex items-center justify-between mb-1.5">
                             <div>
-                                <span class="text-[9px] font-bold text-slate-400 uppercase tracking-wider">Chord ${idx + 1}</span>
-                                <h4 class="font-display font-bold text-xl text-slate-900 dark:text-white group-hover:text-pink-500 transition-colors">${data.name}</h4>
+                                <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white leading-tight">${chord.name}</h4>
+                                <span class="text-[10px] text-pink-600 dark:text-pink-400 font-medium">${chord.mood}</span>
                             </div>
-                            <button class="w-7 h-7 rounded-lg bg-pink-100 dark:bg-pink-500/20 text-pink-600 dark:text-pink-400 flex items-center justify-center group-hover:bg-pink-500 group-hover:text-white transition">
-                                <i class="fa-solid fa-volume-high text-xs"></i>
-                            </button>
+                            <div class="flex gap-1">
+                                <span id="beatDot_${cardIdx}_0" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+                                <span id="beatDot_${cardIdx}_1" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+                                <span id="beatDot_${cardIdx}_2" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+                                <span id="beatDot_${cardIdx}_3" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
+                            </div>
                         </div>
 
-                        <!-- 4 Beat Indicators -->
-                        <div class="flex items-center justify-between bg-white dark:bg-slate-950 px-2 py-1 rounded border border-slate-200 dark:border-slate-800 my-1">
-                            <span class="text-[9px] font-mono text-slate-400 font-bold">4 Beats:</span>
-                            <div class="flex items-center gap-1">
-                                <span id="beatDot_${idx}_0" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></span>
-                                <span id="beatDot_${idx}_1" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></span>
-                                <span id="beatDot_${idx}_2" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></span>
-                                <span id="beatDot_${idx}_3" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all"></span>
-                            </div>
+                        <div onclick="playChordSound('${chordKey}')" class="my-2 bg-white dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-800 flex items-center justify-center min-h-[150px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/80 transition" title="Click to Play Chord">
+                            ${generateDiagramSVG(chordKey)}
                         </div>
                     </div>
 
-                    <!-- Diagram Container (Generous fixed size) -->
-                    <div class="bg-white dark:bg-slate-950 rounded-lg p-2.5 border border-slate-200 dark:border-slate-800/80 flex items-center justify-center my-2 min-h-[170px]">
-                        ${diagramContent}
-                    </div>
-
-                    <!-- Footer Details -->
-                    <div class="text-[10px] text-slate-500 dark:text-slate-400 flex items-center justify-between border-t border-slate-200 dark:border-slate-800/80 pt-1.5">
-                        <span class="text-pink-600 dark:text-pink-400 font-bold">${strumCount}x Strum →</span>
-                        <span class="font-mono text-[9px] text-slate-400">${data.mood}</span>
+                    <div class="mt-2 flex flex-col gap-1.5">
+                        ${generateFingeringText(chordKey)}
                     </div>
                 `;
 
-                container.appendChild(card);
+                card.innerHTML = cardHtml;
+                grid.appendChild(card);
             });
         }
 
-        // ==========================================
-        // REAL-TIME MIC TUNER LOGIC
-        // ==========================================
-        let isMicTunerActive = false;
-        let tunerAudioStream = null;
-        let tunerAnalyser = null;
-        let tunerAnimationFrame = null;
-        let tunerDataArray = null;
-
-        const NOTE_STRINGS = ["C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B"];
-
-        function noteFromPitch(frequency) {
-            const noteNum = 12 * (Math.log(frequency / 440) / Math.log(2));
-            return Math.round(noteNum) + 69;
-        }
-
-        function frequencyFromNoteNumber(note) {
-            return 440 * Math.pow(2, (note - 69) / 12);
-        }
-
-        function centsOffFromPitch(frequency, note) {
-            return Math.floor(1200 * Math.log(frequency / frequencyFromNoteNumber(note)) / Math.log(2));
-        }
-
-        // Initialize display on load
-        window.addEventListener('DOMContentLoaded', () => {
+        // Initial Page Initialization
+        window.onload = function() {
             renderChordGrid();
-        });
+        };
     </script>
 </body>
 </html>
