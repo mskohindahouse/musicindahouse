@@ -378,7 +378,7 @@
                             Cajon Box Drum Studio
                             <span class="text-[10px] px-2 py-0.5 rounded bg-amber-100 dark:bg-amber-900/60 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700/50 font-normal">Rhythm Instrument</span>
                         </h3>
-                        <p class="text-xs text-slate-600 dark:text-slate-300">Explore different percussion beats, bass strokes, slaps, and tap grooves!</p>
+                        <p class="text-xs text-slate-600 dark:text-slate-300">Tap the interactive cajon diagram or pads to play Bass and Slap beats!</p>
                     </div>
                 </div>
                 <button onclick="toggleCajonStudio()" class="w-full sm:w-auto px-4 py-2 rounded-lg bg-gradient-to-r from-amber-500 to-orange-600 hover:from-amber-600 hover:to-orange-700 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-amber-500/20 shrink-0">
@@ -389,47 +389,72 @@
 
             <!-- Cajon Beat Studio Container (Expandable) -->
             <div id="cajonStudioBox" class="hidden mt-3 pt-3 border-t border-amber-200 dark:border-amber-900/40">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    <!-- Beat Selector -->
-                    <div class="bg-white/80 dark:bg-slate-950/80 p-3 rounded-lg border border-slate-200 dark:border-slate-800">
-                        <div class="flex items-center justify-between mb-2">
-                            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-0">Select Cajon Rhythm Beat</span>
-                            <button id="btnPlayCajon" onclick="togglePlayCajonBeat()" class="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold flex items-center gap-1.5 transition">
-                                <i id="cajonPlayIcon" class="fa-solid fa-play"></i>
-                                <span id="cajonPlayText">Play Groove</span>
-                            </button>
+                <div class="grid grid-cols-1 md:grid-cols-12 gap-3">
+                    
+                    <!-- Column 1: Interactive Diagram & Sound Pads -->
+                    <div class="md:col-span-5 bg-white/80 dark:bg-slate-950/80 p-3 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col items-center justify-between gap-3">
+                        <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider w-full text-left">Interactive Cajon Diagram</span>
+                        
+                        <!-- Interactive SVG Cajon Box -->
+                        <div class="relative flex items-center justify-center my-1 w-full max-w-[210px]">
+                            <svg viewBox="0 0 200 240" class="w-full h-auto drop-shadow-md select-none">
+                                <!-- Cajon Outer Cabinet -->
+                                <rect x="10" y="10" width="180" height="220" rx="16" fill="#78350F" stroke="#451A03" stroke-width="4" />
+                                <rect x="18" y="18" width="164" height="204" rx="12" fill="#D97706" stroke="#92400E" stroke-width="2" />
+                                
+                                <!-- Decorative Corner Screws -->
+                                <circle cx="28" cy="28" r="3" fill="#451A03" />
+                                <circle cx="172" cy="28" r="3" fill="#451A03" />
+                                <circle cx="28" cy="212" r="3" fill="#451A03" />
+                                <circle cx="172" cy="212" r="3" fill="#451A03" />
+
+                                <!-- SLAP ZONE (Top Edge & Corners) -->
+                                <g id="cajonZoneSlap" onclick="playCajonSound('slap')" class="cursor-pointer group transition-transform duration-100 active:scale-95">
+                                    <path d="M 24 24 L 176 24 C 176 24 165 72 100 72 C 35 72 24 24 24 24 Z" fill="#EA580C" fill-opacity="0.4" stroke="#EA580C" stroke-width="2" class="transition-all duration-150 hover:fill-opacity-70" />
+                                    <text x="100" y="45" text-anchor="middle" fill="#FFFFFF" font-weight="bold" font-size="12" class="pointer-events-none drop-shadow">⚡ SLAP ZONE</text>
+                                    <text x="100" y="58" text-anchor="middle" fill="#FFEDD5" font-size="9" class="pointer-events-none">(Top Corner / Edge)</text>
+                                </g>
+
+                                <!-- BASS ZONE (Center Face) -->
+                                <g id="cajonZoneBass" onclick="playCajonSound('bass')" class="cursor-pointer group transition-transform duration-100 active:scale-95">
+                                    <circle cx="100" cy="148" r="46" fill="#B45309" fill-opacity="0.5" stroke="#78350F" stroke-width="3" class="transition-all duration-150 hover:fill-opacity-80" />
+                                    <text x="100" y="145" text-anchor="middle" fill="#FFFFFF" font-weight="bold" font-size="12" class="pointer-events-none drop-shadow">💥 BASS ZONE</text>
+                                    <text x="100" y="158" text-anchor="middle" fill="#FEF3C7" font-size="9" class="pointer-events-none">(Center Face)</text>
+                                </g>
+                            </svg>
                         </div>
-                        <div class="grid grid-cols-2 gap-1.5" id="cajonBeatButtons">
-                            <!-- Injected by JS -->
+
+                        <!-- 2 Interactive Sound Pads -->
+                        <div class="grid grid-cols-2 gap-2 w-full">
+                            <button id="padBass" onclick="playCajonSound('bass')" class="p-2.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border-2 border-amber-500/50 text-center transition group active:scale-95 shadow-sm">
+                                <div class="text-xs font-bold text-amber-700 dark:text-amber-300">Bass Stroke</div>
+                                <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Deep Boom 💥</div>
+                            </button>
+                            <button id="padSlap" onclick="playCajonSound('slap')" class="p-2.5 rounded-lg bg-orange-500/15 hover:bg-orange-500/25 border-2 border-orange-500/50 text-center transition group active:scale-95 shadow-sm">
+                                <div class="text-xs font-bold text-orange-700 dark:text-orange-300">Slap Stroke</div>
+                                <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Sharp Pop ⚡</div>
+                            </button>
                         </div>
                     </div>
 
-                    <!-- Interactive Touch Pads & 2-Row Music Notation Grid -->
-                    <div class="bg-white/80 dark:bg-slate-950/80 p-3 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col justify-between gap-2">
+                    <!-- Column 2: Beat Selector & 2-Row Rhythm Score -->
+                    <div class="md:col-span-7 bg-white/80 dark:bg-slate-950/80 p-3 rounded-lg border border-slate-200 dark:border-slate-800 flex flex-col justify-between gap-3">
+                        <!-- Beat Selector -->
                         <div>
-                            <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-1 block">Interactive Cajon Sound Pads</span>
-                            <div class="grid grid-cols-2 gap-2 my-1">
-                                <button onclick="playCajonSound('bass')" class="p-2.5 rounded-lg bg-amber-500/15 hover:bg-amber-500/25 border-2 border-amber-500/50 text-center transition group active:scale-95 shadow-sm">
-                                    <div class="text-xs font-bold text-amber-700 dark:text-amber-300">Bass Stroke (Center)</div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Deep Boom 💥</div>
-                                </button>
-                                <button onclick="playCajonSound('slap')" class="p-2.5 rounded-lg bg-orange-500/15 hover:bg-orange-500/25 border-2 border-orange-500/50 text-center transition group active:scale-95 shadow-sm">
-                                    <div class="text-xs font-bold text-orange-700 dark:text-orange-300">Slap Stroke (Corner)</div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Sharp Pop ⚡</div>
-                                </button>
-                                <button onclick="playCajonSound('tone')" class="p-2.5 rounded-lg bg-yellow-500/15 hover:bg-yellow-500/25 border-2 border-yellow-500/50 text-center transition group active:scale-95 shadow-sm">
-                                    <div class="text-xs font-bold text-yellow-700 dark:text-yellow-300">Open Tone (Edge)</div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Warm Ring 🔔</div>
-                                </button>
-                                <button onclick="playCajonSound('tap')" class="p-2.5 rounded-lg bg-slate-500/15 hover:bg-slate-500/25 border-2 border-slate-400/50 text-center transition group active:scale-95 shadow-sm">
-                                    <div class="text-xs font-bold text-slate-700 dark:text-slate-300">Soft Tap (Touch)</div>
-                                    <div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium">Ghost Note 🤫</div>
+                            <div class="flex items-center justify-between mb-2">
+                                <span class="text-xs font-bold text-amber-600 dark:text-amber-400 uppercase tracking-wider mb-0">Select Cajon Rhythm Beat</span>
+                                <button id="btnPlayCajon" onclick="togglePlayCajonBeat()" class="px-2.5 py-1 rounded bg-amber-500 hover:bg-amber-600 text-white text-xs font-bold flex items-center gap-1.5 transition">
+                                    <i id="cajonPlayIcon" class="fa-solid fa-play"></i>
+                                    <span id="cajonPlayText">Play Groove</span>
                                 </button>
                             </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-1.5" id="cajonBeatButtons">
+                                <!-- Injected by JS -->
+                            </div>
                         </div>
-                        
+
                         <!-- 2-Row Music Notation & Step Indicator -->
-                        <div class="mt-1 bg-slate-100 dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
+                        <div class="bg-slate-100 dark:bg-slate-900 p-2.5 rounded-lg border border-slate-200 dark:border-slate-800">
                             <div class="flex items-center justify-between mb-2">
                                 <span class="text-[11px] font-bold text-slate-600 dark:text-slate-300">2-Row Rhythm Score (Click step to toggle)</span>
                                 <span id="cajonStepCounter" class="text-[10px] font-mono font-bold text-amber-600 dark:text-amber-400 bg-amber-100 dark:bg-amber-900/50 px-2 py-0.5 rounded border border-amber-300 dark:border-amber-800">Beat 1 · Step 1/8</span>
@@ -439,6 +464,7 @@
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </section>
@@ -831,11 +857,16 @@
             }
         };
 
+        // Expanded 8 Cajon Rhythm Beats
         const CAJON_BEATS = [
             { name: "Basic Rock 4/4", bass: [1, 0, 0, 0, 1, 0, 0, 0], slap: [0, 0, 1, 0, 0, 0, 1, 0] },
             { name: "Pop Syncopated", bass: [1, 0, 0, 1, 0, 0, 1, 0], slap: [0, 0, 1, 0, 0, 1, 0, 0] },
             { name: "Ballad Groove", bass: [1, 0, 0, 0, 0, 0, 1, 0], slap: [0, 0, 1, 0, 0, 0, 1, 0] },
-            { name: "Funk Drive", bass: [1, 0, 1, 0, 0, 1, 0, 0], slap: [0, 1, 0, 1, 1, 0, 1, 1] }
+            { name: "Funk Drive", bass: [1, 0, 1, 0, 0, 1, 0, 0], slap: [0, 1, 0, 1, 1, 0, 1, 1] },
+            { name: "Bossa Nova", bass: [1, 0, 0, 1, 1, 0, 0, 1], slap: [0, 1, 1, 0, 0, 1, 1, 0] },
+            { name: "Reggae Beat", bass: [1, 0, 0, 0, 1, 0, 0, 0], slap: [0, 1, 0, 1, 0, 1, 0, 1] },
+            { name: "Hip-Hop Boom-Bap", bass: [1, 1, 0, 0, 0, 1, 1, 0], slap: [0, 0, 1, 0, 0, 0, 1, 0] },
+            { name: "Four-on-the-Floor", bass: [1, 0, 1, 0, 1, 0, 1, 0], slap: [0, 0, 1, 0, 0, 0, 1, 0] }
         ];
 
         const PROGRESSIONS = [
@@ -1192,6 +1223,9 @@
             osc2.stop(startTime + duration + 0.1);
         }
 
+        // ==========================================
+        // CAJON AUDIO SYNTHESIS & VISUAL FLASHING
+        // ==========================================
         function playCajonSound(type) {
             if (!audioCtx) initAudio();
             if (!audioCtx) return;
@@ -1211,6 +1245,8 @@
                 gain.connect(audioCtx.destination);
                 osc.start(now);
                 osc.stop(now + 0.36);
+
+                flashCajonElement('cajonZoneBass', 'padBass');
             } 
             else if (type === 'slap') {
                 const bufferSize = audioCtx.sampleRate * 0.08;
@@ -1234,35 +1270,26 @@
                 filter.connect(gain);
                 gain.connect(audioCtx.destination);
                 noise.start(now);
+
+                flashCajonElement('cajonZoneSlap', 'padSlap');
             }
-            else if (type === 'tone') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'sine';
-                osc.frequency.setValueAtTime(220, now);
-                osc.frequency.exponentialRampToValueAtTime(110, now + 0.15);
+        }
 
-                gain.gain.setValueAtTime(0.5, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+        function flashCajonElement(svgZoneId, padId) {
+            const svgEl = document.getElementById(svgZoneId);
+            const padEl = document.getElementById(padId);
 
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.22);
+            if (svgEl) {
+                svgEl.classList.add('opacity-80', 'brightness-125');
+                setTimeout(() => {
+                    svgEl.classList.remove('opacity-80', 'brightness-125');
+                }, 120);
             }
-            else if (type === 'tap') {
-                const osc = audioCtx.createOscillator();
-                const gain = audioCtx.createGain();
-                osc.type = 'triangle';
-                osc.frequency.setValueAtTime(180, now);
-
-                gain.gain.setValueAtTime(0.2, now);
-                gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
-
-                osc.connect(gain);
-                gain.connect(audioCtx.destination);
-                osc.start(now);
-                osc.stop(now + 0.06);
+            if (padEl) {
+                padEl.classList.add('ring-2', 'ring-amber-400', 'scale-95');
+                setTimeout(() => {
+                    padEl.classList.remove('ring-2', 'ring-amber-400', 'scale-95');
+                }, 120);
             }
         }
 
@@ -1531,18 +1558,18 @@
                 html += `<div class="font-bold p-1 rounded ${isCurrent ? 'bg-amber-500 text-white' : 'text-slate-600 dark:text-slate-400'}">${lbl}</div>`;
             });
 
-            // ROW 1: BASS STROKE
-            html += `<div class="text-left font-bold text-amber-600 dark:text-amber-400">Bass</div>`;
-            beatData.bass.forEach((val, i) => {
-                const activeClass = val ? 'bg-amber-500 text-white font-bold' : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500';
-                html += `<button onclick="toggleCajonStep('bass', ${i})" class="h-7 rounded border border-amber-300 dark:border-amber-800/50 flex items-center justify-center ${activeClass} hover:opacity-80 transition text-xs">${val ? '💥' : '-'}</button>`;
-            });
-
-            // ROW 2: SLAP STROKE
+            // ROW 1: SLAP STROKE (1ST ROW)
             html += `<div class="text-left font-bold text-orange-600 dark:text-orange-400">Slap</div>`;
             beatData.slap.forEach((val, i) => {
                 const activeClass = val ? 'bg-orange-500 text-white font-bold' : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500';
                 html += `<button onclick="toggleCajonStep('slap', ${i})" class="h-7 rounded border border-orange-300 dark:border-orange-800/50 flex items-center justify-center ${activeClass} hover:opacity-80 transition text-xs">${val ? '⚡' : '-'}</button>`;
+            });
+
+            // ROW 2: BASS STROKE (2ND ROW)
+            html += `<div class="text-left font-bold text-amber-600 dark:text-amber-400">Bass</div>`;
+            beatData.bass.forEach((val, i) => {
+                const activeClass = val ? 'bg-amber-500 text-white font-bold' : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500';
+                html += `<button onclick="toggleCajonStep('bass', ${i})" class="h-7 rounded border border-amber-300 dark:border-amber-800/50 flex items-center justify-center ${activeClass} hover:opacity-80 transition text-xs">${val ? '💥' : '-'}</button>`;
             });
 
             html += `</div>`;
@@ -1596,7 +1623,7 @@
         }
 
         // ==========================================
-        // ADJUSTED & DYNAMIC SVG CHORD CHART GENERATORS
+        // DYNAMIC SVG CHORD CHART GENERATORS
         // ==========================================
         function generateGuitarSVG(guitarData) {
             if (!guitarData) return '';
@@ -1604,7 +1631,6 @@
             const fingers = guitarData.fingers;
             const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
 
-            // Determine base fret offset for high chords
             const validFrets = frets.filter(f => typeof f === 'number' && f > 0);
             const maxFret = validFrets.length > 0 ? Math.max(...validFrets) : 0;
             const minFret = validFrets.length > 0 ? Math.min(...validFrets) : 0;
@@ -1616,7 +1642,6 @@
 
             let svg = `<svg viewBox="0 0 145 165" class="w-32 h-36">`;
 
-            // Nut line (for fret 1) or Fret Line + Position Indicator (for higher frets)
             if (baseFret === 1) {
                 svg += `<line x1="25" y1="25" x2="125" y2="25" class="nut-line" />`;
             } else {
@@ -1624,20 +1649,17 @@
                 svg += `<text x="18" y="42" text-anchor="end" font-size="10" font-weight="bold" fill="#EC4899" font-family="Outfit">${baseFret}fr</text>`;
             }
 
-            // Fret lines (4 fret spaces)
             for (let f = 1; f <= 4; f++) {
                 const y = 25 + f * 26;
                 svg += `<line x1="25" y1="${y}" x2="125" y2="${y}" class="fret-line" />`;
             }
 
-            // String lines (6 strings) & string labels
             for (let s = 0; s < 6; s++) {
                 const x = 25 + s * 20;
                 svg += `<line x1="${x}" y1="25" x2="${x}" y2="129" class="guitar-string" stroke-width="${1 + (5 - s) * 0.4}" />`;
                 svg += `<text x="${x}" y="143" text-anchor="middle" font-size="9" font-weight="bold" fill="#94A3B8" font-family="Outfit">${stringNames[s]}</text>`;
             }
 
-            // Top Indicators (X / O) & Finger Dots
             for (let s = 0; s < 6; s++) {
                 const x = 25 + s * 20;
                 const fretVal = frets[s];
@@ -1667,7 +1689,6 @@
             const fingers = ukuleleData.fingers;
             const stringNames = ['G', 'C', 'E', 'A'];
 
-            // Determine base fret offset for high chords
             const validFrets = frets.filter(f => typeof f === 'number' && f > 0);
             const maxFret = validFrets.length > 0 ? Math.max(...validFrets) : 0;
             const minFret = validFrets.length > 0 ? Math.min(...validFrets) : 0;
@@ -1679,7 +1700,6 @@
 
             let svg = `<svg viewBox="0 0 125 165" class="w-28 h-36">`;
 
-            // Nut line (for fret 1) or Fret Line + Position Indicator (for higher frets)
             if (baseFret === 1) {
                 svg += `<line x1="28" y1="25" x2="98" y2="25" class="nut-line" />`;
             } else {
@@ -1687,20 +1707,17 @@
                 svg += `<text x="20" y="42" text-anchor="end" font-size="10" font-weight="bold" fill="#EC4899" font-family="Outfit">${baseFret}fr</text>`;
             }
 
-            // Fret lines (4 fret spaces)
             for (let f = 1; f <= 4; f++) {
                 const y = 25 + f * 26;
                 svg += `<line x1="28" y1="${y}" x2="98" y2="${y}" class="fret-line" />`;
             }
 
-            // String lines (4 strings: G C E A) & string labels
             for (let s = 0; s < 4; s++) {
                 const x = 28 + s * 23.33;
                 svg += `<line x1="${x}" y1="25" x2="${x}" y2="129" class="ukulele-string" stroke-width="${1.5 + (3 - s) * 0.4}" />`;
                 svg += `<text x="${x}" y="143" text-anchor="middle" font-size="9" font-weight="bold" fill="#94A3B8" font-family="Outfit">${stringNames[s]}</text>`;
             }
 
-            // Top Indicators (X / O) & Finger Dots
             for (let s = 0; s < 4; s++) {
                 const x = 28 + s * 23.33;
                 const fretVal = frets[s];
@@ -1741,7 +1758,6 @@
             let svg = `<div class="flex flex-col items-center">`;
             svg += `<svg viewBox="0 0 ${whiteKeys.length * keyWidth} 85" class="w-48 h-28">`;
 
-            // Draw White Keys
             whiteKeys.forEach((note, idx) => {
                 const x = idx * keyWidth;
                 const isActive = activeKeys.includes(note);
@@ -1751,7 +1767,6 @@
                 }
             });
 
-            // Draw Black Keys
             blackKeys.forEach(bk => {
                 const x = (bk.pos + 1) * keyWidth - (blackWidth / 2);
                 const isActive = activeKeys.includes(bk.note);
@@ -1789,7 +1804,6 @@
                     diagramHtml = generatePianoSVG(chordData.pianoKeys, chordData.pianoFingers);
                 }
 
-                // Beat dots for this card
                 let beatDotsHtml = '<div class="flex items-center justify-center gap-1.5 mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-800/80">';
                 for (let b = 0; b < chordBeats; b++) {
                     const isActive = (cardIdx === activeChordIndex && b === activeBeatInChord);
