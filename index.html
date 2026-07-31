@@ -1595,30 +1595,51 @@
             renderCajonNotation();
         }
 
+        // ==========================================
+        // ADJUSTED & DYNAMIC SVG CHORD CHART GENERATORS
+        // ==========================================
         function generateGuitarSVG(guitarData) {
             if (!guitarData) return '';
             const frets = guitarData.frets;
             const fingers = guitarData.fingers;
+            const stringNames = ['E', 'A', 'D', 'G', 'B', 'E'];
 
-            let svg = `<svg viewBox="0 0 140 160" class="w-32 h-36">`;
-            // Nut line
-            svg += `<line x1="20" y1="25" x2="120" y2="25" class="nut-line" />`;
+            // Determine base fret offset for high chords
+            const validFrets = frets.filter(f => typeof f === 'number' && f > 0);
+            const maxFret = validFrets.length > 0 ? Math.max(...validFrets) : 0;
+            const minFret = validFrets.length > 0 ? Math.min(...validFrets) : 0;
 
-            // Fret lines (4 frets)
+            let baseFret = 1;
+            if (maxFret > 4) {
+                baseFret = minFret > 1 ? minFret : maxFret - 3;
+            }
+
+            let svg = `<svg viewBox="0 0 145 165" class="w-32 h-36">`;
+
+            // Nut line (for fret 1) or Fret Line + Position Indicator (for higher frets)
+            if (baseFret === 1) {
+                svg += `<line x1="25" y1="25" x2="125" y2="25" class="nut-line" />`;
+            } else {
+                svg += `<line x1="25" y1="25" x2="125" y2="25" class="fret-line" />`;
+                svg += `<text x="18" y="42" text-anchor="end" font-size="10" font-weight="bold" fill="#EC4899" font-family="Outfit">${baseFret}fr</text>`;
+            }
+
+            // Fret lines (4 fret spaces)
             for (let f = 1; f <= 4; f++) {
-                const y = 25 + f * 28;
-                svg += `<line x1="20" y1="${y}" x2="120" y2="${y}" class="fret-line" />`;
+                const y = 25 + f * 26;
+                svg += `<line x1="25" y1="${y}" x2="125" y2="${y}" class="fret-line" />`;
             }
 
-            // String lines (6 strings)
+            // String lines (6 strings) & string labels
             for (let s = 0; s < 6; s++) {
-                const x = 20 + s * 20;
-                svg += `<line x1="${x}" y1="25" x2="${x}" y2="137" class="guitar-string" stroke-width="${1 + (5 - s) * 0.4}" />`;
+                const x = 25 + s * 20;
+                svg += `<line x1="${x}" y1="25" x2="${x}" y2="129" class="guitar-string" stroke-width="${1 + (5 - s) * 0.4}" />`;
+                svg += `<text x="${x}" y="143" text-anchor="middle" font-size="9" font-weight="bold" fill="#94A3B8" font-family="Outfit">${stringNames[s]}</text>`;
             }
 
-            // Top indicators / Finger Dots
+            // Top Indicators (X / O) & Finger Dots
             for (let s = 0; s < 6; s++) {
-                const x = 20 + s * 20;
+                const x = 25 + s * 20;
                 const fretVal = frets[s];
                 const finger = fingers[s];
 
@@ -1627,10 +1648,11 @@
                 } else if (fretVal === 0) {
                     svg += `<circle cx="${x}" cy="14" r="4" fill="none" stroke="#10B981" stroke-width="2" />`;
                 } else if (typeof fretVal === 'number' && fretVal > 0) {
-                    const y = 25 + (fretVal - 0.5) * 28;
-                    svg += `<circle cx="${x}" cy="${y}" r="8" class="finger-dot" />`;
+                    const relFret = fretVal - baseFret + 1;
+                    const y = 25 + (relFret - 0.5) * 26;
+                    svg += `<circle cx="${x}" cy="${y}" r="7.5" class="finger-dot" />`;
                     if (finger) {
-                        svg += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">${finger}</text>`;
+                        svg += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#FFFFFF" font-family="Outfit">${finger}</text>`;
                     }
                 }
             }
@@ -1643,26 +1665,44 @@
             if (!ukuleleData) return '';
             const frets = ukuleleData.frets;
             const fingers = ukuleleData.fingers;
+            const stringNames = ['G', 'C', 'E', 'A'];
 
-            let svg = `<svg viewBox="0 0 120 160" class="w-28 h-36">`;
-            // Nut line
-            svg += `<line x1="25" y1="25" x2="95" y2="25" class="nut-line" />`;
+            // Determine base fret offset for high chords
+            const validFrets = frets.filter(f => typeof f === 'number' && f > 0);
+            const maxFret = validFrets.length > 0 ? Math.max(...validFrets) : 0;
+            const minFret = validFrets.length > 0 ? Math.min(...validFrets) : 0;
 
-            // Fret lines (4 frets)
+            let baseFret = 1;
+            if (maxFret > 4) {
+                baseFret = minFret > 1 ? minFret : maxFret - 3;
+            }
+
+            let svg = `<svg viewBox="0 0 125 165" class="w-28 h-36">`;
+
+            // Nut line (for fret 1) or Fret Line + Position Indicator (for higher frets)
+            if (baseFret === 1) {
+                svg += `<line x1="28" y1="25" x2="98" y2="25" class="nut-line" />`;
+            } else {
+                svg += `<line x1="28" y1="25" x2="98" y2="25" class="fret-line" />`;
+                svg += `<text x="20" y="42" text-anchor="end" font-size="10" font-weight="bold" fill="#EC4899" font-family="Outfit">${baseFret}fr</text>`;
+            }
+
+            // Fret lines (4 fret spaces)
             for (let f = 1; f <= 4; f++) {
-                const y = 25 + f * 28;
-                svg += `<line x1="25" y1="${y}" x2="95" y2="${y}" class="fret-line" />`;
+                const y = 25 + f * 26;
+                svg += `<line x1="28" y1="${y}" x2="98" y2="${y}" class="fret-line" />`;
             }
 
-            // String lines (4 strings: G C E A)
+            // String lines (4 strings: G C E A) & string labels
             for (let s = 0; s < 4; s++) {
-                const x = 25 + s * 23.33;
-                svg += `<line x1="${x}" y1="25" x2="${x}" y2="137" class="ukulele-string" stroke-width="${1.5 + (3 - s) * 0.4}" />`;
+                const x = 28 + s * 23.33;
+                svg += `<line x1="${x}" y1="25" x2="${x}" y2="129" class="ukulele-string" stroke-width="${1.5 + (3 - s) * 0.4}" />`;
+                svg += `<text x="${x}" y="143" text-anchor="middle" font-size="9" font-weight="bold" fill="#94A3B8" font-family="Outfit">${stringNames[s]}</text>`;
             }
 
-            // Top indicators / Finger Dots
+            // Top Indicators (X / O) & Finger Dots
             for (let s = 0; s < 4; s++) {
-                const x = 25 + s * 23.33;
+                const x = 28 + s * 23.33;
                 const fretVal = frets[s];
                 const finger = fingers[s];
 
@@ -1671,10 +1711,11 @@
                 } else if (fretVal === 0) {
                     svg += `<circle cx="${x}" cy="14" r="4" fill="none" stroke="#10B981" stroke-width="2" />`;
                 } else if (typeof fretVal === 'number' && fretVal > 0) {
-                    const y = 25 + (fretVal - 0.5) * 28;
-                    svg += `<circle cx="${x}" cy="${y}" r="8" class="finger-dot" />`;
+                    const relFret = fretVal - baseFret + 1;
+                    const y = 25 + (relFret - 0.5) * 26;
+                    svg += `<circle cx="${x}" cy="${y}" r="7.5" class="finger-dot" />`;
                     if (finger) {
-                        svg += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">${finger}</text>`;
+                        svg += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#FFFFFF" font-family="Outfit">${finger}</text>`;
                     }
                 }
             }
