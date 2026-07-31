@@ -94,10 +94,10 @@
         </div>
     </header>
 
-    <!-- Main Workspace -->
+<!-- Main Workspace -->
     <main class="max-w-5xl mx-auto w-full px-2.5 sm:px-4 py-3 flex-1 flex flex-col gap-3.5">
         
-        <!-- SECTION 0: REDESIGNED CHROMATIC INSTRUMENT TUNER -->
+        <!-- SECTION 0: UPGRADED CHROMATIC INSTRUMENT TUNER -->
         <section class="bg-white dark:bg-slate-900/90 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm transition-colors mb-1 overflow-hidden">
             <button onclick="toggleTuner()" class="w-full flex items-center justify-between p-2.5 sm:p-3 hover:bg-slate-50 dark:hover:bg-slate-800/50 transition text-left group">
                 <div class="flex items-center gap-2">
@@ -105,8 +105,8 @@
                         <i class="fa-solid fa-microphone-lines text-sm group-hover:scale-110 transition-transform"></i>
                     </div>
                     <div>
-                        <h2 class="font-display font-bold text-[13px] text-slate-900 dark:text-white leading-tight">Instrument Tuner</h2>
-                        <p class="text-[10px] text-slate-500 dark:text-slate-400">Play reference tones or use Live Microphone Tuning</p>
+                        <h2 class="font-display font-bold text-[13px] text-slate-900 dark:text-white leading-tight">Chromatic Instrument Tuner</h2>
+                        <p class="text-[10px] text-slate-500 dark:text-slate-400">Full-octave pitch detection & reference tuning (A4 = 442 Hz default)</p>
                     </div>
                 </div>
                 <div class="text-slate-400 border border-slate-200 dark:border-slate-700 rounded-full w-6 h-6 flex items-center justify-center bg-white dark:bg-slate-800">
@@ -117,15 +117,16 @@
             <!-- Collapsible Tuner Content -->
             <div id="tunerContent" class="hidden border-t border-slate-200 dark:border-slate-800 p-3 sm:p-4 bg-slate-50 dark:bg-slate-900/50">
                 
-                <!-- Tuner Mode & Live Mic Control Header -->
+                <!-- Tuner Control Header (Adjustable A4 Hz & Live Mic Toggle) -->
                 <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mb-4">
-                    <div class="flex bg-slate-200 dark:bg-slate-800 rounded-lg p-1 border border-slate-300 dark:border-slate-700">
-                        <button id="tunerTabGuitar" onclick="switchTunerMode('guitar')" class="px-3.5 py-1.5 rounded-md text-xs font-bold bg-indigo-600 text-white shadow-sm transition-all flex items-center gap-1.5">
-                            <i class="fa-solid fa-guitar"></i> Guitar
-                        </button>
-                        <button id="tunerTabUkulele" onclick="switchTunerMode('ukulele')" class="px-3.5 py-1.5 rounded-md text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-indigo-500 dark:hover:text-indigo-400 transition-all flex items-center gap-1.5">
-                            <i class="fa-solid fa-music"></i> Ukulele
-                        </button>
+                    <!-- A4 Hz Calibration Controls -->
+                    <div class="flex items-center gap-2 bg-slate-200 dark:bg-slate-800 px-3 py-1.5 rounded-lg border border-slate-300 dark:border-slate-700">
+                        <i class="fa-solid fa-sliders text-indigo-500 text-xs"></i>
+                        <span class="text-xs font-bold text-slate-700 dark:text-slate-300">A4 Calibration:</span>
+                        <button onclick="adjustA4(-1)" class="w-6 h-6 rounded bg-slate-300 dark:bg-slate-700 hover:bg-indigo-500 hover:text-white text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center transition active:scale-95">-</button>
+                        <input type="number" id="a4CalibInput" min="410" max="470" value="442" onchange="updateA4Calibration(this.value)" class="w-16 bg-white dark:bg-slate-900 border border-slate-300 dark:border-slate-700 rounded text-center text-indigo-600 dark:text-indigo-400 font-mono text-xs font-bold focus:outline-none focus:border-indigo-500 py-0.5">
+                        <span class="text-xs font-mono font-bold text-slate-500">Hz</span>
+                        <button onclick="adjustA4(1)" class="w-6 h-6 rounded bg-slate-300 dark:bg-slate-700 hover:bg-indigo-500 hover:text-white text-slate-800 dark:text-slate-200 font-bold text-xs flex items-center justify-center transition active:scale-95">+</button>
                     </div>
 
                     <!-- Live Mic Toggle Button -->
@@ -136,7 +137,7 @@
                 </div>
 
                 <!-- Digital Gauge & Chromatic Visual Display Panel -->
-                <div id="liveMicPanel" class="mb-4 p-4 rounded-2xl bg-slate-900 text-white border border-slate-800 shadow-xl relative overflow-hidden">
+                <div id="liveMicPanel" class="p-4 rounded-2xl bg-slate-900 text-white border border-slate-800 shadow-xl relative overflow-hidden">
                     <div class="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500/10 rounded-full blur-2xl pointer-events-none"></div>
                     
                     <div class="flex flex-col items-center justify-center gap-2">
@@ -173,7 +174,7 @@
                                 </g>
                             </svg>
 
-                            <!-- Center Big Note Display -->
+                            <!-- Center Big Chromatic Note Display -->
                             <div class="absolute bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center">
                                 <span id="micNoteDisplay" class="font-display font-extrabold text-4xl text-white tracking-tight drop-shadow-[0_0_12px_rgba(56,189,248,0.5)]">--</span>
                             </div>
@@ -194,66 +195,83 @@
                     </div>
                 </div>
 
-                <div class="text-center mb-3">
-                    <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium"><i class="fa-solid fa-circle-info mr-1 text-indigo-500"></i>Click string pegs below to play reference audio, or start Live Mic for automatic pitch detection.</span>
-                </div>
+                <!-- Guitar and Ukulele String Note Reference Section -->
+                <div class="mt-4 pt-3 border-t border-slate-200 dark:border-slate-800/80 space-y-3">
+                    <div class="text-center">
+                        <span class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">
+                            <i class="fa-solid fa-circle-info mr-1 text-indigo-500"></i>Click any string note below to play reference audio (calibrated to A4 = <span id="refA4Label">442</span> Hz).
+                        </span>
+                    </div>
 
-                <!-- Guitar Tuning Strings (E A D G B E) -->
-                <div id="tunerGuitarPanel" class="grid grid-cols-2 sm:grid-cols-6 gap-2.5">
-                    <button id="str_guitar_E2" onclick="playTuningNote(82.41, 'guitar')" class="tuner-string-btn flex flex-col items-center justify-center p-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">6th Peg</span>
-                        <span class="font-display font-extrabold text-xl text-slate-800 dark:text-white group-hover:text-indigo-500">E2</span>
-                        <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">82.4 Hz</span>
-                    </button>
-                    <button id="str_guitar_A2" onclick="playTuningNote(110.00, 'guitar')" class="tuner-string-btn flex flex-col items-center justify-center p-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">5th Peg</span>
-                        <span class="font-display font-extrabold text-xl text-slate-800 dark:text-white group-hover:text-indigo-500">A2</span>
-                        <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">110.0 Hz</span>
-                    </button>
-                    <button id="str_guitar_D3" onclick="playTuningNote(146.83, 'guitar')" class="tuner-string-btn flex flex-col items-center justify-center p-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">4th Peg</span>
-                        <span class="font-display font-extrabold text-xl text-slate-800 dark:text-white group-hover:text-indigo-500">D3</span>
-                        <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">146.8 Hz</span>
-                    </button>
-                    <button id="str_guitar_G3" onclick="playTuningNote(196.00, 'guitar')" class="tuner-string-btn flex flex-col items-center justify-center p-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">3rd Peg</span>
-                        <span class="font-display font-extrabold text-xl text-slate-800 dark:text-white group-hover:text-indigo-500">G3</span>
-                        <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">196.0 Hz</span>
-                    </button>
-                    <button id="str_guitar_B3" onclick="playTuningNote(246.94, 'guitar')" class="tuner-string-btn flex flex-col items-center justify-center p-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">2nd Peg</span>
-                        <span class="font-display font-extrabold text-xl text-slate-800 dark:text-white group-hover:text-indigo-500">B3</span>
-                        <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">246.9 Hz</span>
-                    </button>
-                    <button id="str_guitar_E4" onclick="playTuningNote(329.63, 'guitar')" class="tuner-string-btn flex flex-col items-center justify-center p-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">1st Peg</span>
-                        <span class="font-display font-extrabold text-xl text-slate-800 dark:text-white group-hover:text-indigo-500">E4</span>
-                        <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">329.6 Hz</span>
-                    </button>
-                </div>
+                    <!-- Guitar Reference Notes -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fa-solid fa-guitar text-indigo-500 text-xs"></i>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Guitar String Notes Reference</h4>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-6 gap-2">
+                            <button id="ref_guitar_E2" onclick="playRefNote(40, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
+                                <span class="text-[9px] font-bold uppercase text-slate-400 dark:text-slate-500">6th String</span>
+                                <span class="font-display font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-indigo-500">E2</span>
+                                <span id="freq_guitar_40" class="text-[10px] font-mono text-slate-400 dark:text-slate-500">82.8 Hz</span>
+                            </button>
+                            <button id="ref_guitar_A2" onclick="playRefNote(45, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
+                                <span class="text-[9px] font-bold uppercase text-slate-400 dark:text-slate-500">5th String</span>
+                                <span class="font-display font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-indigo-500">A2</span>
+                                <span id="freq_guitar_45" class="text-[10px] font-mono text-slate-400 dark:text-slate-500">110.5 Hz</span>
+                            </button>
+                            <button id="ref_guitar_D3" onclick="playRefNote(50, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
+                                <span class="text-[9px] font-bold uppercase text-slate-400 dark:text-slate-500">4th String</span>
+                                <span class="font-display font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-indigo-500">D3</span>
+                                <span id="freq_guitar_50" class="text-[10px] font-mono text-slate-400 dark:text-slate-500">147.5 Hz</span>
+                            </button>
+                            <button id="ref_guitar_G3" onclick="playRefNote(55, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
+                                <span class="text-[9px] font-bold uppercase text-slate-400 dark:text-slate-500">3rd String</span>
+                                <span class="font-display font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-indigo-500">G3</span>
+                                <span id="freq_guitar_55" class="text-[10px] font-mono text-slate-400 dark:text-slate-500">196.9 Hz</span>
+                            </button>
+                            <button id="ref_guitar_B3" onclick="playRefNote(59, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
+                                <span class="text-[9px] font-bold uppercase text-slate-400 dark:text-slate-500">2nd String</span>
+                                <span class="font-display font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-indigo-500">B3</span>
+                                <span id="freq_guitar_59" class="text-[10px] font-mono text-slate-400 dark:text-slate-500">248.1 Hz</span>
+                            </button>
+                            <button id="ref_guitar_E4" onclick="playRefNote(64, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
+                                <span class="text-[9px] font-bold uppercase text-slate-400 dark:text-slate-500">1st String</span>
+                                <span class="font-display font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-indigo-500">E4</span>
+                                <span id="freq_guitar_64" class="text-[10px] font-mono text-slate-400 dark:text-slate-500">331.1 Hz</span>
+                            </button>
+                        </div>
+                    </div>
 
-                <!-- Ukulele Tuning Strings (G C E A) -->
-                <div id="tunerUkulelePanel" class="hidden grid-cols-2 sm:grid-cols-4 gap-2.5">
-                    <button id="str_ukulele_G4" onclick="playTuningNote(392.00, 'ukulele')" class="tuner-string-btn flex flex-col items-center justify-center p-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">4th Peg</span>
-                        <span class="font-display font-extrabold text-xl text-slate-800 dark:text-white group-hover:text-indigo-500">G4</span>
-                        <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">392.0 Hz</span>
-                    </button>
-                    <button id="str_ukulele_C4" onclick="playTuningNote(261.63, 'ukulele')" class="tuner-string-btn flex flex-col items-center justify-center p-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">3rd Peg</span>
-                        <span class="font-display font-extrabold text-xl text-slate-800 dark:text-white group-hover:text-indigo-500">C4</span>
-                        <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">261.6 Hz</span>
-                    </button>
-                    <button id="str_ukulele_E4" onclick="playTuningNote(329.63, 'ukulele')" class="tuner-string-btn flex flex-col items-center justify-center p-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">2nd Peg</span>
-                        <span class="font-display font-extrabold text-xl text-slate-800 dark:text-white group-hover:text-indigo-500">E4</span>
-                        <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">329.6 Hz</span>
-                    </button>
-                    <button id="str_ukulele_A4" onclick="playTuningNote(440.00, 'ukulele')" class="tuner-string-btn flex flex-col items-center justify-center p-2.5 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
-                        <span class="text-[10px] font-bold uppercase text-slate-400 dark:text-slate-500">1st Peg</span>
-                        <span class="font-display font-extrabold text-xl text-slate-800 dark:text-white group-hover:text-indigo-500">A4</span>
-                        <span class="text-[10px] font-mono text-slate-400 dark:text-slate-500">440.0 Hz</span>
-                    </button>
+                    <!-- Ukulele Reference Notes -->
+                    <div>
+                        <div class="flex items-center gap-2 mb-2">
+                            <i class="fa-solid fa-music text-indigo-500 text-xs"></i>
+                            <h4 class="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">Ukulele String Notes Reference</h4>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                            <button id="ref_ukulele_G4" onclick="playRefNote(67, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
+                                <span class="text-[9px] font-bold uppercase text-slate-400 dark:text-slate-500">4th String</span>
+                                <span class="font-display font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-indigo-500">G4</span>
+                                <span id="freq_ukulele_67" class="text-[10px] font-mono text-slate-400 dark:text-slate-500">393.8 Hz</span>
+                            </button>
+                            <button id="ref_ukulele_C4" onclick="playRefNote(60, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
+                                <span class="text-[9px] font-bold uppercase text-slate-400 dark:text-slate-500">3rd String</span>
+                                <span class="font-display font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-indigo-500">C4</span>
+                                <span id="freq_ukulele_60" class="text-[10px] font-mono text-slate-400 dark:text-slate-500">262.8 Hz</span>
+                            </button>
+                            <button id="ref_ukulele_E4" onclick="playRefNote(64, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
+                                <span class="text-[9px] font-bold uppercase text-slate-400 dark:text-slate-500">2nd String</span>
+                                <span class="font-display font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-indigo-500">E4</span>
+                                <span id="freq_ukulele_64" class="text-[10px] font-mono text-slate-400 dark:text-slate-500">331.1 Hz</span>
+                            </button>
+                            <button id="ref_ukulele_A4" onclick="playRefNote(69, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-800/80 hover:border-indigo-500 hover:bg-indigo-50 dark:hover:bg-indigo-950/40 transition-all group active:scale-95 shadow-sm">
+                                <span class="text-[9px] font-bold uppercase text-slate-400 dark:text-slate-500">1st String</span>
+                                <span class="font-display font-extrabold text-lg text-slate-800 dark:text-white group-hover:text-indigo-500">A4</span>
+                                <span id="freq_ukulele_69" class="text-[10px] font-mono text-slate-400 dark:text-slate-500">442.0 Hz</span>
+                            </button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
