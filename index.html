@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Music in da house - Secondary School Music Interactive</title>
+    <title>Let's Koh Make Music! - Secondary School Music Interactive</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- FontAwesome Icons -->
@@ -65,7 +65,7 @@
                 </div>
                 <div>
                     <h1 class="font-display font-bold text-lg leading-tight text-transparent bg-clip-text bg-gradient-to-r from-purple-600 via-pink-500 to-amber-500 dark:from-purple-400 dark:via-pink-400 dark:to-amber-300">
-                        Music in da house <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700/50 font-normal ml-1">Sec Music</span>
+                        Let's Koh Make Music! <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-purple-100 dark:bg-purple-900/60 text-purple-700 dark:text-purple-300 border border-purple-200 dark:border-purple-700/50 font-normal ml-1">Sec Music</span>
                     </h1>
                     <p class="text-[11px] text-slate-500 dark:text-slate-400 font-medium">Interactive Chords & Percussion</p>
                 </div>
@@ -241,14 +241,22 @@
                 
                 <!-- Play Progression Controls -->
                 <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-950 p-1 rounded-lg border border-slate-200 dark:border-slate-800 self-start sm:self-auto">
-                    <!-- New Key Selector -->
+                    <!-- Expanded 12-Key Chromatic Selector -->
                     <div class="flex items-center gap-1 px-1.5 border-r border-slate-300 dark:border-slate-800">
                         <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase hidden sm:inline">Key:</span>
                         <select id="keySelect" onchange="updateKey(this.value)" class="bg-transparent text-cyan-600 dark:text-cyan-400 text-xs font-bold focus:outline-none cursor-pointer">
                             <option value="C" selected>C Major</option>
-                            <option value="G">G Major</option>
+                            <option value="Db">D♭ Major</option>
                             <option value="D">D Major</option>
+                            <option value="Eb">E♭ Major</option>
+                            <option value="E">E Major</option>
+                            <option value="F">F Major</option>
+                            <option value="F#">F♯ Major</option>
+                            <option value="G">G Major</option>
+                            <option value="Ab">A♭ Major</option>
                             <option value="A">A Major</option>
+                            <option value="Bb">B♭ Major</option>
+                            <option value="B">B Major</option>
                         </select>
                     </div>
                     
@@ -455,7 +463,6 @@
                 ukulele: { frets: [0, 4, 3, 2], fingers: ['', '3', '2', '1'] },
                 pianoKeys: ['E3', 'G3', 'B3']
             },
-            // NEW CHORDS ADDED FOR TRANSPOSE SUPPORT
             "D": {
                 name: "D Major",
                 mood: "Triumphant / Bright",
@@ -503,6 +510,120 @@
                 guitar: { frets: ['X', 4, 6, 6, 5, 4], fingers: ['', '1', '3', '4', '2', '1'] },
                 ukulele: { frets: [6, 4, 4, 4], fingers: ['3', '1', '1', '1'] },
                 pianoKeys: ['C#4', 'E4', 'G#4']
+            },
+
+            // ADDITIONAL CHROMATIC CHORDS FOR ALL 12 KEYS
+            "B": {
+                name: "B Major",
+                mood: "Vibrant / Radiant",
+                frequencies: [123.47, 185.00, 246.94, 308.25, 369.99],
+                guitar: { frets: ['X', 2, 4, 4, 4, 2], fingers: ['', '1', '2', '3', '4', '1'] },
+                ukulele: { frets: [4, 3, 2, 2], fingers: ['3', '2', '1', '1'] },
+                pianoKeys: ['B3', 'D#4', 'F#4']
+            },
+            "G#m": {
+                name: "G# Minor",
+                mood: "Introspective / Gentle",
+                frequencies: [103.83, 155.56, 207.65, 246.94, 311.13, 415.30],
+                guitar: { frets: [4, 6, 6, 4, 4, 4], fingers: ['1', '3', '4', '1', '1', '1'] },
+                ukulele: { frets: [4, 3, 4, 2], fingers: ['3', '2', '4', '1'] },
+                pianoKeys: ['G#3', 'B3', 'D#4']
+            },
+            "Dm": {
+                name: "D Minor",
+                mood: "Melancholic / Graceful",
+                frequencies: [146.83, 220.00, 293.66, 349.23],
+                guitar: { frets: ['X', 'X', 0, 2, 3, 1], fingers: ['', '', '', '2', '3', '1'] },
+                ukulele: { frets: [2, 2, 1, 0], fingers: ['2', '3', '1', ''] },
+                pianoKeys: ['D3', 'F3', 'A3']
+            },
+            "Bb": {
+                name: "Bb Major",
+                mood: "Warm / Regal",
+                frequencies: [116.54, 174.61, 233.08, 293.66, 349.23],
+                guitar: { frets: ['X', 1, 3, 3, 3, 1], fingers: ['', '1', '2', '3', '4', '1'] },
+                ukulele: { frets: [3, 2, 1, 1], fingers: ['3', '2', '1', '1'] },
+                pianoKeys: ['A#3', 'D4', 'F4']
+            },
+            "Gm": {
+                name: "G Minor",
+                mood: "Dramatic / Stirring",
+                frequencies: [98.00, 146.83, 196.00, 233.08, 293.66, 392.00],
+                guitar: { frets: [3, 5, 5, 3, 3, 3], fingers: ['1', '3', '4', '1', '1', '1'] },
+                ukulele: { frets: [0, 2, 3, 1], fingers: ['', '2', '3', '1'] },
+                pianoKeys: ['G3', 'A#3', 'D4']
+            },
+            "Eb": {
+                name: "Eb Major",
+                mood: "Lush / Expressive",
+                frequencies: [155.56, 233.08, 311.13, 392.00],
+                guitar: { frets: ['X', 'X', 1, 3, 4, 3], fingers: ['', '', '1', '2', '4', '3'] },
+                ukulele: { frets: [0, 3, 3, 1], fingers: ['', '2', '3', '1'] },
+                pianoKeys: ['D#3', 'G3', 'A#3']
+            },
+            "Ab": {
+                name: "Ab Major",
+                mood: "Noble / Peaceful",
+                frequencies: [103.83, 155.56, 207.65, 261.63, 311.13, 415.30],
+                guitar: { frets: [4, 6, 6, 5, 4, 4], fingers: ['1', '3', '4', '2', '1', '1'] },
+                ukulele: { frets: [5, 3, 4, 3], fingers: ['3', '1', '2', '1'] },
+                pianoKeys: ['G#3', 'C4', 'D#4']
+            },
+            "Cm": {
+                name: "C Minor",
+                mood: "Plaintive / Mysterious",
+                frequencies: [130.81, 196.00, 261.63, 311.13, 392.00],
+                guitar: { frets: ['X', 3, 5, 5, 4, 3], fingers: ['', '1', '3', '4', '2', '1'] },
+                ukulele: { frets: [0, 3, 3, 3], fingers: ['', '1', '2', '3'] },
+                pianoKeys: ['C3', 'D#3', 'G3']
+            },
+            "Db": {
+                name: "Db Major",
+                mood: "Dreamy / Elegant",
+                frequencies: [138.59, 207.65, 277.18, 349.23, 415.30],
+                guitar: { frets: ['X', 4, 6, 6, 6, 4], fingers: ['', '1', '2', '3', '4', '1'] },
+                ukulele: { frets: [1, 1, 1, 4], fingers: ['1', '1', '1', '4'] },
+                pianoKeys: ['C#3', 'F3', 'G#3']
+            },
+            "F#": {
+                name: "F# Major",
+                mood: "Brilliant / Crisp",
+                frequencies: [92.50, 138.59, 185.00, 233.08, 277.18, 369.99],
+                guitar: { frets: [2, 4, 4, 3, 2, 2], fingers: ['1', '3', '4', '2', '1', '1'] },
+                ukulele: { frets: [3, 1, 2, 1], fingers: ['3', '1', '2', '1'] },
+                pianoKeys: ['F#3', 'A#3', 'C#4']
+            },
+            "D#m": {
+                name: "D# Minor",
+                mood: "Deep / Reflective",
+                frequencies: [155.56, 233.08, 311.13, 369.99, 466.16],
+                guitar: { frets: ['X', 'X', 1, 3, 4, 2], fingers: ['', '', '1', '3', '4', '2'] },
+                ukulele: { frets: [3, 3, 2, 1], fingers: ['3', '4', '2', '1'] },
+                pianoKeys: ['D#3', 'F#3', 'A#3']
+            },
+            "Fm": {
+                name: "F Minor",
+                mood: "Solemn / Intense",
+                frequencies: [87.31, 130.81, 174.61, 207.65, 261.63, 349.23],
+                guitar: { frets: [1, 3, 3, 1, 1, 1], fingers: ['1', '3', '4', '1', '1', '1'] },
+                ukulele: { frets: [1, 0, 1, 3], fingers: ['1', '', '2', '4'] },
+                pianoKeys: ['F3', 'G#3', 'C4']
+            },
+            "Bbm": {
+                name: "Bb Minor",
+                mood: "Dark / Sorrowful",
+                frequencies: [116.54, 174.61, 233.08, 277.18, 349.23],
+                guitar: { frets: ['X', 1, 3, 3, 2, 1], fingers: ['', '1', '3', '4', '2', '1'] },
+                ukulele: { frets: [3, 1, 1, 1], fingers: ['3', '1', '1', '1'] },
+                pianoKeys: ['A#3', 'C#4', 'F4']
+            },
+            "C#": {
+                name: "C# Major",
+                mood: "Sparkling / Light",
+                frequencies: [138.59, 207.65, 277.18, 349.23, 415.30],
+                guitar: { frets: ['X', 4, 6, 6, 6, 4], fingers: ['', '1', '2', '3', '4', '1'] },
+                ukulele: { frets: [1, 1, 1, 4], fingers: ['1', '1', '1', '4'] },
+                pianoKeys: ['C#3', 'F3', 'G#3']
             }
         };
 
@@ -542,11 +663,20 @@
             { id: 3, name: "Acoustic Ballad", chords: ["Am", "F", "C", "Em"] }
         ];
 
+        // FULL 12 CHROMATIC KEYS TRANSPOSE MAPPING
         const TRANSPOSE_MAP = {
-            "C": { "C": "C", "G": "G", "Am": "Am", "F": "F", "Em": "Em" },
-            "G": { "C": "G", "G": "D", "Am": "Em", "F": "C", "Em": "Bm" },
-            "D": { "C": "D", "G": "A", "Am": "Bm", "F": "G", "Em": "F#m" },
-            "A": { "C": "A", "G": "E", "Am": "F#m", "F": "D", "Em": "C#m" }
+            "C":  { "C": "C",  "G": "G",  "Am": "Am",  "F": "F",  "Em": "Em" },
+            "Db": { "C": "Db", "G": "Ab", "Am": "Bbm", "F": "F",  "Em": "Fm" },
+            "D":  { "C": "D",  "G": "A",  "Am": "Bm",  "F": "G",  "Em": "F#m" },
+            "Eb": { "C": "Eb", "G": "Bb", "Am": "Cm",  "F": "Ab", "Em": "Gm" },
+            "E":  { "C": "E",  "G": "B",  "Am": "C#m", "F": "A",  "Em": "G#m" },
+            "F":  { "C": "F",  "G": "C",  "Am": "Dm",  "F": "Bb", "Em": "Am" },
+            "F#": { "C": "F#", "G": "C#", "Am": "D#m", "F": "B",  "Em": "Bbm" },
+            "G":  { "C": "G",  "G": "D",  "Am": "Em",  "F": "C",  "Em": "Bm" },
+            "Ab": { "C": "Ab", "G": "Eb", "Am": "Fm",  "F": "Db", "Em": "Cm" },
+            "A":  { "C": "A",  "G": "E",  "Am": "F#m", "F": "D",  "Em": "C#m" },
+            "Bb": { "C": "Bb", "G": "F",  "Am": "Gm",  "F": "Eb", "Em": "Dm" },
+            "B":  { "C": "B",  "G": "F#", "Am": "G#m", "F": "E",  "Em": "D#m" }
         };
 
         // State Variables
@@ -697,7 +827,7 @@
             const now = audioCtx.currentTime;
 
             if (type === 'bass') {
-                // Deep resonant center hit (200% Louder: 2.1 Gain)
+                // Deep resonant center hit
                 const osc = audioCtx.createOscillator();
                 const gain = audioCtx.createGain();
                 osc.frequency.setValueAtTime(130, now);
@@ -852,9 +982,15 @@
 
             renderChordGrid();
             
-            // Play first transposed chord
-            const firstChord = TRANSPOSE_MAP[currentKey][PROGRESSIONS[index].chords[0]];
-            playChordNTimes(firstChord, 0);
+            // Stop single chords from playing when selecting a new progression
+            singleChordTimeouts.forEach(t => clearTimeout(t));
+            singleChordTimeouts = [];
+            updateBeatUI(-1, -1);
+
+            if (isPlayingProgression) {
+                stopProgression();
+                startProgression();
+            }
         }
 
         function updateKey(newKey) {
@@ -875,8 +1011,10 @@
                 stopProgression();
                 startProgression();
             } else {
-                const firstChord = TRANSPOSE_MAP[currentKey][PROGRESSIONS[currentProgressionIndex].chords[0]];
-                playChordNTimes(firstChord, 0);
+                // Ensure no single chords keep ringing from previous key selection
+                singleChordTimeouts.forEach(t => clearTimeout(t));
+                singleChordTimeouts = [];
+                updateBeatUI(-1, -1);
             }
         }
 
@@ -1011,7 +1149,7 @@
             }
         }
 
-        // Render 2-Row Music Notation Grid (1st Row: Bass Stroke, 2nd Row: Slap Stroke)
+        // Render 2-Row Music Notation Grid
         function renderCajonNotation() {
             const container = document.getElementById('cajonNotationGrid');
             if (!container) return;
@@ -1027,7 +1165,7 @@
                 html += `<div class="font-bold text-slate-500 dark:text-slate-400">${lbl}</div>`;
             });
 
-            // ROW 1: BASS STROKE (First Row)
+            // ROW 1: BASS STROKE
             html += `<div class="text-left font-bold text-amber-600 dark:text-amber-400 flex items-center gap-1">💥 Bass</div>`;
             for (let step = 0; step < 8; step++) {
                 const hasBass = beatData.bass[step] === 1;
@@ -1042,7 +1180,7 @@
                     </button>`;
             }
 
-            // ROW 2: SLAP STROKE (Second Row)
+            // ROW 2: SLAP STROKE
             html += `<div class="text-left font-bold text-orange-600 dark:text-orange-400 flex items-center gap-1">⚡ Slap</div>`;
             for (let step = 0; step < 8; step++) {
                 const hasSlap = beatData.slap[step] === 1;
@@ -1061,7 +1199,6 @@
             container.innerHTML = html;
         }
 
-        // Toggle interactive step note in notation grid
         function toggleCajonStepNote(type, step) {
             const beatData = CAJON_BEATS[activeCajonBeatIndex];
             beatData[type][step] = beatData[type][step] === 1 ? 0 : 1;
@@ -1090,7 +1227,6 @@
                 if (playBass) playCajonSound('bass');
                 if (playSlap) playCajonSound('slap');
 
-                // Update Beat Counter Display
                 const currentBeatNum = Math.floor(currentCajonStep / 2) + 1;
                 const currentBeatSub = currentCajonStep % 2 === 0 ? '' : ' &';
                 const counterElem = document.getElementById('cajonStepCounter');
@@ -1098,7 +1234,6 @@
                     counterElem.innerText = `Beat ${currentBeatNum}${currentBeatSub} · Step ${currentCajonStep + 1}/8`;
                 }
 
-                // Highlight notes and active column progress in both rows
                 for (let i = 0; i < 8; i++) {
                     const bassElem = document.getElementById(`cajonNote_bass_${i}`);
                     const slapElem = document.getElementById(`cajonNote_slap_${i}`);
@@ -1393,7 +1528,7 @@
                 rms += val * val;
             }
             rms = Math.sqrt(rms / SIZE);
-            if (rms < 0.01) return -1; // Not enough signal
+            if (rms < 0.01) return -1;
 
             let r1 = 0, r2 = SIZE - 1, thres = 0.2;
             for (let i = 0; i < SIZE / 2; i++)
@@ -1436,7 +1571,7 @@
         async function startMicTuner() {
             try {
                 tunerAudioStream = await navigator.mediaDevices.getUserMedia({ audio: true });
-                initAudio(); // Ensure context is running
+                initAudio();
                 
                 const source = audioCtx.createMediaStreamSource(tunerAudioStream);
                 tunerAnalyser = audioCtx.createAnalyser();
@@ -1479,11 +1614,7 @@
             document.getElementById('tunerVisualizer').classList.add('hidden');
             document.getElementById('tunerVisualizer').classList.remove('flex');
 
-            // Reset string highlights
-            document.querySelectorAll('.tuner-string-btn').forEach(b => {
-                b.classList.remove('border-emerald-500', 'bg-emerald-50', 'dark:bg-emerald-900/40');
-                b.classList.add('border-slate-200', 'dark:border-slate-700', 'bg-white', 'dark:bg-slate-800');
-            });
+            resetStringHighlights();
         }
 
         function updatePitch() {
@@ -1501,7 +1632,7 @@
                 noteEl.innerText = "-";
                 centsEl.innerText = "";
                 needleEl.style.transform = `translateX(-50%)`;
-                needleEl.style.backgroundColor = '#64748b'; // slate-500
+                needleEl.style.backgroundColor = '#64748b';
                 perfectEl.style.opacity = '0';
                 resetStringHighlights();
             } else {
@@ -1514,17 +1645,15 @@
                 noteEl.innerText = `${noteStr}${octave}`;
                 centsEl.innerText = cents > 0 ? `+${cents} ¢` : `${cents} ¢`;
                 
-                // Needle visualizer (-50 to +50 cents maps to 0% to 100% width)
-                // Center is 50%.
                 let percentage = (cents + 50) / 100;
-                percentage = Math.max(0, Math.min(1, percentage)); // clamp 0-1
+                percentage = Math.max(0, Math.min(1, percentage));
                 needleEl.style.left = `${percentage * 100}%`;
                 
                 if (Math.abs(cents) < 5) {
-                    needleEl.style.backgroundColor = '#10b981'; // emerald-500
+                    needleEl.style.backgroundColor = '#10b981';
                     perfectEl.style.opacity = '1';
                 } else {
-                    needleEl.style.backgroundColor = '#f43f5e'; // rose-500
+                    needleEl.style.backgroundColor = '#f43f5e';
                     perfectEl.style.opacity = '0';
                 }
 
@@ -1543,8 +1672,6 @@
 
         function highlightCurrentString(detectedNote, cents) {
             resetStringHighlights();
-            
-            // Only highlight if within a reasonable tuning range (e.g. +/- 15 cents)
             if (Math.abs(cents) > 15) return;
             
             let targetId = `str_${currentTunerMode}_${detectedNote}`;
@@ -1559,7 +1686,7 @@
         // Initialize App
         window.addEventListener('DOMContentLoaded', () => {
             selectInstrument('piano');
-            selectProgression(0, false);
+            selectProgression(0);
         });
     </script>
 </body>
