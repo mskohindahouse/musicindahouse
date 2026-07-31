@@ -144,9 +144,7 @@
                                 <span>Sharp (+50c)</span>
                             </div>
                             <div class="w-full h-3 bg-slate-800 rounded-full relative overflow-hidden border border-slate-700">
-                                <!-- Center Perfect Alignment Line -->
                                 <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-emerald-400 z-10"></div>
-                                <!-- Moving Needle Bar -->
                                 <div id="micNeedle" class="absolute top-0 bottom-0 left-1/2 w-1.5 bg-emerald-400 -translate-x-1/2 transition-all duration-100 rounded-full"></div>
                             </div>
                         </div>
@@ -253,7 +251,7 @@
                 </div>
                 
                 <!-- Play Progression Controls -->
-                <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-950 p-1 rounded-lg border border-slate-200 dark:border-slate-800 self-start sm:self-auto">
+                <div class="flex items-center gap-2 bg-slate-100 dark:bg-slate-950 p-1 rounded-lg border border-slate-200 dark:border-slate-800 self-start sm:self-auto flex-wrap">
                     <!-- Expanded 12-Key Chromatic Selector -->
                     <div class="flex items-center gap-1 px-1.5 border-r border-slate-300 dark:border-slate-800">
                         <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase hidden sm:inline">Key:</span>
@@ -278,9 +276,15 @@
                         <span id="playProgText">Play All</span>
                     </button>
                     
+                    <!-- Dropdown for Meter / Beats per Bar (2, 4, or 8 beats) -->
                     <div class="flex items-center gap-1 border-x border-slate-300 dark:border-slate-800 px-2 text-xs">
-                        <span class="bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 font-mono font-bold px-1.5 py-0.5 rounded border border-purple-200 dark:border-purple-700/50 text-[10px]">4/4 Meter</span>
+                        <select id="meterSelect" onchange="setChordBeats(this.value)" class="bg-purple-100 dark:bg-purple-900/50 text-purple-700 dark:text-purple-300 font-mono font-bold text-[10px] px-1.5 py-0.5 rounded border border-purple-200 dark:border-purple-700/50 focus:outline-none cursor-pointer">
+                            <option value="2">2 Beats (2/4 Meter)</option>
+                            <option value="4" selected>4 Beats (4/4 Meter)</option>
+                            <option value="8">8 Beats (8/4 Meter)</option>
+                        </select>
                     </div>
+
                     <div class="flex items-center gap-1 px-1 text-xs text-slate-500 dark:text-slate-400">
                         <i class="fa-solid fa-gauge-high text-[11px]"></i>
                         <span id="bpmDisplay" class="font-mono text-pink-600 dark:text-pink-400 font-bold w-12 text-center text-[11px]">90 BPM</span>
@@ -322,12 +326,22 @@
 
         <!-- SECTION 3: CHORD CHARTS & DIAGRAMS DISPLAY -->
         <section class="bg-white dark:bg-slate-900/90 rounded-xl p-3.5 border border-slate-200 dark:border-slate-800 shadow-md flex-none transition-colors">
-            <div class="flex items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-800 pb-2.5">
+            <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-3 border-b border-slate-200 dark:border-slate-800 pb-2.5 gap-2">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-diagram-project text-pink-500"></i>
                     <h3 id="diagramsTitle" class="font-display font-bold text-base text-slate-900 dark:text-white">
                         Chord Charts for <span class="text-pink-500">Piano</span>
                     </h3>
+                </div>
+
+                <!-- Beats per Chord Selector Controls (2, 4, 8 Beats) -->
+                <div class="flex items-center gap-1.5 bg-slate-100 dark:bg-slate-950 p-1 rounded-lg border border-slate-200 dark:border-slate-800 self-start sm:self-auto">
+                    <span class="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase px-1.5 flex items-center gap-1">
+                        <i class="fa-solid fa-clock text-pink-500"></i> Beats / Chord:
+                    </span>
+                    <button id="btnBeats2" onclick="setChordBeats(2)" class="px-2.5 py-1 text-xs font-bold rounded-md bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-pink-500 dark:hover:text-pink-400 transition-all">2 Beats</button>
+                    <button id="btnBeats4" onclick="setChordBeats(4)" class="px-2.5 py-1 text-xs font-bold rounded-md bg-pink-500 text-white shadow-sm transition-all">4 Beats</button>
+                    <button id="btnBeats8" onclick="setChordBeats(8)" class="px-2.5 py-1 text-xs font-bold rounded-md bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-pink-500 dark:hover:text-pink-400 transition-all">8 Beats</button>
                 </div>
             </div>
 
@@ -340,6 +354,9 @@
                     <span class="inline-flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-bold flex items-center justify-center">3</span> Ring</span>
                     <span class="inline-flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-pink-500 text-white text-[9px] font-bold flex items-center justify-center">4</span> Pinky</span>
                     <span class="inline-flex items-center gap-1"><span class="w-4 h-4 rounded-full bg-amber-500 text-white text-[9px] font-bold flex items-center justify-center">T</span> Thumb</span>
+                </div>
+                <div class="text-[10px] text-pink-600 dark:text-pink-400 font-bold flex items-center gap-1">
+                    <i class="fa-solid fa-volume-high"></i> Click/Press any chord chart below to play sound
                 </div>
             </div>
 
@@ -830,7 +847,7 @@
 
         const TRANSPOSE_MAP = {
             "C":  { "C": "C",  "G": "G",  "Am": "Am",  "F": "F",  "Em": "Em" },
-            "Db": { "C": "Db", "G": "Ab", "Am": "Bbm", "F": "F",  "Em": "Fm" },
+            "Db": { "C": "Db", "G": "Ab", "Am": "Bbm", "F": "Gb", "Em": "Fm" },
             "D":  { "C": "D",  "G": "A",  "Am": "Bm",  "F": "G",  "Em": "F#m" },
             "Eb": { "C": "Eb", "G": "Bb", "Am": "Cm",  "F": "Ab", "Em": "Gm" },
             "E":  { "C": "E",  "G": "B",  "Am": "C#m", "F": "A",  "Em": "G#m" },
@@ -848,9 +865,11 @@
         let currentProgressionIndex = 0;
         let currentKey = "C";
         let bpm = 90;
+        let chordBeats = 4; // Beats per chord/bar (2, 4, or 8)
         let isPlayingProgression = false;
         let progressionInterval = null;
         let activeChordIndex = null;
+        let activeBeatInChord = 0;
         let currentTunerMode = 'guitar';
 
         // Cajon State
@@ -883,7 +902,6 @@
             ]
         };
 
-        // Audio Context Engine
         let audioCtx = null;
 
         function initAudio() {
@@ -967,7 +985,6 @@
 
                 processMicAudio();
             } catch (err) {
-                alert("Microphone access is required for the Live Mic Tuner. Please check browser permissions.");
                 console.error("Mic tuner error:", err);
             }
         }
@@ -1015,14 +1032,13 @@
             micAnimationId = requestAnimationFrame(processMicAudio);
         }
 
-        // Time-Domain Autocorrelation Pitch Detection
         function autoCorrelatePitch(buf, sampleRate) {
             let rms = 0;
             for (let i = 0; i < buf.length; i++) {
                 rms += buf[i] * buf[i];
             }
             rms = Math.sqrt(rms / buf.length);
-            if (rms < 0.012) return -1; // Volume below noise threshold
+            if (rms < 0.012) return -1;
 
             let r1 = 0, r2 = buf.length - 1, thres = 0.2;
             for (let i = 0; i < buf.length / 2; i++) {
@@ -1051,7 +1067,6 @@
             }
             let T0 = maxpos;
 
-            // Parabolic Interpolation
             const x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
             const a = (x1 + x3 - 2 * x2) / 2;
             const b = (x3 - x1) / 2;
@@ -1073,14 +1088,12 @@
                 }
             });
 
-            // Calculate cents difference: 1200 * log2(f1 / f2)
             const cents = Math.round(1200 * (Math.log2(freq / closestString.freq)));
             const boundedCents = Math.max(-50, Math.min(50, cents));
 
             document.getElementById('micNoteDisplay').innerText = closestString.note;
             document.getElementById('micFreqDisplay').innerText = `${freq.toFixed(1)} Hz`;
 
-            // Needle percentage mapping: -50c -> 0%, 0c -> 50%, +50c -> 100%
             const needlePercent = 50 + (boundedCents);
             const needle = document.getElementById('micNeedle');
             needle.style.left = `${needlePercent}%`;
@@ -1101,7 +1114,6 @@
                 needle.className = "absolute top-0 bottom-0 w-2 bg-amber-400 left-1/2 -translate-x-1/2 rounded-full";
             }
 
-            // Highlight corresponding string button
             clearTunerHighlights();
             const targetBtn = document.getElementById(closestString.id);
             if (targetBtn) {
@@ -1120,7 +1132,6 @@
             playTone(freq, 2.5, type, 0); 
         }
 
-        // Synthesize Instrument Notes
         function playTone(freq, duration = 1.8, instType = 'guitar', delay = 0) {
             if (!audioCtx) initAudio();
             if (!audioCtx) return;
@@ -1181,7 +1192,6 @@
             osc2.stop(startTime + duration + 0.1);
         }
 
-        // Synthesize Cajon Drum Strokes
         function playCajonSound(type) {
             if (!audioCtx) initAudio();
             if (!audioCtx) return;
@@ -1319,6 +1329,36 @@
             }
         }
 
+        function setChordBeats(numBeats) {
+            chordBeats = parseInt(numBeats);
+
+            // Synchronize Meter Dropdown Selection
+            const meterSelect = document.getElementById('meterSelect');
+            if (meterSelect) {
+                meterSelect.value = chordBeats.toString();
+            }
+
+            // Synchronize Beats Buttons
+            [2, 4, 8].forEach(b => {
+                const btn = document.getElementById(`btnBeats${b}`);
+                if (btn) {
+                    if (b === chordBeats) {
+                        btn.className = "px-2.5 py-1 text-xs font-bold rounded-md bg-pink-500 text-white shadow-sm transition-all";
+                    } else {
+                        btn.className = "px-2.5 py-1 text-xs font-bold rounded-md bg-slate-200 dark:bg-slate-800 text-slate-700 dark:text-slate-300 hover:text-pink-500 dark:hover:text-pink-400 transition-all";
+                    }
+                }
+            });
+
+            renderChordGrid();
+            updateBeatUI(-1, -1);
+
+            if (isPlayingProgression) {
+                stopProgression();
+                startProgression();
+            }
+        }
+
         function updateKey(newKey) {
             currentKey = newKey;
             
@@ -1367,19 +1407,22 @@
             document.getElementById('btnPlayProgression').classList.replace('bg-pink-600', 'bg-red-600');
 
             let totalBeatCount = 0;
+            const totalProgressionBeats = 4 * chordBeats; // 4 chords in sequence
             const beatIntervalMs = (60 / bpm) * 1000;
 
             const executeBeat = () => {
-                activeChordIndex = Math.floor(totalBeatCount / 4);
-                const activeBeatInChord = totalBeatCount % 4;
+                activeChordIndex = Math.floor(totalBeatCount / chordBeats);
+                activeBeatInChord = totalBeatCount % chordBeats;
+                
+                // Trigger sound for every beat
                 const baseChordKey = PROGRESSIONS[currentProgressionIndex].chords[activeChordIndex];
                 const chordKey = TRANSPOSE_MAP[currentKey][baseChordKey];
-                
                 playChordSound(chordKey);
+
                 highlightActiveCard();
                 updateBeatUI(activeChordIndex, activeBeatInChord);
 
-                totalBeatCount = (totalBeatCount + 1) % 16;
+                totalBeatCount = (totalBeatCount + 1) % totalProgressionBeats;
             };
 
             executeBeat();
@@ -1394,13 +1437,14 @@
             document.getElementById('btnPlayProgression').classList.replace('bg-red-600', 'bg-pink-600');
             
             activeChordIndex = null;
+            activeBeatInChord = 0;
             highlightActiveCard();
             updateBeatUI(-1, -1);
         }
 
         function updateBeatUI(chordCardIdx, beatIdx) {
             for (let c = 0; c < 4; c++) {
-                for (let b = 0; b < 4; b++) {
+                for (let b = 0; b < chordBeats; b++) {
                     const dot = document.getElementById(`beatDot_${c}_${b}`);
                     if (dot) {
                         if (c === chordCardIdx && b === beatIdx) {
@@ -1424,9 +1468,6 @@
             });
         }
 
-        // ==========================================
-        // CAJON STUDIO LOGIC
-        // ==========================================
         function toggleCajonStudio() {
             const box = document.getElementById('cajonStudioBox');
             const txt = document.getElementById('cajonToggleText');
@@ -1528,11 +1569,15 @@
                 const beatData = CAJON_BEATS[activeCajonBeatIndex];
                 if (beatData.bass[currentCajonStep]) playCajonSound('bass');
                 if (beatData.slap[currentCajonStep]) playCajonSound('slap');
-
-                const stepNum = Math.floor(currentCajonStep / 2) + 1;
-                document.getElementById('cajonStepCounter').innerText = `Beat ${stepNum} · Step ${currentCajonStep + 1}/8`;
-
+                
                 renderCajonNotation();
+                
+                const stepCounter = document.getElementById('cajonStepCounter');
+                if (stepCounter) {
+                    const beatNum = Math.floor(currentCajonStep / 2) + 1;
+                    stepCounter.innerText = `Beat ${beatNum} · Step ${currentCajonStep + 1}/8`;
+                }
+
                 currentCajonStep = (currentCajonStep + 1) % 8;
             };
 
@@ -1550,194 +1595,189 @@
             renderCajonNotation();
         }
 
-        // ==========================================
-        // SVG CHORD DIAGRAM RENDERERS
-        // ==========================================
-        function generateDiagramSVG(chordKey) {
-            const chord = CHORD_DATA[chordKey] || CHORD_DATA["C"];
-            if (currentInstrument === 'piano') {
-                return generatePianoSVG(chord.pianoKeys);
-            } else if (currentInstrument === 'ukulele') {
-                return generateFretboardSVG(chord.ukulele.frets, chord.ukulele.fingers, 4);
-            } else {
-                return generateFretboardSVG(chord.guitar.frets, chord.guitar.fingers, 6);
+        function generateGuitarSVG(guitarData) {
+            if (!guitarData) return '';
+            const frets = guitarData.frets;
+            const fingers = guitarData.fingers;
+
+            let svg = `<svg viewBox="0 0 140 160" class="w-32 h-36">`;
+            // Nut line
+            svg += `<line x1="20" y1="25" x2="120" y2="25" class="nut-line" />`;
+
+            // Fret lines (4 frets)
+            for (let f = 1; f <= 4; f++) {
+                const y = 25 + f * 28;
+                svg += `<line x1="20" y1="${y}" x2="120" y2="${y}" class="fret-line" />`;
             }
-        }
 
-        function generatePianoSVG(activeKeys) {
-            const keys = [
-                { note: 'C3', type: 'white', x: 10 },
-                { note: 'C#3', type: 'black', x: 26 },
-                { note: 'D3', type: 'white', x: 34 },
-                { note: 'D#3', type: 'black', x: 52 },
-                { note: 'E3', type: 'white', x: 58 },
-                { note: 'F3', type: 'white', x: 82 },
-                { note: 'F#3', type: 'black', x: 98 },
-                { note: 'G3', type: 'white', x: 106 },
-                { note: 'G#3', type: 'black', x: 124 },
-                { note: 'A3', type: 'white', x: 130 },
-                { note: 'A#3', type: 'black', x: 148 },
-                { note: 'B3', type: 'white', x: 154 },
-                { note: 'C4', type: 'white', x: 178 },
-                { note: 'C#4', type: 'black', x: 194 },
-                { note: 'D4', type: 'white', x: 202 },
-                { note: 'D#4', type: 'black', x: 220 },
-                { note: 'E4', type: 'white', x: 226 },
-                { note: 'F4', type: 'white', x: 250 },
-                { note: 'F#4', type: 'black', x: 266 },
-                { note: 'G4', type: 'white', x: 274 },
-                { note: 'G#4', type: 'black', x: 292 },
-                { note: 'A4', type: 'white', x: 298 }
-            ];
+            // String lines (6 strings)
+            for (let s = 0; s < 6; s++) {
+                const x = 20 + s * 20;
+                svg += `<line x1="${x}" y1="25" x2="${x}" y2="137" class="guitar-string" stroke-width="${1 + (5 - s) * 0.4}" />`;
+            }
 
-            let whiteKeysSvg = '';
-            let blackKeysSvg = '';
+            // Top indicators / Finger Dots
+            for (let s = 0; s < 6; s++) {
+                const x = 20 + s * 20;
+                const fretVal = frets[s];
+                const finger = fingers[s];
 
-            keys.forEach(k => {
-                const isActive = activeKeys.includes(k.note);
-                if (k.type === 'white') {
-                    const fillClass = isActive ? 'piano-key-active' : 'piano-key-white';
-                    whiteKeysSvg += `<rect x="${k.x}" y="10" width="22" height="110" class="${fillClass}" onclick="playTone(${getNoteFreq(k.note)}, 1.2, 'piano')"/>`;
-                    if (isActive) {
-                        whiteKeysSvg += `<circle cx="${k.x + 11}" cy="100" r="4.5" fill="#0284C7"/>`;
-                    }
-                } else {
-                    const fillClass = isActive ? 'piano-key-active' : 'piano-key-black';
-                    blackKeysSvg += `<rect x="${k.x}" y="10" width="14" height="68" class="${fillClass}" onclick="playTone(${getNoteFreq(k.note)}, 1.2, 'piano')"/>`;
-                    if (isActive) {
-                        blackKeysSvg += `<circle cx="${k.x + 7}" cy="60" r="3.5" fill="#38BDF8"/>`;
+                if (fretVal === 'X') {
+                    svg += `<text x="${x}" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#EF4444">✕</text>`;
+                } else if (fretVal === 0) {
+                    svg += `<circle cx="${x}" cy="14" r="4" fill="none" stroke="#10B981" stroke-width="2" />`;
+                } else if (typeof fretVal === 'number' && fretVal > 0) {
+                    const y = 25 + (fretVal - 0.5) * 28;
+                    svg += `<circle cx="${x}" cy="${y}" r="8" class="finger-dot" />`;
+                    if (finger) {
+                        svg += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">${finger}</text>`;
                     }
                 }
-            });
-
-            return `
-                <svg viewBox="0 0 330 130" class="w-full h-auto max-h-[150px]">
-                    ${whiteKeysSvg}
-                    ${blackKeysSvg}
-                </svg>
-            `;
-        }
-
-        function getNoteFreq(note) {
-            const notes = {
-                'C3': 130.81, 'C#3': 138.59, 'D3': 146.83, 'D#3': 155.56, 'E3': 164.81,
-                'F3': 174.61, 'F#3': 185.00, 'G3': 196.00, 'G#3': 207.65, 'A3': 220.00,
-                'A#3': 233.08, 'B3': 246.94, 'C4': 261.63, 'C#4': 277.18, 'D4': 293.66,
-                'D#4': 311.13, 'E4': 329.63, 'F4': 349.23, 'F#4': 369.99, 'G4': 392.00,
-                'G#4': 415.30, 'A4': 440.00
-            };
-            return notes[note] || 261.63;
-        }
-
-        function generateFretboardSVG(frets, fingers, numStrings) {
-            const width = 160;
-            const height = 140;
-            const startX = 25;
-            const endX = 135;
-            const startY = 30;
-            const numFrets = 4;
-            const fretSpacing = 24;
-
-            const stringSpacing = (endX - startX) / (numStrings - 1);
-
-            let svg = `<svg viewBox="0 0 ${width} ${height}" class="w-full h-auto max-h-[150px]">`;
-
-            // Nut Line
-            svg += `<line x1="${startX}" y1="${startY}" x2="${endX}" y2="${startY}" class="nut-line" />`;
-
-            // Fret Lines
-            for (let i = 1; i <= numFrets; i++) {
-                const y = startY + (i * fretSpacing);
-                svg += `<line x1="${startX}" y1="${y}" x2="${endX}" y2="${y}" class="fret-line" />`;
             }
-
-            // Strings
-            for (let i = 0; i < numStrings; i++) {
-                const x = startX + (i * stringSpacing);
-                const stringClass = numStrings === 4 ? 'ukulele-string' : 'guitar-string';
-                svg += `<line x1="${x}" y1="${startY}" x2="${x}" y2="${startY + (numFrets * fretSpacing)}" class="${stringClass}" stroke-width="${1.5 + (i * 0.4)}" />`;
-            }
-
-            // Finger Dots & Muted/Open String Indicators
-            frets.forEach((fret, stringIdx) => {
-                const x = startX + (stringIdx * stringSpacing);
-                
-                if (fret === 'X') {
-                    svg += `<text x="${x}" y="${startY - 8}" text-anchor="middle" font-size="11" font-weight="bold" fill="#EF4444">✕</text>`;
-                } else if (fret === 0) {
-                    svg += `<circle cx="${x}" cy="${startY - 10}" r="4" fill="none" stroke="#10B981" stroke-width="2"/>`;
-                } else if (typeof fret === 'number' && fret > 0) {
-                    const y = startY + (fret * fretSpacing) - (fretSpacing / 2);
-                    const fingerNum = fingers[stringIdx] || '';
-                    svg += `<circle cx="${x}" cy="${y}" r="8.5" class="finger-dot" />`;
-                    if (fingerNum) {
-                        svg += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">${fingerNum}</text>`;
-                    }
-                }
-            });
 
             svg += `</svg>`;
             return svg;
         }
 
-        function generateFingeringText(chordKey) {
-            const chord = CHORD_DATA[chordKey] || CHORD_DATA["C"];
-            if (currentInstrument === 'piano') {
-                return `<div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium text-center">Fingering (RH/LH): <span class="font-mono font-bold text-purple-600 dark:text-purple-400">${chord.pianoFingers.rh} / ${chord.pianoFingers.lh}</span></div>`;
-            } else if (currentInstrument === 'ukulele') {
-                return `<div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium text-center">Fret Position: <span class="font-mono font-bold text-pink-600 dark:text-pink-400">[ ${chord.ukulele.frets.join(' - ')} ]</span></div>`;
-            } else {
-                return `<div class="text-[10px] text-slate-500 dark:text-slate-400 font-medium text-center">Fret Position: <span class="font-mono font-bold text-pink-600 dark:text-pink-400">[ ${chord.guitar.frets.join(' - ')} ]</span></div>`;
+        function generateUkuleleSVG(ukuleleData) {
+            if (!ukuleleData) return '';
+            const frets = ukuleleData.frets;
+            const fingers = ukuleleData.fingers;
+
+            let svg = `<svg viewBox="0 0 120 160" class="w-28 h-36">`;
+            // Nut line
+            svg += `<line x1="25" y1="25" x2="95" y2="25" class="nut-line" />`;
+
+            // Fret lines (4 frets)
+            for (let f = 1; f <= 4; f++) {
+                const y = 25 + f * 28;
+                svg += `<line x1="25" y1="${y}" x2="95" y2="${y}" class="fret-line" />`;
             }
+
+            // String lines (4 strings: G C E A)
+            for (let s = 0; s < 4; s++) {
+                const x = 25 + s * 23.33;
+                svg += `<line x1="${x}" y1="25" x2="${x}" y2="137" class="ukulele-string" stroke-width="${1.5 + (3 - s) * 0.4}" />`;
+            }
+
+            // Top indicators / Finger Dots
+            for (let s = 0; s < 4; s++) {
+                const x = 25 + s * 23.33;
+                const fretVal = frets[s];
+                const finger = fingers[s];
+
+                if (fretVal === 'X') {
+                    svg += `<text x="${x}" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#EF4444">✕</text>`;
+                } else if (fretVal === 0) {
+                    svg += `<circle cx="${x}" cy="14" r="4" fill="none" stroke="#10B981" stroke-width="2" />`;
+                } else if (typeof fretVal === 'number' && fretVal > 0) {
+                    const y = 25 + (fretVal - 0.5) * 28;
+                    svg += `<circle cx="${x}" cy="${y}" r="8" class="finger-dot" />`;
+                    if (finger) {
+                        svg += `<text x="${x}" y="${y + 3.5}" text-anchor="middle" font-size="10" font-weight="bold" fill="#FFFFFF">${finger}</text>`;
+                    }
+                }
+            }
+
+            svg += `</svg>`;
+            return svg;
+        }
+
+        function generatePianoSVG(activeKeys = [], fingering = { rh: '', lh: '' }) {
+            const whiteKeys = ['C3', 'D3', 'E3', 'F3', 'G3', 'A3', 'B3', 'C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
+            const blackKeys = [
+                { note: 'C#3', pos: 0 }, { note: 'D#3', pos: 1 },
+                { note: 'F#3', pos: 3 }, { note: 'G#3', pos: 4 }, { note: 'A#3', pos: 5 },
+                { note: 'C#4', pos: 7 }, { note: 'D#4', pos: 8 },
+                { note: 'F#4', pos: 10 }, { note: 'G#4', pos: 11 }, { note: 'A#4', pos: 12 }
+            ];
+
+            const keyWidth = 14;
+            const keyHeight = 70;
+            const blackWidth = 9;
+            const blackHeight = 42;
+
+            let svg = `<div class="flex flex-col items-center">`;
+            svg += `<svg viewBox="0 0 ${whiteKeys.length * keyWidth} 85" class="w-48 h-28">`;
+
+            // Draw White Keys
+            whiteKeys.forEach((note, idx) => {
+                const x = idx * keyWidth;
+                const isActive = activeKeys.includes(note);
+                svg += `<rect x="${x}" y="0" width="${keyWidth - 1}" height="${keyHeight}" class="piano-key-white ${isActive ? 'piano-key-active' : ''}" />`;
+                if (isActive) {
+                    svg += `<circle cx="${x + keyWidth / 2 - 0.5}" cy="${keyHeight - 8}" r="3" fill="#0284C7" />`;
+                }
+            });
+
+            // Draw Black Keys
+            blackKeys.forEach(bk => {
+                const x = (bk.pos + 1) * keyWidth - (blackWidth / 2);
+                const isActive = activeKeys.includes(bk.note);
+                svg += `<rect x="${x}" y="0" width="${blackWidth}" height="${blackHeight}" class="piano-key-black ${isActive ? 'piano-key-active' : ''}" />`;
+            });
+
+            svg += `</svg>`;
+            svg += `<div class="text-[10px] text-slate-500 dark:text-slate-400 mt-1 font-mono text-center">RH: <span class="text-pink-600 dark:text-pink-400 font-bold">${fingering.rh || '1-3-5'}</span> | LH: <span class="text-indigo-600 dark:text-indigo-400 font-bold">${fingering.lh || '5-3-1'}</span></div>`;
+            svg += `</div>`;
+
+            return svg;
         }
 
         function renderChordGrid() {
             const grid = document.getElementById('chordGrid');
             if (!grid) return;
+            grid.innerHTML = '';
 
-            grid.innerHTML = "";
             const baseChords = PROGRESSIONS[currentProgressionIndex].chords;
 
             baseChords.forEach((baseChordKey, cardIdx) => {
                 const chordKey = TRANSPOSE_MAP[currentKey][baseChordKey];
-                const chord = CHORD_DATA[chordKey] || CHORD_DATA["C"];
+                const chordData = CHORD_DATA[chordKey] || CHORD_DATA['C'];
 
                 const card = document.createElement('div');
-                card.className = `chord-card bg-slate-50 dark:bg-slate-950/80 rounded-xl p-3 border border-slate-200 dark:border-slate-800 shadow-sm hover:shadow-md transition-all flex flex-col justify-between ${cardIdx === activeChordIndex ? 'border-pink-500 ring-2 ring-pink-500/40' : ''}`;
+                card.className = `chord-card bg-slate-50 dark:bg-slate-950 p-3 rounded-xl border border-slate-200 dark:border-slate-800 transition-all hover:border-pink-400 cursor-pointer flex flex-col justify-between ${cardIdx === activeChordIndex ? 'border-pink-500 ring-2 ring-pink-500/40' : ''}`;
+                card.onclick = () => playChordSound(chordKey);
 
-                let cardHtml = `
+                let diagramHtml = '';
+                if (currentInstrument === 'guitar') {
+                    diagramHtml = generateGuitarSVG(chordData.guitar);
+                } else if (currentInstrument === 'ukulele') {
+                    diagramHtml = generateUkuleleSVG(chordData.ukulele);
+                } else {
+                    diagramHtml = generatePianoSVG(chordData.pianoKeys, chordData.pianoFingers);
+                }
+
+                // Beat dots for this card
+                let beatDotsHtml = '<div class="flex items-center justify-center gap-1.5 mt-2.5 pt-2 border-t border-slate-200 dark:border-slate-800/80">';
+                for (let b = 0; b < chordBeats; b++) {
+                    const isActive = (cardIdx === activeChordIndex && b === activeBeatInChord);
+                    beatDotsHtml += `<span id="beatDot_${cardIdx}_${b}" class="${isActive ? 'w-2.5 h-2.5 rounded-full bg-pink-500 shadow scale-125 transition-all' : 'w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all'}"></span>`;
+                }
+                beatDotsHtml += '</div>';
+
+                card.innerHTML = `
                     <div>
-                        <div class="flex items-center justify-between mb-1.5">
-                            <div>
-                                <h4 class="font-display font-bold text-lg text-slate-900 dark:text-white leading-tight">${chord.name}</h4>
-                                <span class="text-[10px] text-pink-600 dark:text-pink-400 font-medium">${chord.mood}</span>
-                            </div>
-                            <div class="flex gap-1">
-                                <span id="beatDot_${cardIdx}_0" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-                                <span id="beatDot_${cardIdx}_1" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-                                <span id="beatDot_${cardIdx}_2" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-                                <span id="beatDot_${cardIdx}_3" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700"></span>
-                            </div>
+                        <div class="flex items-center justify-between mb-1">
+                            <span class="font-display font-bold text-xl text-slate-900 dark:text-white">${chordData.name}</span>
+                            <span class="text-[10px] font-mono px-1.5 py-0.5 rounded bg-slate-200 dark:bg-slate-800 text-slate-600 dark:text-slate-300 font-semibold">${chordKey}</span>
                         </div>
-
-                        <div onclick="playChordSound('${chordKey}')" class="my-2 bg-white dark:bg-slate-900 p-2 rounded-lg border border-slate-200 dark:border-slate-800 flex items-center justify-center min-h-[150px] cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/80 transition" title="Click to Play Chord">
-                            ${generateDiagramSVG(chordKey)}
+                        <p class="text-[10px] text-pink-600 dark:text-pink-400 font-medium mb-2"><i class="fa-solid fa-heart-pulse mr-1"></i>${chordData.mood}</p>
+                        <div class="flex justify-center items-center my-1">
+                            ${diagramHtml}
                         </div>
                     </div>
-
-                    <div class="mt-2 flex flex-col gap-1.5">
-                        ${generateFingeringText(chordKey)}
-                    </div>
+                    ${beatDotsHtml}
                 `;
 
-                card.innerHTML = cardHtml;
                 grid.appendChild(card);
             });
         }
 
-        // Initial Page Initialization
         window.onload = function() {
             renderChordGrid();
+            renderCajonBeatButtons();
+            renderCajonNotation();
         };
     </script>
 </body>
