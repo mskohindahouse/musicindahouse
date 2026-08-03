@@ -1327,8 +1327,8 @@
             else if (instType === 'ukulele') {
                 osc1.type = 'triangle';
                 osc2.type = 'sine';
-                osc1.frequency.setValueAtTime(freq * 1.5, startTime);
-                osc2.frequency.setValueAtTime(freq * 1.5, startTime);
+                osc1.frequency.setValueAtTime(freq * 2, startTime);
+                osc2.frequency.setValueAtTime(freq * 2, startTime);
                 filter.type = 'lowpass';
                 filter.frequency.setValueAtTime(3000, startTime);
                 filter.frequency.exponentialRampToValueAtTime(400, startTime + duration);
