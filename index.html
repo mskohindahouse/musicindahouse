@@ -791,16 +791,16 @@
 
                     <div id="nrStaffContainer" class="w-full max-w-2xl cursor-pointer touch-none"></div>
 
-                    <div class="flex flex-wrap items-center justify-center gap-2 pt-1">
-                        <span class="text-[11px] font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mr-1">Accidental:</span>
-                        <button id="nrAccFlatBtn" onclick="nrSetAccidental(-1)" class="px-3.5 py-1.5 rounded-lg border-2 border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 hover:border-[#CB1517] font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 transition active:scale-95">
-                            <span class="text-base leading-none">♭</span> Flat
+                    <div class="flex flex-nowrap items-center justify-start sm:justify-center gap-1 sm:gap-2 pt-1 w-full overflow-x-auto pb-1 hide-scrollbar">
+                        <span class="text-[10px] sm:text-[11px] font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mr-0 sm:mr-1 shrink-0">Accidental:</span>
+                        <button id="nrAccFlatBtn" onclick="nrSetAccidental(-1)" class="px-2 sm:px-3.5 py-1.5 rounded-lg border-2 border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 hover:border-[#CB1517] font-display font-bold text-[11px] sm:text-sm flex items-center gap-1 sm:gap-1.5 transition active:scale-95 shrink-0">
+                            <span class="text-sm sm:text-base leading-none">♭</span> Flat
                         </button>
-                        <button id="nrAccNatBtn" onclick="nrSetAccidental(0)" class="px-3.5 py-1.5 rounded-lg border-2 border-[#CB1517] bg-rose-50 dark:bg-rose-950/50 text-[#CB1517] dark:text-rose-300 font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition active:scale-95">
-                            <span class="text-base leading-none">♮</span> Natural
+                        <button id="nrAccNatBtn" onclick="nrSetAccidental(0)" class="px-2 sm:px-3.5 py-1.5 rounded-lg border-2 border-[#CB1517] bg-rose-50 dark:bg-rose-950/50 text-[#CB1517] dark:text-rose-300 font-display font-bold text-[11px] sm:text-sm flex items-center gap-1 sm:gap-1.5 shadow-sm transition active:scale-95 shrink-0">
+                            <span class="text-sm sm:text-base leading-none">♮</span> Natural
                         </button>
-                        <button id="nrAccSharpBtn" onclick="nrSetAccidental(1)" class="px-3.5 py-1.5 rounded-lg border-2 border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 hover:border-[#CB1517] font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 transition active:scale-95">
-                            <span class="text-base leading-none">♯</span> Sharp
+                        <button id="nrAccSharpBtn" onclick="nrSetAccidental(1)" class="px-2 sm:px-3.5 py-1.5 rounded-lg border-2 border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 hover:border-[#CB1517] font-display font-bold text-[11px] sm:text-sm flex items-center gap-1 sm:gap-1.5 transition active:scale-95 shrink-0">
+                            <span class="text-sm sm:text-base leading-none">♯</span> Sharp
                         </button>
                     </div>
                 </div>
@@ -2967,8 +2967,8 @@
                 const btnNat = document.getElementById('nrAccNatBtn');
                 const btnSharp = document.getElementById('nrAccSharpBtn');
 
-                const activeCls = "px-3.5 py-1.5 rounded-lg border-2 border-[#CB1517] bg-rose-50 dark:bg-rose-950/50 text-[#CB1517] dark:text-rose-300 font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition active:scale-95";
-                const inactiveCls = "px-3.5 py-1.5 rounded-lg border-2 border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 hover:border-[#CB1517] font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 transition active:scale-95";
+                const activeCls = "px-3.5 py-1.5 rounded-lg border-2 border-[#CB1517] bg-rose-50 dark:bg-rose-950/50 text-[#CB1517] dark:text-rose-300 font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition active:scale-95 shrink-0";
+                const inactiveCls = "px-3.5 py-1.5 rounded-lg border-2 border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 hover:border-[#CB1517] font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 transition active:scale-95 shrink-0";
 
                 if (btnFlat) btnFlat.className = accVal === -1 ? activeCls : inactiveCls;
                 if (btnNat) btnNat.className = accVal === 0 ? activeCls : inactiveCls;
