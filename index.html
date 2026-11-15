@@ -63,80 +63,161 @@
 </head>
 <body class="bg-[#DCD7D0] text-stone-800 dark:bg-stone-950 dark:text-stone-100 font-sans min-h-screen flex flex-col justify-between transition-colors duration-300">
 
-    <!-- Top Header with Brand, Section Tabs, and Top-Right Theme Toggle -->
-    <header class="bg-[#F9F8F5]/95 dark:bg-stone-900/95 backdrop-blur-md border-b border-stone-300 dark:border-stone-800 sticky top-0 z-50 transition-colors duration-300 shadow-sm">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap lg:flex-nowrap items-center justify-between gap-2.5 xl:gap-4">
-            <!-- Left: Brand Identity -->
-            <div class="order-1 flex items-center gap-3 shrink-0">
-                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-[#CB1517] to-[#FF4D4D] flex items-center justify-center text-[#E6E0D8] shadow-md shadow-[#CB1517]/30 shrink-0">
-                    <i class="fa-solid fa-music text-base sm:text-lg"></i>
+    <!-- Slim Top Header with Brand, Compact Desktop Tabs, Side-Panel Trigger, and Top-Right Theme Toggle -->
+    <header class="bg-[#F9F8F5]/95 dark:bg-stone-900/95 backdrop-blur-md border-b border-stone-300 dark:border-stone-800 sticky top-0 z-40 transition-colors duration-300 shadow-sm">
+        <div class="max-w-7xl mx-auto px-3 sm:px-6 py-1.5 sm:py-2 flex items-center justify-between gap-2 xl:gap-3">
+            <!-- Left: Side Panel Menu Button (Portrait / Narrow) + Compact Brand Identity -->
+            <div class="flex items-center gap-2 sm:gap-2.5 min-w-0">
+                <button id="sidePanelToggleBtn" type="button" onclick="toggleSidePanel()" aria-expanded="false" aria-controls="sidePanelDrawer" aria-label="Open sections menu" class="lg:hidden w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-700 flex items-center justify-center transition shrink-0">
+                    <i class="fa-solid fa-bars text-xs sm:text-sm"></i>
+                </button>
+
+                <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-tr from-[#CB1517] to-[#FF4D4D] flex items-center justify-center text-[#E6E0D8] shadow-sm shadow-[#CB1517]/30 shrink-0">
+                    <i class="fa-solid fa-music text-sm sm:text-base"></i>
                 </div>
-                <div>
-                    <h1 class="font-display font-bold text-lg sm:text-xl leading-tight text-[#CB1517]">
+
+                <div class="min-w-0">
+                    <h1 class="font-display font-bold text-base sm:text-lg leading-none text-[#CB1517] truncate">
                         Let's Koh Make Music!
                     </h1>
                     <div class="flex items-center gap-1.5 mt-0.5">
-                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/60 text-red-800 dark:text-red-300 border border-red-300 dark:border-red-700/50 font-normal">Sec Music</span>
-                        <span class="text-[11px] text-stone-600 dark:text-stone-400 font-medium">version 2.1</span>
+                        <span class="text-[9px] sm:text-[10px] px-1.5 py-0 rounded-full bg-red-100 dark:bg-red-900/60 text-red-800 dark:text-red-300 border border-red-300 dark:border-red-700/50 font-normal leading-tight">Sec Music</span>
+                        <span class="text-[10px] sm:text-[11px] text-stone-600 dark:text-stone-400 font-medium leading-none">version 2.1</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Top Right: Theme Toggle Button (inline with website title) -->
-            <button id="themeToggleBtn" onclick="toggleTheme()" class="order-2 lg:order-3 flex items-center justify-center gap-1.5 text-xs bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 px-3 py-2 rounded-xl border border-stone-300 dark:border-stone-700 transition shrink-0">
-                <i class="fa-solid fa-sun text-yellow-600 hidden dark:inline"></i>
-                <i class="fa-solid fa-moon text-stone-600 dark:hidden"></i>
-                <span id="themeText" class="font-medium text-[11px]">Dark</span>
-            </button>
-            
-            <!-- Section Tabs: Songwriting, Practice Tools, Chord Charts, Note Recognition -->
-            <nav aria-label="Main Workspace Tabs" class="order-3 lg:order-2 w-full lg:w-auto grid grid-cols-2 sm:grid-cols-4 lg:flex lg:items-center gap-2 lg:gap-1.5 xl:gap-2.5">
+            <!-- Center (Wide / Landscape Desktop): Slim Single-Row Section Tabs -->
+            <nav aria-label="Main Workspace Tabs" class="hidden lg:flex lg:items-center gap-1.5 xl:gap-2">
                 <!-- Banner Tab 1: Songwriting Project -->
-                <button id="bannerTabSongwriting" onclick="switchBannerTab('songwriting')" class="banner-tab-btn px-2.5 xl:px-3 py-2 rounded-xl border-2 border-blue-600 bg-blue-50/90 dark:bg-blue-950/40 text-left transition-all flex items-center gap-2 xl:gap-2.5 shadow-sm">
-                    <div class="w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-pen-nib text-xs"></i>
+                <button id="bannerTabSongwriting" onclick="switchBannerTab('songwriting')" class="banner-tab-btn px-2.5 py-1.5 rounded-lg border-2 border-blue-600 bg-blue-50/90 dark:bg-blue-950/40 text-left transition-all flex items-center gap-2 shadow-sm">
+                    <div class="w-6 h-6 rounded-md bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-pen-nib text-[11px]"></i>
                     </div>
-                    <div class="min-w-0">
+                    <div class="min-w-0 leading-tight">
                         <div class="font-display font-bold text-xs text-stone-900 dark:text-[#E6E0D8] whitespace-nowrap">Songwriting</div>
                         <div class="text-[10px] text-stone-600 dark:text-stone-400 whitespace-nowrap">Chords &amp; Cajon</div>
                     </div>
                 </button>
 
                 <!-- Banner Tab 2: Practice Tools -->
-                <button id="bannerTabPractice" onclick="switchBannerTab('practice')" class="banner-tab-btn px-2.5 xl:px-3 py-2 rounded-xl border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-2 xl:gap-2.5 opacity-80 hover:opacity-100">
-                    <div class="w-7 h-7 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-sliders text-xs"></i>
+                <button id="bannerTabPractice" onclick="switchBannerTab('practice')" class="banner-tab-btn px-2.5 py-1.5 rounded-lg border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-2 opacity-80 hover:opacity-100">
+                    <div class="w-6 h-6 rounded-md bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-sliders text-[11px]"></i>
                     </div>
-                    <div class="min-w-0">
+                    <div class="min-w-0 leading-tight">
                         <div class="font-display font-bold text-xs text-stone-900 dark:text-[#E6E0D8] whitespace-nowrap">Practice Tools</div>
                         <div class="text-[10px] text-stone-600 dark:text-stone-400 whitespace-nowrap">Tuner &amp; Metronome</div>
                     </div>
                 </button>
 
                 <!-- Banner Tab 3: Chord Reference Charts -->
-                <button id="bannerTabChords" onclick="switchBannerTab('chords')" class="banner-tab-btn px-2.5 xl:px-3 py-2 rounded-xl border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-2 xl:gap-2.5 opacity-80 hover:opacity-100">
-                    <div class="w-7 h-7 rounded-lg bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-guitar text-xs"></i>
+                <button id="bannerTabChords" onclick="switchBannerTab('chords')" class="banner-tab-btn px-2.5 py-1.5 rounded-lg border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-2 opacity-80 hover:opacity-100">
+                    <div class="w-6 h-6 rounded-md bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-guitar text-[11px]"></i>
                     </div>
-                    <div class="min-w-0">
+                    <div class="min-w-0 leading-tight">
                         <div class="font-display font-bold text-xs text-stone-900 dark:text-[#E6E0D8] whitespace-nowrap">Chord Charts</div>
                         <div class="text-[10px] text-stone-600 dark:text-stone-400 whitespace-nowrap">Ukulele &amp; Guitar</div>
                     </div>
                 </button>
 
                 <!-- Banner Tab 4: Note Recognition -->
-                <button id="bannerTabNoteRec" onclick="switchBannerTab('noterec')" class="banner-tab-btn px-2.5 xl:px-3 py-2 rounded-xl border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-2 xl:gap-2.5 opacity-80 hover:opacity-100">
-                    <div class="w-7 h-7 rounded-lg bg-rose-100 dark:bg-rose-900/50 text-[#CB1517] dark:text-rose-400 flex items-center justify-center shrink-0">
-                        <i class="fa-solid fa-music text-xs"></i>
+                <button id="bannerTabNoteRec" onclick="switchBannerTab('noterec')" class="banner-tab-btn px-2.5 py-1.5 rounded-lg border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-2 opacity-80 hover:opacity-100">
+                    <div class="w-6 h-6 rounded-md bg-rose-100 dark:bg-rose-900/50 text-[#CB1517] dark:text-rose-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-music text-[11px]"></i>
                     </div>
-                    <div class="min-w-0">
+                    <div class="min-w-0 leading-tight">
                         <div class="font-display font-bold text-xs text-stone-900 dark:text-[#E6E0D8] whitespace-nowrap">Note Recognition</div>
                         <div class="text-[10px] text-stone-600 dark:text-stone-400 whitespace-nowrap">Staff &amp; Pitch</div>
                     </div>
                 </button>
             </nav>
+
+            <!-- Top Right: Compact Theme Toggle Button (inline with website title) -->
+            <button id="themeToggleBtn" onclick="toggleTheme()" class="flex items-center justify-center gap-1.5 text-xs bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 px-2.5 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 transition shrink-0">
+                <i class="fa-solid fa-sun text-yellow-600 hidden dark:inline"></i>
+                <i class="fa-solid fa-moon text-stone-600 dark:hidden"></i>
+                <span id="themeText" class="font-medium text-[11px]">Dark</span>
+            </button>
         </div>
     </header>
+
+    <!-- Portrait / Narrow Screen Slide-Out Side Panel & Backdrop -->
+    <div id="sidePanelBackdrop" onclick="closeSidePanel()" class="fixed inset-0 z-50 bg-stone-950/50 backdrop-blur-xs hidden lg:hidden transition-opacity duration-200" aria-hidden="true"></div>
+
+    <aside id="sidePanelDrawer" aria-label="Workspace Sections Drawer" class="fixed top-0 left-0 bottom-0 z-50 w-72 max-w-[82vw] bg-[#F9F8F5] dark:bg-stone-900 border-r border-stone-300 dark:border-stone-800 shadow-2xl transform -translate-x-full transition-transform duration-200 ease-out flex flex-col justify-between lg:hidden">
+        <!-- Drawer Top Bar -->
+        <div class="px-3.5 py-2.5 border-b border-stone-300 dark:border-stone-800 flex items-center justify-between gap-2">
+            <div class="flex items-center gap-2 min-w-0">
+                <div class="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#CB1517] to-[#FF4D4D] flex items-center justify-center text-[#E6E0D8] shrink-0">
+                    <i class="fa-solid fa-music text-sm"></i>
+                </div>
+                <div class="min-w-0">
+                    <div class="font-display font-bold text-sm text-[#CB1517] truncate">Let's Koh Make Music!</div>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="text-[9px] px-1.5 py-0 rounded-full bg-red-100 dark:bg-red-900/60 text-red-800 dark:text-red-300 border border-red-300 dark:border-red-700/50">Sec Music</span>
+                        <span class="text-[10px] text-stone-600 dark:text-stone-400 font-medium">version 2.1</span>
+                    </div>
+                </div>
+            </div>
+            <button id="sidePanelCloseBtn" type="button" onclick="closeSidePanel()" aria-label="Close sections menu" class="w-8 h-8 rounded-lg bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 flex items-center justify-center transition shrink-0">
+                <i class="fa-solid fa-xmark text-sm"></i>
+            </button>
+        </div>
+
+        <!-- Drawer Section Navigation -->
+        <div class="p-3 flex-1 overflow-y-auto flex flex-col gap-2">
+            <!-- Drawer Item 1: Songwriting -->
+            <button id="drawerTabSongwriting" type="button" onclick="selectSectionFromDrawer('songwriting')" class="drawer-tab-btn w-full px-3 py-2.5 rounded-xl border-2 border-blue-600 bg-blue-50/90 dark:bg-blue-950/40 text-left transition-all flex items-center gap-3 shadow-sm">
+                <div class="w-8 h-8 rounded-lg bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-pen-nib text-xs"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="font-display font-bold text-sm text-stone-900 dark:text-[#E6E0D8]">Songwriting</div>
+                    <div class="text-[11px] text-stone-600 dark:text-stone-400">Chords &amp; Cajon</div>
+                </div>
+            </button>
+
+            <!-- Drawer Item 2: Practice Tools -->
+            <button id="drawerTabPractice" type="button" onclick="selectSectionFromDrawer('practice')" class="drawer-tab-btn w-full px-3 py-2.5 rounded-xl border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-3 opacity-85 hover:opacity-100">
+                <div class="w-8 h-8 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-sliders text-xs"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="font-display font-bold text-sm text-stone-900 dark:text-[#E6E0D8]">Practice Tools</div>
+                    <div class="text-[11px] text-stone-600 dark:text-stone-400">Tuner &amp; Metronome</div>
+                </div>
+            </button>
+
+            <!-- Drawer Item 3: Chord Charts -->
+            <button id="drawerTabChords" type="button" onclick="selectSectionFromDrawer('chords')" class="drawer-tab-btn w-full px-3 py-2.5 rounded-xl border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-3 opacity-85 hover:opacity-100">
+                <div class="w-8 h-8 rounded-lg bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-guitar text-xs"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="font-display font-bold text-sm text-stone-900 dark:text-[#E6E0D8]">Chord Charts</div>
+                    <div class="text-[11px] text-stone-600 dark:text-stone-400">Ukulele &amp; Guitar</div>
+                </div>
+            </button>
+
+            <!-- Drawer Item 4: Note Recognition -->
+            <button id="drawerTabNoteRec" type="button" onclick="selectSectionFromDrawer('noterec')" class="drawer-tab-btn w-full px-3 py-2.5 rounded-xl border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-3 opacity-85 hover:opacity-100">
+                <div class="w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-900/50 text-[#CB1517] dark:text-rose-400 flex items-center justify-center shrink-0">
+                    <i class="fa-solid fa-music text-xs"></i>
+                </div>
+                <div class="min-w-0 flex-1">
+                    <div class="font-display font-bold text-sm text-stone-900 dark:text-[#E6E0D8]">Note Recognition</div>
+                    <div class="text-[11px] text-stone-600 dark:text-stone-400">Staff &amp; Pitch</div>
+                </div>
+            </button>
+        </div>
+
+        <!-- Drawer Bottom Info -->
+        <div class="px-3.5 py-2.5 border-t border-stone-200 dark:border-stone-800 flex items-center justify-between text-[11px] text-stone-500 dark:text-stone-400">
+            <span>Tap a section to switch</span>
+        </div>
+    </aside>
 
     <!-- Main Workspace -->
     <main class="max-w-6xl mx-auto w-full px-3 sm:px-6 py-4 flex-1 flex flex-col gap-4">
@@ -826,11 +907,19 @@
 
     <script>
         // ==========================================
-        // GLOBAL STATE & AUDIO ENGINE INITIALIZATION
+        // GLOBAL APPLICATION STATE & AUDIO CONTEXT
         // ==========================================
         let audioCtx = null;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
 
-        // Chromatic Tuner & Calibration State
+        // Tuner & Pitch Calibration State
         let a4ReferenceHz = 442;
         const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
         let isMicTunerActive = false;
@@ -849,8 +938,8 @@
         // Songwriting & Chord Progression State
         let currentInstrument = 'piano';
         let currentProgressionIndex = 0;
-        let currentKey = 'C';
         let chordBeats = 4;
+        let currentKey = 'C';
         let bpm = 90;
         let isPlayingProgression = false;
         let progressionInterval = null;
@@ -860,62 +949,95 @@
         // Cajon Studio State
         let activeCajonBeatIndex = 0;
         let isPlayingCajon = false;
-        let cajonInterval = null;
         let currentCajonStep = 0;
-
-        function initAudio() {
-            if (!audioCtx) {
-                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                if (AudioContextClass) {
-                    audioCtx = new AudioContextClass();
-                }
-            }
-            if (audioCtx && audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-
-        document.body.addEventListener('click', () => { initAudio(); }, { once: true });
+        let cajonInterval = null;
 
         // ==========================================
-        // BANNER & SUB-TAB NAVIGATION
+        // BANNER, SIDE PANEL & SUB-TAB NAVIGATION
         // ==========================================
         const BANNER_TABS = {
             songwriting: {
                 btnId: 'bannerTabSongwriting',
+                drawerBtnId: 'drawerTabSongwriting',
                 panelId: 'songWritingContent',
                 activeBorder: 'border-blue-600 bg-blue-50/90 dark:bg-blue-950/40'
             },
             practice: {
                 btnId: 'bannerTabPractice',
+                drawerBtnId: 'drawerTabPractice',
                 panelId: 'practiceToolsContent',
                 activeBorder: 'border-emerald-600 bg-emerald-50/90 dark:bg-emerald-950/40'
             },
             chords: {
                 btnId: 'bannerTabChords',
+                drawerBtnId: 'drawerTabChords',
                 panelId: 'chordLibraryContent',
                 activeBorder: 'border-amber-600 bg-amber-50/90 dark:bg-amber-950/40'
             },
             noterec: {
                 btnId: 'bannerTabNoteRec',
+                drawerBtnId: 'drawerTabNoteRec',
                 panelId: 'noteRecognitionContent',
                 activeBorder: 'border-[#CB1517] bg-rose-50/90 dark:bg-rose-950/40'
             }
         };
 
+        function openSidePanel() {
+            const drawer = document.getElementById('sidePanelDrawer');
+            const backdrop = document.getElementById('sidePanelBackdrop');
+            const toggleBtn = document.getElementById('sidePanelToggleBtn');
+            if (backdrop) backdrop.classList.remove('hidden');
+            if (drawer) drawer.classList.remove('-translate-x-full');
+            if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'true');
+        }
+
+        function closeSidePanel() {
+            const drawer = document.getElementById('sidePanelDrawer');
+            const backdrop = document.getElementById('sidePanelBackdrop');
+            const toggleBtn = document.getElementById('sidePanelToggleBtn');
+            if (drawer) drawer.classList.add('-translate-x-full');
+            if (backdrop) backdrop.classList.add('hidden');
+            if (toggleBtn) toggleBtn.setAttribute('aria-expanded', 'false');
+        }
+
+        function toggleSidePanel() {
+            const drawer = document.getElementById('sidePanelDrawer');
+            if (!drawer) return;
+            if (drawer.classList.contains('-translate-x-full')) {
+                openSidePanel();
+            } else {
+                closeSidePanel();
+            }
+        }
+
+        function selectSectionFromDrawer(tabKey) {
+            switchBannerTab(tabKey);
+            closeSidePanel();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeSidePanel();
+            }
+        });
+
         function switchBannerTab(tabKey) {
-            const baseBtnClasses = "banner-tab-btn px-2.5 xl:px-3 py-2 rounded-xl border-2 text-left transition-all flex items-center gap-2 xl:gap-2.5";
+            const baseBtnClasses = "banner-tab-btn px-2.5 py-1.5 rounded-lg border-2 text-left transition-all flex items-center gap-2";
+            const baseDrawerBtnClasses = "drawer-tab-btn w-full px-3 py-2.5 rounded-xl border-2 text-left transition-all flex items-center gap-3";
 
             Object.entries(BANNER_TABS).forEach(([key, cfg]) => {
                 const btn = document.getElementById(cfg.btnId);
+                const drawerBtn = document.getElementById(cfg.drawerBtnId);
                 const panel = document.getElementById(cfg.panelId);
-                if (!btn || !panel) return;
+                if (!panel) return;
 
                 if (key === tabKey) {
-                    btn.className = `${baseBtnClasses} ${cfg.activeBorder} shadow-sm opacity-100`;
+                    if (btn) btn.className = `${baseBtnClasses} ${cfg.activeBorder} shadow-sm opacity-100`;
+                    if (drawerBtn) drawerBtn.className = `${baseDrawerBtnClasses} ${cfg.activeBorder} shadow-sm opacity-100`;
                     panel.classList.remove('hidden');
                 } else {
-                    btn.className = `${baseBtnClasses} border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 opacity-80 hover:opacity-100`;
+                    if (btn) btn.className = `${baseBtnClasses} border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 opacity-80 hover:opacity-100`;
+                    if (drawerBtn) drawerBtn.className = `${baseDrawerBtnClasses} border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 opacity-85 hover:opacity-100`;
                     panel.classList.add('hidden');
                 }
             });
