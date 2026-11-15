@@ -868,15 +868,15 @@
         <!-- TAB PANEL 4: NOTE RECOGNITION -->
         <section id="noteRecognitionContent" class="hidden bg-[#F9F8F5] dark:bg-stone-900/90 rounded-xl border border-stone-300 dark:border-stone-800 shadow-sm transition-colors mb-2 overflow-hidden p-3 sm:p-4">
             <div class="flex flex-col gap-3.5">
-                <!-- Header & Clef Controls -->
-                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-stone-300 dark:border-stone-800 pb-3">
+                <!-- Header, Clef & Range Controls -->
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-2.5 border-b border-stone-300 dark:border-stone-800 pb-3">
                     <div class="flex items-center gap-2.5">
-                        <div class="w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-900/50 text-[#CB1517] dark:text-rose-400 flex items-center justify-center">
+                        <div class="w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-900/50 text-[#CB1517] dark:text-rose-400 flex items-center justify-center shrink-0">
                             <i class="fa-solid fa-music text-sm"></i>
                         </div>
                         <div>
-                            <h2 class="font-display font-bold text-base text-stone-900 dark:text-[#E6E0D8] leading-tight">Note Recognition Trainer</h2>
-                            <p class="text-[11px] text-stone-600 dark:text-stone-400">Identify the note shown on the musical staff and hear its pitch</p>
+                            <h2 class="font-display font-bold text-base text-stone-900 dark:text-[#E6E0D8] leading-tight">Note Recognition</h2>
+                            <p class="text-[11px] text-stone-600 dark:text-stone-400">Click any note and range on the score, select ♭ / ♮ / ♯, and see where it sits on the keyboard</p>
                         </div>
                     </div>
 
@@ -887,43 +887,84 @@
                             <button id="nrClefBassBtn" onclick="nrSetClef('bass')" class="px-2.5 py-1 rounded-md text-xs font-bold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition">Bass Clef</button>
                         </div>
 
-                        <!-- Score & Streak Badge -->
-                        <div class="flex items-center gap-2 bg-stone-200/80 dark:bg-stone-800 px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 text-xs font-mono font-bold">
-                            <span class="text-emerald-700 dark:text-emerald-400">Score: <span id="nrScoreDisplay">0</span></span>
-                            <span class="text-stone-400">|</span>
-                            <span class="text-amber-700 dark:text-amber-400">Streak: <span id="nrStreakDisplay">0</span></span>
+                        <!-- Pitch Range Selector on Score -->
+                        <div class="flex items-center gap-1.5 bg-stone-200 dark:bg-stone-800 px-2.5 py-1 rounded-lg border border-stone-300 dark:border-stone-700">
+                            <span class="text-[10px] font-bold uppercase text-stone-600 dark:text-stone-400">Range:</span>
+                            <select id="nrRangeSelect" onchange="nrSetRange(this.value)" class="bg-transparent text-xs font-bold text-stone-900 dark:text-stone-100 focus:outline-none cursor-pointer">
+                                <option value="full" selected>Full Range (Ledger Lines)</option>
+                                <option value="staff">Staff Only (Lines &amp; Spaces)</option>
+                                <option value="lower">Lower Octave</option>
+                                <option value="upper">Upper Octave</option>
+                            </select>
                         </div>
-                    </div>
-                </div>
 
-                <!-- Musical Staff Display Card -->
-                <div class="bg-white dark:bg-stone-950/80 rounded-xl p-4 border border-stone-200 dark:border-stone-800 flex flex-col items-center justify-center gap-2 shadow-inner">
-                    <div class="w-full max-w-md flex items-center justify-between text-xs">
-                        <span id="nrClefLabel" class="font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">Treble Clef (G Clef)</span>
-                        <button onclick="nrPlayCurrentNote()" class="px-2.5 py-1 rounded-md bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-[11px] flex items-center gap-1.5 transition">
-                            <i class="fa-solid fa-volume-high text-[#CB1517]"></i>
-                            <span>Hear Pitch</span>
+                        <!-- Random Note Jump Button -->
+                        <button onclick="nrPickRandomNote()" class="px-2.5 py-1.5 rounded-lg bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 border border-stone-300 dark:border-stone-700 font-bold text-xs flex items-center gap-1.5 transition active:scale-95">
+                            <i class="fa-solid fa-shuffle text-[#CB1517]"></i>
+                            <span>Random Note</span>
                         </button>
                     </div>
+                </div>
 
-                    <!-- Dynamic SVG Staff Container -->
-                    <div id="nrStaffContainer" class="w-full max-w-md my-1"></div>
+                <!-- Interactive Musical Score & Accidental Controls -->
+                <div class="bg-white dark:bg-stone-950/80 rounded-xl p-3.5 sm:p-4 border border-stone-200 dark:border-stone-800 flex flex-col items-center justify-center gap-2.5 shadow-inner">
+                    <div class="w-full max-w-2xl flex flex-wrap items-center justify-between gap-2 text-xs">
+                        <span id="nrClefLabel" class="font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">Treble Clef (G Clef) · Click score to place note</span>
+                        <div class="flex items-center gap-1.5">
+                            <button onclick="nrStepNote(-1)" aria-label="Move note down one step" class="px-2 py-1 rounded-md bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-[11px] transition active:scale-95">
+                                <i class="fa-solid fa-arrow-down text-[10px]"></i> Step
+                            </button>
+                            <button onclick="nrStepNote(1)" aria-label="Move note up one step" class="px-2 py-1 rounded-md bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-[11px] transition active:scale-95">
+                                <i class="fa-solid fa-arrow-up text-[10px]"></i> Step
+                            </button>
+                            <button onclick="nrPlayCurrentNote()" class="px-2.5 py-1 rounded-md bg-[#CB1517] hover:bg-red-700 text-white font-bold text-[11px] flex items-center gap-1.5 transition shadow-sm active:scale-95">
+                                <i class="fa-solid fa-volume-high"></i>
+                                <span>Hear Pitch</span>
+                            </button>
+                        </div>
+                    </div>
 
-                    <!-- Feedback Prompt -->
-                    <div id="nrFeedbackBanner" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-900 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800 text-center">
-                        Select the correct note letter (C – B) below!
+                    <!-- Dynamic Interactive SVG Staff Container -->
+                    <div id="nrStaffContainer" class="w-full max-w-2xl cursor-pointer touch-none"></div>
+
+                    <!-- Sharp / Natural / Flat Accidental Selector -->
+                    <div class="flex flex-wrap items-center justify-center gap-2 pt-1">
+                        <span class="text-[11px] font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400 mr-1">Accidental:</span>
+                        <button id="nrAccFlatBtn" onclick="nrSetAccidental(-1)" class="px-3.5 py-1.5 rounded-lg border-2 border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 hover:border-[#CB1517] font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 transition active:scale-95">
+                            <span class="text-base leading-none">♭</span> Flat
+                        </button>
+                        <button id="nrAccNatBtn" onclick="nrSetAccidental(0)" class="px-3.5 py-1.5 rounded-lg border-2 border-[#CB1517] bg-rose-50 dark:bg-rose-950/50 text-[#CB1517] dark:text-rose-300 font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition active:scale-95">
+                            <span class="text-base leading-none">♮</span> Natural
+                        </button>
+                        <button id="nrAccSharpBtn" onclick="nrSetAccidental(1)" class="px-3.5 py-1.5 rounded-lg border-2 border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 hover:border-[#CB1517] font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 transition active:scale-95">
+                            <span class="text-base leading-none">♯</span> Sharp
+                        </button>
                     </div>
                 </div>
 
-                <!-- Answer Note Buttons (C D E F G A B) -->
-                <div class="grid grid-cols-7 gap-1.5 sm:gap-2.5">
-                    <button onclick="nrCheckAnswer('C')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">C</button>
-                    <button onclick="nrCheckAnswer('D')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">D</button>
-                    <button onclick="nrCheckAnswer('E')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">E</button>
-                    <button onclick="nrCheckAnswer('F')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">F</button>
-                    <button onclick="nrCheckAnswer('G')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">G</button>
-                    <button onclick="nrCheckAnswer('A')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">A</button>
-                    <button onclick="nrCheckAnswer('B')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">B</button>
+                <!-- Selected Note Details & Keyboard Location Display -->
+                <div class="bg-white dark:bg-stone-950/80 rounded-xl p-3 sm:p-4 border border-stone-200 dark:border-stone-800 flex flex-col gap-3">
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 bg-stone-100 dark:bg-stone-900 px-3 py-2 rounded-lg border border-stone-200 dark:border-stone-800">
+                        <div class="flex items-center gap-2.5">
+                            <span class="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded bg-[#CB1517] text-white">Selected Note</span>
+                            <span id="nrSelectedNoteTitle" class="font-display font-extrabold text-lg sm:text-xl text-stone-900 dark:text-white leading-none">C4 (Middle C)</span>
+                            <span id="nrEnharmonicBadge" class="hidden text-[11px] font-bold px-2 py-0.5 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-800 dark:text-amber-300 border border-amber-300 dark:border-amber-700/50"></span>
+                        </div>
+                        <div class="flex items-center gap-2 text-xs text-stone-600 dark:text-stone-400 font-medium">
+                            <span id="nrStaffPositionLabel">1st Ledger Line Below</span>
+                            <span>•</span>
+                            <span id="nrFreqReadout" class="font-mono font-bold text-[#CB1517] dark:text-rose-400">262.8 Hz</span>
+                        </div>
+                    </div>
+
+                    <!-- Interactive 4-Octave Piano Keyboard (C2 to C6) -->
+                    <div class="flex flex-col gap-1.5">
+                        <div class="flex items-center justify-between text-[11px] text-stone-500 dark:text-stone-400 px-0.5">
+                            <span class="font-bold uppercase tracking-wider"><i class="fa-solid fa-keyboard mr-1 text-[#CB1517]"></i>Keyboard Position (C2 – C6)</span>
+                            <span>Click any key on the keyboard to hear &amp; view on score</span>
+                        </div>
+                        <div id="nrKeyboardContainer" class="w-full overflow-x-auto pb-1"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1219,11 +1260,7 @@
                     renderMasterUkeChordLibrary();
                     renderGuitarChordLibrary();
                 } else if (tabKey === 'noterec') {
-                    if (!nrCurrentNote) {
-                        nrNextNote();
-                    } else {
-                        nrRenderStaff();
-                    }
+                    nrRenderAll();
                 }
             }
 
@@ -1237,15 +1274,15 @@
                 const inactiveClass = "py-1.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition-all";
 
                 if (subTab === 'tuner') {
-                    btnTuner.className = `${activeClass} text-emerald-700 dark:text-emerald-400`;
-                    btnMetro.className = inactiveClass;
-                    panelTuner.classList.remove('hidden');
-                    panelMetro.classList.add('hidden');
+                    if (btnTuner) btnTuner.className = `${activeClass} text-emerald-700 dark:text-emerald-400`;
+                    if (btnMetro) btnMetro.className = inactiveClass;
+                    if (panelTuner) panelTuner.classList.remove('hidden');
+                    if (panelMetro) panelMetro.classList.add('hidden');
                 } else {
-                    btnMetro.className = `${activeClass} text-orange-700 dark:text-orange-400`;
-                    btnTuner.className = inactiveClass;
-                    panelMetro.classList.remove('hidden');
-                    panelTuner.classList.add('hidden');
+                    if (btnMetro) btnMetro.className = `${activeClass} text-orange-700 dark:text-orange-400`;
+                    if (btnTuner) btnTuner.className = inactiveClass;
+                    if (panelMetro) panelMetro.classList.remove('hidden');
+                    if (panelTuner) panelTuner.classList.add('hidden');
                     renderMetronomeDots();
                 }
             }
@@ -1260,16 +1297,16 @@
                 const inactiveClass = "py-1.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition-all";
 
                 if (subTab === 'ukulele') {
-                    btnUke.className = `${activeClass} text-teal-700 dark:text-teal-400`;
-                    btnGuitar.className = inactiveClass;
-                    panelUke.classList.remove('hidden');
-                    panelGuitar.classList.add('hidden');
+                    if (btnUke) btnUke.className = `${activeClass} text-teal-700 dark:text-teal-400`;
+                    if (btnGuitar) btnGuitar.className = inactiveClass;
+                    if (panelUke) panelUke.classList.remove('hidden');
+                    if (panelGuitar) panelGuitar.classList.add('hidden');
                     renderMasterUkeChordLibrary();
                 } else {
-                    btnGuitar.className = `${activeClass} text-amber-700 dark:text-amber-400`;
-                    btnUke.className = inactiveClass;
-                    panelGuitar.classList.remove('hidden');
-                    panelUke.classList.add('hidden');
+                    if (btnGuitar) btnGuitar.className = `${activeClass} text-amber-700 dark:text-amber-400`;
+                    if (btnUke) btnUke.className = inactiveClass;
+                    if (panelGuitar) panelGuitar.classList.remove('hidden');
+                    if (panelUke) panelUke.classList.add('hidden');
                     renderGuitarChordLibrary();
                 }
             }
@@ -1628,8 +1665,7 @@
                         audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } 
                     });
                     
-                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
-                    micAudioCtx = new AudioContextClass();
+                    micAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
                     const source = micAudioCtx.createMediaStreamSource(micStream);
                     micAnalyser = micAudioCtx.createAnalyser();
                     micAnalyser.fftSize = 2048;
@@ -1646,7 +1682,6 @@
 
                     processMicAudio();
                 } catch (err) {
-                    console.error("Mic tuner error:", err);
                     const badge = document.getElementById('micStatusBadge');
                     if (badge) {
                         badge.innerText = "Mic Blocked";
@@ -1940,7 +1975,7 @@
                     gainNode.gain.linearRampToValueAtTime(0.35, startTime + 0.01);
                     gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.85);
                 } 
-                else { // Piano
+                else {
                     osc1.type = 'sine';
                     osc2.type = 'triangle';
                     osc1.frequency.setValueAtTime(freq, startTime);
@@ -2296,14 +2331,12 @@
                     html += `<div class="font-bold p-1 rounded ${isCurrent ? 'bg-amber-500 text-white' : 'text-slate-600 dark:text-slate-400'}">${lbl}</div>`;
                 });
 
-                // ROW 1: SLAP STROKE
                 html += `<div class="text-left font-bold text-orange-600 dark:text-orange-400">Slap</div>`;
                 beatData.slap.forEach((val, i) => {
                     const activeClass = val ? 'bg-orange-500 text-white font-bold' : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500';
                     html += `<button onclick="toggleCajonStep('slap', ${i})" class="h-7 rounded border border-orange-300 dark:border-orange-800/50 flex items-center justify-center ${activeClass} hover:opacity-80 transition text-xs">${val ? '⚡' : '-'}</button>`;
                 });
 
-                // ROW 2: BASS STROKE
                 html += `<div class="text-left font-bold text-amber-600 dark:text-amber-400">Bass</div>`;
                 beatData.bass.forEach((val, i) => {
                     const activeClass = val ? 'bg-amber-500 text-white font-bold' : 'bg-slate-200 dark:bg-slate-800 text-slate-400 dark:text-slate-500';
@@ -3017,172 +3050,462 @@
             }
 
             // ==========================================
-            // NOTE RECOGNITION TRAINER (TREBLE & BASS)
+            // NOTE RECOGNITION (INTERACTIVE SCORE & KEYBOARD)
             // ==========================================
-            const NR_NOTES = {
+            const NR_CLEF_STEPS = {
                 treble: [
-                    { letter: 'C', label: 'C4 (Middle C)', step: -2, midi: 60 },
-                    { letter: 'D', label: 'D4', step: -1, midi: 62 },
-                    { letter: 'E', label: 'E4 (Line 1)', step: 0, midi: 64 },
-                    { letter: 'F', label: 'F4 (Space 1)', step: 1, midi: 65 },
-                    { letter: 'G', label: 'G4 (Line 2)', step: 2, midi: 67 },
-                    { letter: 'A', label: 'A4 (Space 2)', step: 3, midi: 69 },
-                    { letter: 'B', label: 'B4 (Line 3)', step: 4, midi: 71 },
-                    { letter: 'C', label: 'C5 (Space 3)', step: 5, midi: 72 },
-                    { letter: 'D', label: 'D5 (Line 4)', step: 6, midi: 74 },
-                    { letter: 'E', label: 'E5 (Space 4)', step: 7, midi: 76 },
-                    { letter: 'F', label: 'F5 (Line 5)', step: 8, midi: 77 },
-                    { letter: 'G', label: 'G5', step: 9, midi: 79 },
-                    { letter: 'A', label: 'A5', step: 10, midi: 81 }
+                    { step: -4, letter: 'A', octave: 3, midi: 57, posLabel: '2nd Ledger Line Below' },
+                    { step: -3, letter: 'B', octave: 3, midi: 59, posLabel: 'Below 1st Ledger Line' },
+                    { step: -2, letter: 'C', octave: 4, midi: 60, posLabel: '1st Ledger Line Below (Middle C)' },
+                    { step: -1, letter: 'D', octave: 4, midi: 62, posLabel: 'Space Below Line 1' },
+                    { step: 0,  letter: 'E', octave: 4, midi: 64, posLabel: 'Line 1 (Bottom Line)' },
+                    { step: 1,  letter: 'F', octave: 4, midi: 65, posLabel: 'Space 1' },
+                    { step: 2,  letter: 'G', octave: 4, midi: 67, posLabel: 'Line 2 (G Line)' },
+                    { step: 3,  letter: 'A', octave: 4, midi: 69, posLabel: 'Space 2' },
+                    { step: 4,  letter: 'B', octave: 4, midi: 71, posLabel: 'Line 3 (Middle Line)' },
+                    { step: 5,  letter: 'C', octave: 5, midi: 72, posLabel: 'Space 3' },
+                    { step: 6,  letter: 'D', octave: 5, midi: 74, posLabel: 'Line 4' },
+                    { step: 7,  letter: 'E', octave: 5, midi: 76, posLabel: 'Space 4' },
+                    { step: 8,  letter: 'F', octave: 5, midi: 77, posLabel: 'Line 5 (Top Line)' },
+                    { step: 9,  letter: 'G', octave: 5, midi: 79, posLabel: 'Space Above Line 5' },
+                    { step: 10, letter: 'A', octave: 5, midi: 81, posLabel: '1st Ledger Line Above' },
+                    { step: 11, letter: 'B', octave: 5, midi: 83, posLabel: 'Above 1st Ledger Line' },
+                    { step: 12, letter: 'C', octave: 6, midi: 84, posLabel: '2nd Ledger Line Above' }
                 ],
                 bass: [
-                    { letter: 'E', label: 'E2', step: -2, midi: 40 },
-                    { letter: 'F', label: 'F2', step: -1, midi: 41 },
-                    { letter: 'G', label: 'G2 (Line 1)', step: 0, midi: 43 },
-                    { letter: 'A', label: 'A2 (Space 1)', step: 1, midi: 45 },
-                    { letter: 'B', label: 'B2 (Line 2)', step: 2, midi: 47 },
-                    { letter: 'C', label: 'C3 (Space 2)', step: 3, midi: 48 },
-                    { letter: 'D', label: 'D3 (Line 3)', step: 4, midi: 50 },
-                    { letter: 'E', label: 'E3 (Space 3)', step: 5, midi: 52 },
-                    { letter: 'F', label: 'F3 (Line 4)', step: 6, midi: 53 },
-                    { letter: 'G', label: 'G3 (Space 4)', step: 7, midi: 55 },
-                    { letter: 'A', label: 'A3 (Line 5)', step: 8, midi: 57 },
-                    { letter: 'B', label: 'B3', step: 9, midi: 59 },
-                    { letter: 'C', label: 'C4 (Middle C)', step: 10, midi: 60 }
+                    { step: -4, letter: 'C', octave: 2, midi: 36, posLabel: '2nd Ledger Line Below' },
+                    { step: -3, letter: 'D', octave: 2, midi: 38, posLabel: 'Below 1st Ledger Line' },
+                    { step: -2, letter: 'E', octave: 2, midi: 40, posLabel: '1st Ledger Line Below' },
+                    { step: -1, letter: 'F', octave: 2, midi: 41, posLabel: 'Space Below Line 1' },
+                    { step: 0,  letter: 'G', octave: 2, midi: 43, posLabel: 'Line 1 (Bottom Line)' },
+                    { step: 1,  letter: 'A', octave: 2, midi: 45, posLabel: 'Space 1' },
+                    { step: 2,  letter: 'B', octave: 2, midi: 47, posLabel: 'Line 2' },
+                    { step: 3,  letter: 'C', octave: 3, midi: 48, posLabel: 'Space 2' },
+                    { step: 4,  letter: 'D', octave: 3, midi: 50, posLabel: 'Line 3 (Middle Line)' },
+                    { step: 5,  letter: 'E', octave: 3, midi: 52, posLabel: 'Space 3' },
+                    { step: 6,  letter: 'F', octave: 3, midi: 53, posLabel: 'Line 4 (F Line)' },
+                    { step: 7,  letter: 'G', octave: 3, midi: 55, posLabel: 'Space 4' },
+                    { step: 8,  letter: 'A', octave: 3, midi: 57, posLabel: 'Line 5 (Top Line)' },
+                    { step: 9,  letter: 'B', octave: 3, midi: 59, posLabel: 'Space Above Line 5' },
+                    { step: 10, letter: 'C', octave: 4, midi: 60, posLabel: '1st Ledger Line Above (Middle C)' },
+                    { step: 11, letter: 'D', octave: 4, midi: 62, posLabel: 'Above 1st Ledger Line' },
+                    { step: 12, letter: 'E', octave: 4, midi: 64, posLabel: '2nd Ledger Line Above' }
                 ]
             };
 
+            const NR_RANGE_BOUNDS = {
+                full:  { min: -4, max: 12, label: 'Full Range (Ledger Lines)' },
+                staff: { min: 0,  max: 8,  label: 'Staff Only (Lines & Spaces)' },
+                lower: { min: -4, max: 4,  label: 'Lower Octave' },
+                upper: { min: 4,  max: 12, label: 'Upper Octave' }
+            };
+
             let nrCurrentClef = 'treble';
-            let nrCurrentNote = null;
-            let nrScore = 0;
-            let nrStreak = 0;
-            let nrLocked = false;
+            let nrCurrentRange = 'full';
+            let nrSelectedStep = -2;
+            let nrAccidental = 0;
+            let nrHoverStep = null;
+
+            function nrGetStepEntry(clef, step) {
+                const list = NR_CLEF_STEPS[clef] || NR_CLEF_STEPS.treble;
+                return list.find(item => item.step === step) || list[0];
+            }
+
+            function nrClampStepToRange(step) {
+                const bounds = NR_RANGE_BOUNDS[nrCurrentRange] || NR_RANGE_BOUNDS.full;
+                return Math.max(bounds.min, Math.min(bounds.max, step));
+            }
+
+            function nrFormatNoteDisplay(entry, accidental) {
+                const accSymbol = accidental === 1 ? '♯' : accidental === -1 ? '♭' : '';
+                const actualMidi = entry.midi + accidental;
+                const noteIndex = ((actualMidi % 12) + 12) % 12;
+                const actualOctave = Math.floor(actualMidi / 12) - 1;
+                const canonicalSharp = `${NOTE_NAMES[noteIndex]}${actualOctave}`;
+                const flatNames = ['C', 'D♭', 'D', 'E♭', 'E', 'F', 'G♭', 'G', 'A♭', 'A', 'B♭', 'B'];
+                const canonicalFlat = `${flatNames[noteIndex]}${actualOctave}`;
+                const primaryName = `${entry.letter}${accSymbol}${entry.octave}`;
+
+                let enharmonic = '';
+                if (accidental === 1 && canonicalFlat !== primaryName) {
+                    enharmonic = canonicalFlat.includes('♭') ? `Enharmonic: ${canonicalFlat}` : `Sounds as ${canonicalSharp}`;
+                } else if (accidental === -1 && canonicalSharp !== primaryName) {
+                    enharmonic = canonicalSharp.includes('#') ? `Enharmonic: ${canonicalSharp.replace('#', '♯')}` : `Sounds as ${canonicalSharp}`;
+                }
+
+                const isMiddleC = (actualMidi === 60 && accidental === 0);
+                return {
+                    primaryName: isMiddleC ? `${primaryName} (Middle C)` : primaryName,
+                    shortName: primaryName,
+                    actualMidi,
+                    enharmonic
+                };
+            }
 
             function nrSetClef(clef) {
                 nrCurrentClef = clef;
                 const btnTreble = document.getElementById('nrClefTrebleBtn');
                 const btnBass = document.getElementById('nrClefBassBtn');
-                const label = document.getElementById('nrClefLabel');
 
                 if (clef === 'treble') {
                     btnTreble.className = "px-2.5 py-1 rounded-md text-xs font-bold bg-[#F9F8F5] dark:bg-stone-900 text-[#CB1517] dark:text-rose-400 shadow-sm transition";
                     btnBass.className = "px-2.5 py-1 rounded-md text-xs font-bold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition";
-                    if (label) label.innerText = "Treble Clef (G Clef)";
+                    nrSelectedStep = nrClampStepToRange(-2);
                 } else {
                     btnBass.className = "px-2.5 py-1 rounded-md text-xs font-bold bg-[#F9F8F5] dark:bg-stone-900 text-[#CB1517] dark:text-rose-400 shadow-sm transition";
                     btnTreble.className = "px-2.5 py-1 rounded-md text-xs font-bold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition";
-                    if (label) label.innerText = "Bass Clef (F Clef)";
+                    nrSelectedStep = nrClampStepToRange(3);
                 }
-                nrNextNote();
+                nrRenderAll();
+                nrPlayCurrentNote();
             }
 
-            function nrNextNote() {
-                const pool = NR_NOTES[nrCurrentClef];
-                let candidate = pool[Math.floor(Math.random() * pool.length)];
-                if (nrCurrentNote && pool.length > 1) {
-                    while (candidate.label === nrCurrentNote.label) {
-                        candidate = pool[Math.floor(Math.random() * pool.length)];
+            function nrSetRange(rangeKey) {
+                nrCurrentRange = rangeKey;
+                nrSelectedStep = nrClampStepToRange(nrSelectedStep);
+                nrRenderAll();
+                nrPlayCurrentNote();
+            }
+
+            function nrSetAccidental(accVal) {
+                nrAccidental = accVal;
+                const btnFlat = document.getElementById('nrAccFlatBtn');
+                const btnNat = document.getElementById('nrAccNatBtn');
+                const btnSharp = document.getElementById('nrAccSharpBtn');
+
+                const activeCls = "px-3.5 py-1.5 rounded-lg border-2 border-[#CB1517] bg-rose-50 dark:bg-rose-950/50 text-[#CB1517] dark:text-rose-300 font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 shadow-sm transition active:scale-95";
+                const inactiveCls = "px-3.5 py-1.5 rounded-lg border-2 border-stone-300 dark:border-stone-700 bg-stone-100 dark:bg-stone-900 text-stone-800 dark:text-stone-200 hover:border-[#CB1517] font-display font-bold text-xs sm:text-sm flex items-center gap-1.5 transition active:scale-95";
+
+                if (btnFlat) btnFlat.className = accVal === -1 ? activeCls : inactiveCls;
+                if (btnNat) btnNat.className = accVal === 0 ? activeCls : inactiveCls;
+                if (btnSharp) btnSharp.className = accVal === 1 ? activeCls : inactiveCls;
+
+                nrRenderAll();
+                nrPlayCurrentNote();
+            }
+
+            function nrStepNote(delta) {
+                nrSelectedStep = nrClampStepToRange(nrSelectedStep + delta);
+                nrRenderAll();
+                nrPlayCurrentNote();
+            }
+
+            function nrPickRandomNote() {
+                const bounds = NR_RANGE_BOUNDS[nrCurrentRange] || NR_RANGE_BOUNDS.full;
+                const possibleSteps = [];
+                for (let s = bounds.min; s <= bounds.max; s++) {
+                    possibleSteps.push(s);
+                }
+                let nextStep = possibleSteps[Math.floor(Math.random() * possibleSteps.length)];
+                if (possibleSteps.length > 1 && nextStep === nrSelectedStep) {
+                    nextStep = possibleSteps[(possibleSteps.indexOf(nextStep) + 1) % possibleSteps.length];
+                }
+                const accidentals = [-1, 0, 0, 1];
+                nrSelectedStep = nextStep;
+                nrSetAccidental(accidentals[Math.floor(Math.random() * accidentals.length)]);
+            }
+
+            function nrSelectStepFromScore(step) {
+                nrSelectedStep = nrClampStepToRange(step);
+                nrRenderAll();
+                nrPlayCurrentNote();
+            }
+
+            function nrSelectFromKeyboard(midi) {
+                const clampedMidi = Math.max(36, Math.min(84, midi));
+                const list = NR_CLEF_STEPS[nrCurrentClef];
+
+                let exactNat = list.find(item => item.midi === clampedMidi);
+                if (exactNat) {
+                    nrSelectedStep = exactNat.step;
+                    nrSetAccidental(0);
+                    return;
+                }
+
+                let sharpCandidate = list.find(item => item.midi + 1 === clampedMidi);
+                if (sharpCandidate) {
+                    nrSelectedStep = sharpCandidate.step;
+                    nrSetAccidental(1);
+                    return;
+                }
+
+                let closest = list[0];
+                let minDiff = Infinity;
+                list.forEach(item => {
+                    const diff = Math.abs(item.midi - clampedMidi);
+                    if (diff < minDiff) {
+                        minDiff = diff;
+                        closest = item;
                     }
-                }
-                nrCurrentNote = candidate;
-                nrLocked = false;
+                });
+                nrSelectedStep = closest.step;
+                nrSetAccidental(clampedMidi - closest.midi);
+            }
 
-                const feedback = document.getElementById('nrFeedbackBanner');
-                if (feedback) {
-                    feedback.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-900 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800 text-center";
-                    feedback.innerText = "Select the correct note letter (C – B) below!";
-                }
+            function nrPlayCurrentNote() {
+                initAudio();
+                const entry = nrGetStepEntry(nrCurrentClef, nrSelectedStep);
+                const actualMidi = entry.midi + nrAccidental;
+                const freq = midiToFreq(actualMidi);
+                playTone(freq, 1.4, 'piano', 0);
+            }
 
-                nrRenderStaff();
+            function nrRenderLedgerLines(x, step, strokeColor, opacity = 1) {
+                let svg = '';
+                const line1Y = 116;
+                const stepH = 6;
+                if (step <= -2) {
+                    const y1 = line1Y - (-2 * stepH);
+                    svg += `<line x1="${x - 19}" y1="${y1}" x2="${x + 19}" y2="${y1}" stroke="${strokeColor}" stroke-width="2" opacity="${opacity}" />`;
+                }
+                if (step <= -4) {
+                    const y2 = line1Y - (-4 * stepH);
+                    svg += `<line x1="${x - 19}" y1="${y2}" x2="${x + 19}" y2="${y2}" stroke="${strokeColor}" stroke-width="2" opacity="${opacity}" />`;
+                }
+                if (step >= 10) {
+                    const y3 = line1Y - (10 * stepH);
+                    svg += `<line x1="${x - 19}" y1="${y3}" x2="${x + 19}" y2="${y3}" stroke="${strokeColor}" stroke-width="2" opacity="${opacity}" />`;
+                }
+                if (step >= 12) {
+                    const y4 = line1Y - (12 * stepH);
+                    svg += `<line x1="${x - 19}" y1="${y4}" x2="${x + 19}" y2="${y4}" stroke="${strokeColor}" stroke-width="2" opacity="${opacity}" />`;
+                }
+                return svg;
             }
 
             function nrRenderStaff() {
                 const container = document.getElementById('nrStaffContainer');
                 if (!container) return;
-                if (!nrCurrentNote) {
-                    nrNextNote();
-                    return;
+
+                const entry = nrGetStepEntry(nrCurrentClef, nrSelectedStep);
+                const info = nrFormatNoteDisplay(entry, nrAccidental);
+                const bounds = NR_RANGE_BOUNDS[nrCurrentRange] || NR_RANGE_BOUNDS.full;
+
+                const clefLabel = document.getElementById('nrClefLabel');
+                if (clefLabel) {
+                    const title = nrCurrentClef === 'treble' ? 'Treble Clef (G Clef)' : 'Bass Clef (F Clef)';
+                    clefLabel.innerText = `${title} · ${bounds.label}`;
                 }
 
-                const noteY = 96 - (nrCurrentNote.step * 6);
-                const noteX = 185;
+                const line1Y = 116;
+                const stepH = 6;
+                const noteX = 245;
+                const noteY = line1Y - (nrSelectedStep * stepH);
 
-                let ledgerSvg = '';
-                if (nrCurrentNote.step <= -2) {
-                    ledgerSvg += `<line x1="${noteX - 18}" y1="108" x2="${noteX + 18}" y2="108" stroke="currentColor" stroke-width="2" />`;
+                let rangeOverlaySvg = '';
+                if (bounds.min > -4) {
+                    const topOfRestrictedBottom = line1Y - ((bounds.min - 0.5) * stepH);
+                    rangeOverlaySvg += `<rect x="28" y="${topOfRestrictedBottom}" width="404" height="${156 - topOfRestrictedBottom}" fill="currentColor" opacity="0.06" />`;
                 }
-                if (nrCurrentNote.step >= 10) {
-                    ledgerSvg += `<line x1="${noteX - 18}" y1="36" x2="${noteX + 18}" y2="36" stroke="currentColor" stroke-width="2" />`;
+                if (bounds.max < 12) {
+                    const bottomOfRestrictedTop = line1Y - ((bounds.max + 0.5) * stepH);
+                    rangeOverlaySvg += `<rect x="28" y="24" width="404" height="${bottomOfRestrictedTop - 24}" fill="currentColor" opacity="0.06" />`;
                 }
 
-                const stemSvg = nrCurrentNote.step < 4
-                    ? `<line x1="${noteX + 7.5}" y1="${noteY}" x2="${noteX + 7.5}" y2="${noteY - 34}" stroke="#CB1517" stroke-width="2.2" />`
-                    : `<line x1="${noteX - 7.5}" y1="${noteY}" x2="${noteX - 7.5}" y2="${noteY + 34}" stroke="#CB1517" stroke-width="2.2" />`;
+                let hoverSvg = '';
+                if (nrHoverStep !== null && nrHoverStep !== nrSelectedStep) {
+                    const clampedHover = nrClampStepToRange(nrHoverStep);
+                    const hoverY = line1Y - (clampedHover * stepH);
+                    const hoverEntry = nrGetStepEntry(nrCurrentClef, clampedHover);
+                    const hoverInfo = nrFormatNoteDisplay(hoverEntry, nrAccidental);
+                    hoverSvg += nrRenderLedgerLines(noteX, clampedHover, '#CB1517', 0.45);
+                    hoverSvg += `
+                        <ellipse cx="${noteX}" cy="${hoverY}" rx="9" ry="6.2" transform="rotate(-15 ${noteX} ${hoverY})" fill="#CB1517" opacity="0.32" />
+                        <text x="${noteX + 26}" y="${hoverY + 4}" font-size="11" font-weight="bold" fill="#CB1517" opacity="0.75" font-family="Outfit">${hoverInfo.shortName}</text>
+                    `;
+                }
+
+                let accSvg = '';
+                if (nrAccidental === 1) {
+                    accSvg = `<text x="${noteX - 24}" y="${noteY + 7}" font-size="23" font-weight="bold" fill="#CB1517" font-family="serif" class="select-none">♯</text>`;
+                } else if (nrAccidental === -1) {
+                    accSvg = `<text x="${noteX - 23}" y="${noteY + 6}" font-size="24" font-weight="bold" fill="#CB1517" font-family="serif" class="select-none">♭</text>`;
+                }
+
+                const stemSvg = nrSelectedStep < 4
+                    ? `<line x1="${noteX + 8.2}" y1="${noteY}" x2="${noteX + 8.2}" y2="${noteY - 36}" stroke="#CB1517" stroke-width="2.3" stroke-linecap="round" />`
+                    : `<line x1="${noteX - 8.2}" y1="${noteY}" x2="${noteX - 8.2}" y2="${noteY + 36}" stroke="#CB1517" stroke-width="2.3" stroke-linecap="round" />`;
 
                 const clefSymbol = nrCurrentClef === 'treble'
-                    ? `<text x="42" y="96" font-size="68" fill="currentColor" font-family="serif" class="select-none">𝄞</text>`
-                    : `<text x="44" y="84" font-size="52" fill="currentColor" font-family="serif" class="select-none">𝄢</text>`;
+                    ? `<text x="52" y="116" font-size="72" fill="currentColor" font-family="serif" class="select-none">𝄞</text>`
+                    : `<text x="54" y="103" font-size="56" fill="currentColor" font-family="serif" class="select-none">𝄢</text>`;
 
                 container.innerHTML = `
-                    <svg viewBox="0 0 320 136" class="w-full h-36 text-stone-800 dark:text-stone-200 select-none">
-                        <line x1="28" y1="48" x2="292" y2="48" stroke="currentColor" stroke-width="1.5" class="opacity-70" />
-                        <line x1="28" y1="60" x2="292" y2="60" stroke="currentColor" stroke-width="1.5" class="opacity-70" />
-                        <line x1="28" y1="72" x2="292" y2="72" stroke="currentColor" stroke-width="1.5" class="opacity-70" />
-                        <line x1="28" y1="84" x2="292" y2="84" stroke="currentColor" stroke-width="1.5" class="opacity-70" />
-                        <line x1="28" y1="96" x2="292" y2="96" stroke="currentColor" stroke-width="1.5" class="opacity-70" />
+                    <svg id="nrInteractiveStaffSvg" viewBox="0 0 460 172" class="w-full h-40 sm:h-44 text-stone-800 dark:text-stone-200 select-none">
+                        ${rangeOverlaySvg}
 
-                        <line x1="28" y1="48" x2="28" y2="96" stroke="currentColor" stroke-width="2" />
-                        <line x1="292" y1="48" x2="292" y2="96" stroke="currentColor" stroke-width="2" />
+                        <line x1="28" y1="68"  x2="432" y2="68"  stroke="currentColor" stroke-width="1.5" opacity="0.75" />
+                        <line x1="28" y1="80"  x2="432" y2="80"  stroke="currentColor" stroke-width="1.5" opacity="0.75" />
+                        <line x1="28" y1="92"  x2="432" y2="92"  stroke="currentColor" stroke-width="1.5" opacity="0.75" />
+                        <line x1="28" y1="104" x2="432" y2="104" stroke="currentColor" stroke-width="1.5" opacity="0.75" />
+                        <line x1="28" y1="116" x2="432" y2="116" stroke="currentColor" stroke-width="1.5" opacity="0.75" />
+
+                        <line x1="28"  y1="68" x2="28"  y2="116" stroke="currentColor" stroke-width="2.2" />
+                        <line x1="432" y1="68" x2="432" y2="116" stroke="currentColor" stroke-width="2.2" />
 
                         ${clefSymbol}
-                        ${ledgerSvg}
+                        ${hoverSvg}
+                        ${nrRenderLedgerLines(noteX, nrSelectedStep, 'currentColor', 0.9)}
+                        ${accSvg}
                         ${stemSvg}
-                        <ellipse cx="${noteX}" cy="${noteY}" rx="8.5" ry="6" transform="rotate(-15 ${noteX} ${noteY})" fill="#CB1517" />
+                        <ellipse cx="${noteX}" cy="${noteY}" rx="9.2" ry="6.4" transform="rotate(-15 ${noteX} ${noteY})" fill="#CB1517" />
+
+                        <text x="${noteX + 24}" y="${noteY + 4}" font-size="12" font-weight="bold" fill="#CB1517" font-family="Outfit">${info.shortName}</text>
+
+                        <rect x="28" y="20" width="404" height="140" fill="transparent" />
                     </svg>
                 `;
+
+                const svgEl = document.getElementById('nrInteractiveStaffSvg');
+                if (svgEl) {
+                    const getStepFromClientY = (clientY) => {
+                        const rect = svgEl.getBoundingClientRect();
+                        if (!rect.height) return nrSelectedStep;
+                        const svgY = ((clientY - rect.top) / rect.height) * 172;
+                        const rawStep = Math.round((line1Y - svgY) / stepH);
+                        return nrClampStepToRange(rawStep);
+                    };
+
+                    svgEl.addEventListener('pointermove', (e) => {
+                        const hovered = getStepFromClientY(e.clientY);
+                        if (hovered !== nrHoverStep) {
+                            nrHoverStep = hovered;
+                            nrRenderStaff();
+                        }
+                    });
+
+                    svgEl.addEventListener('pointerleave', () => {
+                        if (nrHoverStep !== null) {
+                            nrHoverStep = null;
+                            nrRenderStaff();
+                        }
+                    });
+
+                    svgEl.addEventListener('click', (e) => {
+                        const clickedStep = getStepFromClientY(e.clientY);
+                        nrHoverStep = null;
+                        nrSelectStepFromScore(clickedStep);
+                    });
+                }
             }
 
-            function nrPlayCurrentNote() {
-                if (!nrCurrentNote) return;
-                initAudio();
-                const freq = midiToFreq(nrCurrentNote.midi);
-                playTone(freq, 1.4, 'piano', 0);
-            }
+            function nrRenderKeyboard() {
+                const container = document.getElementById('nrKeyboardContainer');
+                if (!container) return;
 
-            function nrCheckAnswer(guessedLetter) {
-                if (!nrCurrentNote || nrLocked) return;
-                initAudio();
+                const entry = nrGetStepEntry(nrCurrentClef, nrSelectedStep);
+                const info = nrFormatNoteDisplay(entry, nrAccidental);
+                const activeMidi = info.actualMidi;
 
-                const feedback = document.getElementById('nrFeedbackBanner');
-                const scoreEl = document.getElementById('nrScoreDisplay');
-                const streakEl = document.getElementById('nrStreakDisplay');
+                const whiteKeyNotes = [];
+                const blackKeyNotes = [];
+                const whiteIntervals = [0, 2, 4, 5, 7, 9, 11];
+                const whiteNames = ['C', 'D', 'E', 'F', 'G', 'A', 'B'];
+                const blackOffsets = [
+                    { afterWhiteOffset: 0, semitone: 1 },
+                    { afterWhiteOffset: 1, semitone: 3 },
+                    { afterWhiteOffset: 3, semitone: 6 },
+                    { afterWhiteOffset: 4, semitone: 8 },
+                    { afterWhiteOffset: 5, semitone: 10 }
+                ];
 
-                if (guessedLetter === nrCurrentNote.letter) {
-                    nrLocked = true;
-                    nrScore += 10;
-                    nrStreak += 1;
-                    if (scoreEl) scoreEl.innerText = nrScore;
-                    if (streakEl) streakEl.innerText = nrStreak;
-
-                    nrPlayCurrentNote();
-
-                    if (feedback) {
-                        feedback.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border border-emerald-400 dark:border-emerald-700 text-center";
-                        feedback.innerText = `Correct! That is ${nrCurrentNote.label}. Next note coming up...`;
+                let whiteIndex = 0;
+                for (let octave = 2; octave <= 5; octave++) {
+                    const octaveBaseMidi = (octave + 1) * 12;
+                    for (let i = 0; i < 7; i++) {
+                        whiteKeyNotes.push({
+                            midi: octaveBaseMidi + whiteIntervals[i],
+                            label: `${whiteNames[i]}${octave}`,
+                            isC: i === 0,
+                            whiteIndex: whiteIndex
+                        });
+                        whiteIndex++;
                     }
+                    blackOffsets.forEach(b => {
+                        blackKeyNotes.push({
+                            midi: octaveBaseMidi + b.semitone,
+                            afterWhiteIndex: (octave - 2) * 7 + b.afterWhiteOffset
+                        });
+                    });
+                }
 
-                    setTimeout(() => {
-                        nrNextNote();
-                    }, 1100);
-                } else {
-                    nrStreak = 0;
-                    if (streakEl) streakEl.innerText = nrStreak;
+                whiteKeyNotes.push({
+                    midi: 84,
+                    label: 'C6',
+                    isC: true,
+                    whiteIndex: whiteIndex
+                });
 
-                    if (feedback) {
-                        feedback.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-red-100 dark:bg-red-950/80 text-red-800 dark:text-red-300 border border-red-400 dark:border-red-700 text-center";
-                        feedback.innerText = `Not quite (${guessedLetter}) — try again!`;
+                const wWidth = 30;
+                const wHeight = 112;
+                const bWidth = 18;
+                const bHeight = 68;
+                const totalWidth = whiteKeyNotes.length * wWidth;
+
+                let svg = `<svg viewBox="0 0 ${totalWidth} 126" class="w-full min-w-[640px] h-32 sm:h-36 select-none">`;
+
+                whiteKeyNotes.forEach(wk => {
+                    const x = wk.whiteIndex * wWidth;
+                    const isActive = (wk.midi === activeMidi);
+                    const fill = isActive ? '#CB1517' : '#F9F8F5';
+                    const stroke = isActive ? '#991B1B' : '#57534E';
+                    svg += `
+                        <g onclick="nrSelectFromKeyboard(${wk.midi})" class="cursor-pointer">
+                            <rect x="${x + 0.5}" y="4" width="${wWidth - 1}" height="${wHeight}" rx="4" fill="${fill}" stroke="${stroke}" stroke-width="1.2" />
+                            ${isActive ? `
+                                <circle cx="${x + wWidth / 2}" cy="${wHeight - 24}" r="4.5" fill="#FFFFFF" />
+                                <text x="${x + wWidth / 2}" y="${wHeight - 6}" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#FFFFFF" font-family="Outfit">${info.shortName}</text>
+                            ` : (wk.isC ? `
+                                <text x="${x + wWidth / 2}" y="${wHeight - 7}" text-anchor="middle" font-size="9" font-weight="bold" fill="${wk.midi === 60 ? '#CB1517' : '#78716C'}" font-family="Outfit">${wk.label}</text>
+                            ` : '')}
+                        </g>
+                    `;
+                });
+
+                blackKeyNotes.forEach(bk => {
+                    const x = (bk.afterWhiteIndex + 1) * wWidth - (bWidth / 2);
+                    const isActive = (bk.midi === activeMidi);
+                    const fill = isActive ? '#CB1517' : '#292524';
+                    const stroke = isActive ? '#FECDD3' : '#1C1917';
+                    svg += `
+                        <g onclick="nrSelectFromKeyboard(${bk.midi})" class="cursor-pointer">
+                            <rect x="${x}" y="4" width="${bWidth}" height="${bHeight}" rx="3" fill="${fill}" stroke="${stroke}" stroke-width="${isActive ? '2' : '1'}" />
+                            ${isActive ? `
+                                <circle cx="${x + bWidth / 2}" cy="${bHeight - 12}" r="3.8" fill="#FFFFFF" />
+                                <rect x="${x - 6}" y="${bHeight + 6}" width="${bWidth + 12}" height="16" rx="4" fill="#CB1517" />
+                                <text x="${x + bWidth / 2}" y="${bHeight + 17}" text-anchor="middle" font-size="9.5" font-weight="bold" fill="#FFFFFF" font-family="Outfit">${info.shortName}</text>
+                            ` : ''}
+                        </g>
+                    `;
+                });
+
+                svg += `</svg>`;
+                container.innerHTML = svg;
+            }
+
+            function nrRenderAll() {
+                const entry = nrGetStepEntry(nrCurrentClef, nrSelectedStep);
+                const info = nrFormatNoteDisplay(entry, nrAccidental);
+
+                const titleEl = document.getElementById('nrSelectedNoteTitle');
+                const enhEl = document.getElementById('nrEnharmonicBadge');
+                const posEl = document.getElementById('nrStaffPositionLabel');
+                const freqEl = document.getElementById('nrFreqReadout');
+
+                if (titleEl) titleEl.innerText = info.primaryName;
+                if (enhEl) {
+                    if (info.enharmonic) {
+                        enhEl.innerText = info.enharmonic;
+                        enhEl.classList.remove('hidden');
+                    } else {
+                        enhEl.classList.add('hidden');
                     }
                 }
+                if (posEl) posEl.innerText = entry.posLabel;
+                if (freqEl) freqEl.innerText = `${midiToFreq(info.actualMidi).toFixed(1)} Hz`;
+
+                nrRenderStaff();
+                nrRenderKeyboard();
             }
 
             // ==========================================
@@ -3194,7 +3517,7 @@
                 selectProgression(0);
                 renderMasterUkeChordLibrary();
                 renderGuitarChordLibrary();
-                nrNextNote();
+                nrRenderAll();
                 switchBannerTab('songwriting');
             });
 
@@ -3232,8 +3555,12 @@
                 cycleChordVariation,
                 playGuitarVariationPreview,
                 nrSetClef,
-                nrPlayCurrentNote,
-                nrCheckAnswer
+                nrSetRange,
+                nrSetAccidental,
+                nrStepNote,
+                nrPickRandomNote,
+                nrSelectFromKeyboard,
+                nrPlayCurrentNote
             });
         })();
     </script>
