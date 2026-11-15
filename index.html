@@ -63,290 +63,86 @@
 </head>
 <body class="bg-[#DCD7D0] text-stone-800 dark:bg-stone-950 dark:text-stone-100 font-sans min-h-screen flex flex-col justify-between transition-colors duration-300">
 
-    <!-- Compact Top Header -->
-    <header class="bg-[#F9F8F5]/90 dark:bg-stone-900/90 backdrop-blur-md border-b border-stone-300 dark:border-stone-800 sticky top-0 z-50 py-2 transition-colors duration-300">
-        <div class="max-w-5xl mx-auto px-3 sm:px-4 flex items-center justify-between">
-            <div class="flex items-center gap-2.5">
-                <div class="w-8 h-8 sm:w-9 sm:h-9 rounded-lg bg-gradient-to-tr from-[#CB1517] to-[#FF4D4D] flex items-center justify-center text-[#E6E0D8] shadow-md shadow-[#CB1517]/30">
-                    <i class="fa-solid fa-music text-base"></i>
+    <!-- Top Header with Brand, Section Tabs, and Top-Right Theme Toggle -->
+    <header class="bg-[#F9F8F5]/95 dark:bg-stone-900/95 backdrop-blur-md border-b border-stone-300 dark:border-stone-800 sticky top-0 z-50 transition-colors duration-300 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3 flex flex-wrap lg:flex-nowrap items-center justify-between gap-2.5 xl:gap-4">
+            <!-- Left: Brand Identity -->
+            <div class="order-1 flex items-center gap-3 shrink-0">
+                <div class="w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-tr from-[#CB1517] to-[#FF4D4D] flex items-center justify-center text-[#E6E0D8] shadow-md shadow-[#CB1517]/30 shrink-0">
+                    <i class="fa-solid fa-music text-base sm:text-lg"></i>
                 </div>
                 <div>
-                    <h1 class="font-display font-bold text-lg leading-tight text-[#CB1517]">
-                        Let's Koh Make Music! <span class="text-[10px] px-1.5 py-0.5 rounded-full bg-red-100 dark:bg-red-900/60 text-red-800 dark:text-red-300 border border-red-300 dark:border-red-700/50 font-normal ml-1">Sec Music</span>
+                    <h1 class="font-display font-bold text-lg sm:text-xl leading-tight text-[#CB1517]">
+                        Let's Koh Make Music!
                     </h1>
-                    <p class="text-[11px] text-stone-600 dark:text-stone-400 font-medium">version 2.1 | Interactive Chords and Beats</p>
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-red-100 dark:bg-red-900/60 text-red-800 dark:text-red-300 border border-red-300 dark:border-red-700/50 font-normal">Sec Music</span>
+                        <span class="text-[11px] text-stone-600 dark:text-stone-400 font-medium">version 2.1</span>
+                    </div>
                 </div>
             </div>
+
+            <!-- Top Right: Theme Toggle Button (inline with website title) -->
+            <button id="themeToggleBtn" onclick="toggleTheme()" class="order-2 lg:order-3 flex items-center justify-center gap-1.5 text-xs bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 px-3 py-2 rounded-xl border border-stone-300 dark:border-stone-700 transition shrink-0">
+                <i class="fa-solid fa-sun text-yellow-600 hidden dark:inline"></i>
+                <i class="fa-solid fa-moon text-stone-600 dark:hidden"></i>
+                <span id="themeText" class="font-medium text-[11px]">Dark</span>
+            </button>
             
-            <div class="flex items-center gap-2">
-                <!-- Theme Toggle Button -->
-                <button id="themeToggleBtn" onclick="toggleTheme()" class="flex items-center gap-1.5 text-xs bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 px-2.5 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 transition">
-                    <i class="fa-solid fa-sun text-yellow-600 hidden dark:inline"></i>
-                    <i class="fa-solid fa-moon text-stone-600 dark:hidden"></i>
-                    <span id="themeText" class="font-medium text-[11px] hidden sm:inline">Dark</span>
+            <!-- Section Tabs: Songwriting, Practice Tools, Chord Charts, Note Recognition -->
+            <nav aria-label="Main Workspace Tabs" class="order-3 lg:order-2 w-full lg:w-auto grid grid-cols-2 sm:grid-cols-4 lg:flex lg:items-center gap-2 lg:gap-1.5 xl:gap-2.5">
+                <!-- Banner Tab 1: Songwriting Project -->
+                <button id="bannerTabSongwriting" onclick="switchBannerTab('songwriting')" class="banner-tab-btn px-2.5 xl:px-3 py-2 rounded-xl border-2 border-blue-600 bg-blue-50/90 dark:bg-blue-950/40 text-left transition-all flex items-center gap-2 xl:gap-2.5 shadow-sm">
+                    <div class="w-7 h-7 rounded-lg bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-pen-nib text-xs"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="font-display font-bold text-xs text-stone-900 dark:text-[#E6E0D8] whitespace-nowrap">Songwriting</div>
+                        <div class="text-[10px] text-stone-600 dark:text-stone-400 whitespace-nowrap">Chords &amp; Cajon</div>
+                    </div>
                 </button>
-                <!-- Audio Status Button -->
-                <button id="soundUnlockBtn" onclick="initAudio()" class="flex items-center gap-1.5 text-xs bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-700 dark:text-stone-200 px-2.5 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 transition">
-                    <i class="fa-solid fa-volume-high text-amber-700" id="audioStatusIcon"></i>
-                    <span id="audioStatusText" class="text-[11px] hidden sm:inline">Audio Ready</span>
+
+                <!-- Banner Tab 2: Practice Tools -->
+                <button id="bannerTabPractice" onclick="switchBannerTab('practice')" class="banner-tab-btn px-2.5 xl:px-3 py-2 rounded-xl border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-2 xl:gap-2.5 opacity-80 hover:opacity-100">
+                    <div class="w-7 h-7 rounded-lg bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-sliders text-xs"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="font-display font-bold text-xs text-stone-900 dark:text-[#E6E0D8] whitespace-nowrap">Practice Tools</div>
+                        <div class="text-[10px] text-stone-600 dark:text-stone-400 whitespace-nowrap">Tuner &amp; Metronome</div>
+                    </div>
                 </button>
-            </div>
+
+                <!-- Banner Tab 3: Chord Reference Charts -->
+                <button id="bannerTabChords" onclick="switchBannerTab('chords')" class="banner-tab-btn px-2.5 xl:px-3 py-2 rounded-xl border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-2 xl:gap-2.5 opacity-80 hover:opacity-100">
+                    <div class="w-7 h-7 rounded-lg bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-guitar text-xs"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="font-display font-bold text-xs text-stone-900 dark:text-[#E6E0D8] whitespace-nowrap">Chord Charts</div>
+                        <div class="text-[10px] text-stone-600 dark:text-stone-400 whitespace-nowrap">Ukulele &amp; Guitar</div>
+                    </div>
+                </button>
+
+                <!-- Banner Tab 4: Note Recognition -->
+                <button id="bannerTabNoteRec" onclick="switchBannerTab('noterec')" class="banner-tab-btn px-2.5 xl:px-3 py-2 rounded-xl border-2 border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 text-left transition-all flex items-center gap-2 xl:gap-2.5 opacity-80 hover:opacity-100">
+                    <div class="w-7 h-7 rounded-lg bg-rose-100 dark:bg-rose-900/50 text-[#CB1517] dark:text-rose-400 flex items-center justify-center shrink-0">
+                        <i class="fa-solid fa-music text-xs"></i>
+                    </div>
+                    <div class="min-w-0">
+                        <div class="font-display font-bold text-xs text-stone-900 dark:text-[#E6E0D8] whitespace-nowrap">Note Recognition</div>
+                        <div class="text-[10px] text-stone-600 dark:text-stone-400 whitespace-nowrap">Staff &amp; Pitch</div>
+                    </div>
+                </button>
+            </nav>
         </div>
     </header>
 
     <!-- Main Workspace -->
-    <main class="max-w-5xl mx-auto w-full px-2.5 sm:px-4 py-3 flex-1 flex flex-col gap-3.5">
-        
-        <!-- SECTION 0: UPGRADED CHROMATIC INSTRUMENT TUNER -->
-        <section class="bg-[#F9F8F5] dark:bg-stone-900/90 rounded-xl border border-stone-300 dark:border-stone-800 shadow-sm transition-colors mb-1 overflow-hidden">
-            <button onclick="toggleTuner()" class="w-full flex items-center justify-between p-2.5 sm:p-3 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition text-left group">
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded bg-green-100 dark:bg-green-900/50 text-green-700 dark:text-green-400 flex items-center justify-center">
-                        <i class="fa-solid fa-microphone-lines text-sm group-hover:scale-110 transition-transform"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-display font-bold text-[13px] text-stone-900 dark:text-[#E6E0D8] leading-tight">Chromatic Tuner</h2>
-                        <p class="text-[10px] text-stone-600 dark:text-stone-400">Full-octave pitch detection & reference tuning (A4 = 442 Hz default)</p>
-                    </div>
-                </div>
-                <div class="text-stone-500 border border-stone-300 dark:border-stone-700 rounded-full w-6 h-6 flex items-center justify-center bg-[#E6E0D8] dark:bg-stone-800">
-                    <i id="tunerChevron" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
-                </div>
-            </button>
-            
-            <!-- Collapsible Tuner Content -->
-            <div id="tunerContent" class="hidden border-t border-stone-300 dark:border-stone-800 p-3 sm:p-4 bg-stone-100 dark:bg-stone-900/50">
-                
-                <!-- Tuner Control Header (Adjustable A4 Hz & Live Mic Toggle) -->
-                <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mb-4">
-                    <!-- A4 Hz Calibration Controls -->
-                    <div class="flex items-center gap-2 bg-stone-200 dark:bg-stone-800 px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700">
-                        <i class="fa-solid fa-sliders text-green-700 text-xs"></i>
-                        <span class="text-xs font-bold text-stone-800 dark:text-stone-300">A4 Calibration:</span>
-                        <button onclick="adjustA4(-1)" class="w-6 h-6 rounded bg-stone-300 dark:bg-stone-700 hover:bg-green-700 hover:text-[#E6E0D8] text-stone-800 dark:text-stone-200 font-bold text-xs flex items-center justify-center transition active:scale-95">-</button>
-                        <input type="number" id="a4CalibInput" min="410" max="470" value="442" onchange="updateA4Calibration(this.value)" class="w-16 bg-[#E6E0D8] dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded text-center text-green-700 dark:text-green-400 font-mono text-xs font-bold focus:outline-none focus:border-green-600 py-0.5">
-                        <span class="text-xs font-mono font-bold text-stone-600">Hz</span>
-                        <button onclick="adjustA4(1)" class="w-6 h-6 rounded bg-stone-300 dark:bg-stone-700 hover:bg-green-700 hover:text-[#E6E0D8] text-stone-800 dark:text-stone-200 font-bold text-xs flex items-center justify-center transition active:scale-95">+</button>
-                    </div>
+    <main class="max-w-6xl mx-auto w-full px-3 sm:px-6 py-4 flex-1 flex flex-col gap-4">
 
-                    <!-- Live Mic Toggle Button -->
-                    <button id="btnMicTuner" onclick="toggleMicTuner()" class="w-full sm:w-auto px-4 py-1.5 rounded-lg bg-green-700 hover:bg-green-600 text-[#E6E0D8] font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-teal-700/20">
-                        <i id="micTunerIcon" class="fa-solid fa-microphone"></i>
-                        <span id="micTunerText">Start Live Mic Tuner</span>
-                    </button>
-                </div>
-
-                <!-- Digital Gauge & Chromatic Visual Display Panel -->
-                <div id="liveMicPanel" class="p-4 rounded-2xl bg-stone-900 text-[#E6E0D8] border border-stone-800 shadow-xl relative overflow-hidden">
-                    <div class="absolute -right-10 -top-10 w-40 h-40 bg-green-700/10 rounded-full blur-2xl pointer-events-none"></div>
-                    
-                    <div class="flex flex-col items-center justify-center gap-2">
-                        <!-- Top Bar Status -->
-                        <div class="w-full flex items-center justify-between text-[11px] font-mono text-stone-400 border-b border-stone-800/80 pb-2 mb-1">
-                            <span class="flex items-center gap-1.5">
-                                <span id="micPulseDot" class="w-2 h-2 rounded-full bg-teal-500"></span>
-                                CHROMATIC TUNER
-                            </span>
-                            <span id="micStatusBadge" class="font-bold text-teal-400 bg-teal-950/60 border border-teal-500/30 px-2 py-0.5 rounded-md">Ready</span>
-                            <span id="micFreqDisplay" class="font-mono text-stone-300">0.0 Hz</span>
-                        </div>
-
-                        <!-- Semi-Circular Arc Dial Tuner -->
-                        <div class="relative w-full max-w-[280px] h-[130px] flex items-center justify-center my-1 select-none">
-                            <svg viewBox="0 0 200 110" class="w-full h-full">
-                                <!-- Dial Arc Track -->
-                                <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#292524" stroke-width="8" stroke-linecap="round"/>
-                                
-                                <!-- Center Target Arc (In Tune Zone) -->
-                                <path d="M 90 20.6 A 80 80 0 0 1 110 20.6" fill="none" stroke="#14B8A6" stroke-width="10" stroke-linecap="round"/>
-                                
-                                <!-- Flat & Sharp Gradient Ticks -->
-                                <path d="M 30 92 A 80 80 0 0 1 85 22" fill="none" stroke="#84CC16" stroke-width="4" stroke-dasharray="2, 6"/>
-                                <path d="M 115 22 A 80 80 0 0 1 170 92" fill="none" stroke="#D97706" stroke-width="4" stroke-dasharray="2, 6"/>
-
-                                <!-- Center Anchor Point -->
-                                <circle cx="100" cy="100" r="6" fill="#1C1917" stroke="#84CC16" stroke-width="3"/>
-
-                                <!-- Swinging Needle -->
-                                <g id="tunerNeedle" style="transform: rotate(0deg); transform-origin: 100px 100px;">
-                                    <line x1="100" y1="100" x2="100" y2="24" stroke="#84CC16" stroke-width="3" stroke-linecap="round"/>
-                                    <polygon points="100,16 96,26 104,26" fill="#84CC16"/>
-                                </g>
-                            </svg>
-
-                            <!-- Center Big Chromatic Note Display -->
-                            <div class="absolute bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center">
-                                <span id="micNoteDisplay" class="font-display font-extrabold text-4xl text-[#E6E0D8] tracking-tight drop-shadow-[0_0_12px_rgba(132,204,22,0.5)]">--</span>
-                            </div>
-                        </div>
-
-                        <!-- Cents Bar Meter -->
-                        <div class="w-full max-w-md mt-1">
-                            <div class="w-full flex justify-between text-[10px] font-mono text-stone-400 mb-1">
-                                <span>-50c FLAT</span>
-                                <span id="centsDisplay" class="font-bold text-stone-300">0 cents</span>
-                                <span>+50c SHARP</span>
-                            </div>
-                            <div class="w-full h-2.5 bg-stone-800 rounded-full relative overflow-hidden border border-stone-700">
-                                <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-teal-400 z-10"></div>
-                                <div id="micNeedle" class="absolute top-0 bottom-0 left-1/2 w-2 bg-teal-400 -translate-x-1/2 transition-all duration-100 rounded-full"></div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Guitar and Ukulele String Note Reference Section -->
-                <div class="mt-4 pt-3 border-t border-stone-300 dark:border-stone-800/80 space-y-3">
-                    <div class="text-center">
-                        <span class="text-[11px] text-stone-600 dark:text-stone-400 font-medium">
-                            <i class="fa-solid fa-circle-info mr-1 text-green-700"></i>Click any string note below to play reference audio (calibrated to A4 = <span id="refA4Label">442</span> Hz).
-                        </span>
-                    </div>
-
-                    <!-- Guitar Reference Notes -->
-                    <div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <i class="fa-solid fa-guitar text-green-700 text-xs"></i>
-                            <h4 class="text-xs font-bold uppercase tracking-wider text-stone-800 dark:text-stone-300">Guitar String Notes Reference</h4>
-                        </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-6 gap-2">
-                            <button id="ref_guitar_E2" onclick="playRefNote(40, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
-                                <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">6th String</span>
-                                <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">E2</span>
-                                <span id="freq_guitar_40" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">82.8 Hz</span>
-                            </button>
-                            <button id="ref_guitar_A2" onclick="playRefNote(45, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
-                                <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">5th String</span>
-                                <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">A2</span>
-                                <span id="freq_guitar_45" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">110.5 Hz</span>
-                            </button>
-                            <button id="ref_guitar_D3" onclick="playRefNote(50, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
-                                <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">4th String</span>
-                                <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">D3</span>
-                                <span id="freq_guitar_50" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">147.5 Hz</span>
-                            </button>
-                            <button id="ref_guitar_G3" onclick="playRefNote(55, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
-                                <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">3rd String</span>
-                                <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">G3</span>
-                                <span id="freq_guitar_55" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">196.9 Hz</span>
-                            </button>
-                            <button id="ref_guitar_B3" onclick="playRefNote(59, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
-                                <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">2nd String</span>
-                                <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">B3</span>
-                                <span id="freq_guitar_59" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">248.1 Hz</span>
-                            </button>
-                            <button id="ref_guitar_E4" onclick="playRefNote(64, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
-                                <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">1st String</span>
-                                <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">E4</span>
-                                <span id="freq_guitar_64" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">331.1 Hz</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <!-- Ukulele Reference Notes -->
-                    <div>
-                        <div class="flex items-center gap-2 mb-2">
-                            <i class="fa-solid fa-music text-green-700 text-xs"></i>
-                            <h4 class="text-xs font-bold uppercase tracking-wider text-stone-800 dark:text-stone-300">Ukulele String Notes Reference</h4>
-                        </div>
-                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
-                            <button id="ref_ukulele_G4" onclick="playRefNote(67, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
-                                <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">4th String</span>
-                                <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">G4</span>
-                                <span id="freq_ukulele_67" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">393.8 Hz</span>
-                            </button>
-                            <button id="ref_ukulele_C4" onclick="playRefNote(60, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
-                                <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">3rd String</span>
-                                <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">C4</span>
-                                <span id="freq_ukulele_60" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">262.8 Hz</span>
-                            </button>
-                            <button id="ref_ukulele_E4" onclick="playRefNote(64, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
-                                <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">2nd String</span>
-                                <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">E4</span>
-                                <span id="freq_ukulele_64" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">331.1 Hz</span>
-                            </button>
-                            <button id="ref_ukulele_A4" onclick="playRefNote(69, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
-                                <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">1st String</span>
-                                <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">A4</span>
-                                <span id="freq_ukulele_69" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">442.0 Hz</span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION 0.5: METRONOME -->
-        <section class="bg-[#F9F8F5] dark:bg-stone-900/90 rounded-xl border border-stone-300 dark:border-stone-800 shadow-sm transition-colors mb-1 overflow-hidden">
-            <button onclick="toggleMetronome()" class="w-full flex items-center justify-between p-2.5 sm:p-3 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition text-left group">
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded bg-purple-100 dark:bg-purple-900/50 text-purple-600 dark:text-purple-400 flex items-center justify-center">
-                        <i class="fa-solid fa-stopwatch text-sm group-hover:scale-110 transition-transform"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-display font-bold text-[13px] text-stone-900 dark:text-[#E6E0D8] leading-tight">Metronome</h2>
-                        <p class="text-[10px] text-stone-600 dark:text-stone-400">Keep tempo with visual beat tracking & customizable clicks</p>
-                    </div>
-                </div>
-                <div class="text-stone-500 border border-stone-300 dark:border-stone-700 rounded-full w-6 h-6 flex items-center justify-center bg-[#E6E0D8] dark:bg-stone-800">
-                    <i id="metronomeChevron" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
-                </div>
-            </button>
-            
-            <!-- Collapsible Metronome Content -->
-            <div id="metronomeContent" class="hidden border-t border-stone-300 dark:border-stone-800 p-3 bg-stone-100 dark:bg-stone-900/50">
-                <div class="flex flex-col sm:flex-row items-center justify-between gap-3">
-                    <!-- Controls -->
-                    <div class="flex items-center gap-3 flex-wrap w-full sm:w-auto">
-                        <button id="btnPlayMetronome" onclick="togglePlayMetronome()" class="px-4 py-2 rounded-lg bg-orange-700 hover:bg-orange-600 text-[#E6E0D8] font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm">
-                            <i id="metronomePlayIcon" class="fa-solid fa-play"></i>
-                            <span id="metronomePlayText">Start Metronome</span>
-                        </button>
-
-                        <div class="flex items-center gap-2 bg-[#E6E0D8] dark:bg-stone-800 px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700">
-                            <span class="text-xs font-bold text-stone-600 dark:text-stone-400">Beats:</span>
-                            <select id="metroTimeSigSelect" onchange="updateMetronomeTimeSig(this.value)" class="bg-transparent text-orange-800 dark:text-orange-400 text-xs font-bold focus:outline-none cursor-pointer">
-                                <option value="2">2/4</option>
-                                <option value="3">3/4</option>
-                                <option value="4" selected>4/4</option>
-                                <option value="6">6/8</option>
-                            </select>
-                        </div>
-
-                        <div class="flex items-center gap-2 bg-[#E6E0D8] dark:bg-stone-800 px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700">
-                            <i class="fa-solid fa-gauge-high text-xs text-orange-700"></i>
-                            <span id="metroBpmDisplay" class="font-mono text-orange-800 dark:text-orange-400 font-bold text-xs w-14 text-center">90 BPM</span>
-                            <input type="range" id="metroBpmSlider" min="40" max="220" value="90" oninput="updateMetronomeBPM(this.value)" class="w-24 accent-orange-700 cursor-pointer">
-                        </div>
-                    </div>
-
-                    <!-- Visual Beats Indicator -->
-                    <div class="flex items-center gap-2" id="metronomeDotsContainer">
-                        <!-- Beat dots generated dynamically -->
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- SECTION: SONGWRITING COLLAPSIBLE TAB (Contains Steps 1, 2, and Chord Charts) -->
-        <section class="bg-[#F9F8F5] dark:bg-stone-900/90 rounded-xl border border-stone-300 dark:border-stone-800 shadow-sm transition-colors mb-1 overflow-hidden">
-            <button onclick="toggleSongWriting()" class="w-full flex items-center justify-between p-2.5 sm:p-3 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition text-left group">
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded bg-blue-100 dark:bg-blue-900/50 text-blue-600 dark:text-blue-400 flex items-center justify-center">
-                        <i class="fa-solid fa-pen-nib text-sm group-hover:scale-110 transition-transform"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-display font-bold text-[13px] text-stone-900 dark:text-[#E6E0D8] leading-tight">Songwriting Project</h2>
-                        <p class="text-[10px] text-stone-600 dark:text-stone-400">Instrument selection, progressions, and interactive chord charts</p>
-                    </div>
-                </div>
-                <div class="text-stone-500 border border-stone-300 dark:border-stone-700 rounded-full w-6 h-6 flex items-center justify-center bg-[#E6E0D8] dark:bg-stone-800">
-                    <i id="songWritingChevron" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
-                </div>
-            </button>
-            
-            <!-- Collapsible Song Writing Content (Closed by default) -->
-            <div id="songWritingContent" class="hidden border-t border-stone-300 dark:border-stone-800 p-3 bg-stone-100 dark:bg-stone-900/50 flex flex-col gap-3.5">
+        <!-- TAB PANEL 1: SONGWRITING PROJECT (Contains Steps 1, 2, Chord Charts & Cajon Studio) -->
+        <section id="songWritingContent" class="bg-stone-100 dark:bg-stone-900/50 rounded-xl border border-stone-300 dark:border-stone-800 shadow-sm transition-colors overflow-hidden p-3 flex flex-col gap-3.5">
 
                 <!-- SECTION 1: INSTRUMENT SELECTOR -->
                 <section class="bg-[#F9F8F5] dark:bg-stone-900/90 rounded-xl p-2.5 sm:p-3 border border-stone-300 dark:border-stone-800 shadow-sm transition-colors">
@@ -610,167 +406,414 @@
                         </div>
                     </div>
                 </section>
-            </div>
         </section>
 
-        <!-- SECTION: MASTER UKULELE CHORD LIBRARY WITH VISUAL DIAGRAMS -->
-        <section class="bg-[#F9F8F5] dark:bg-stone-900/90 rounded-xl border border-stone-300 dark:border-stone-800 shadow-sm transition-colors mb-2 overflow-hidden">
-            <button onclick="toggleUkeChords()" class="w-full flex items-center justify-between p-2.5 sm:p-3 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition text-left group">
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded bg-teal-100 dark:bg-teal-900/50 text-teal-600 dark:text-teal-400 flex items-center justify-center">
-                        <i class="fa-solid fa-guitar text-sm group-hover:scale-110 transition-transform"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-display font-bold text-[13px] text-stone-900 dark:text-[#E6E0D8] leading-tight">Ukulele Chord Chart</h2>
-                        <p class="text-[10px] text-stone-600 dark:text-stone-400">Standard & alternative voicings with visual fretboard diagrams (gCEA)</p>
-                    </div>
+        <!-- TAB PANEL 2: PRACTICE TOOLS (CHROMATIC TUNER & METRONOME) -->
+        <section id="practiceToolsContent" class="hidden bg-[#F9F8F5] dark:bg-stone-900/90 rounded-xl border border-stone-300 dark:border-stone-800 shadow-sm transition-colors overflow-hidden p-3 sm:p-4">
+                <!-- Sub-Tab Switcher: Chromatic Tuner vs Metronome -->
+                <div class="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-stone-200/90 dark:bg-stone-950/80 border border-stone-300 dark:border-stone-800 mb-3">
+                    <button id="tabBtnTuner" onclick="switchPracticeTab('tuner')" class="py-1.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 bg-[#F9F8F5] dark:bg-stone-800 text-emerald-700 dark:text-emerald-400 shadow-sm border border-stone-300/80 dark:border-stone-700 transition-all">
+                        <i class="fa-solid fa-microphone-lines"></i>
+                        <span>Chromatic Tuner</span>
+                    </button>
+                    <button id="tabBtnMetronome" onclick="switchPracticeTab('metronome')" class="py-1.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition-all">
+                        <i class="fa-solid fa-stopwatch"></i>
+                        <span>Metronome</span>
+                    </button>
                 </div>
-                <div class="text-stone-500 border border-stone-300 dark:border-stone-700 rounded-full w-6 h-6 flex items-center justify-center bg-[#E6E0D8] dark:bg-stone-800">
-                    <i id="ukeChordsChevron" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
-                </div>
-            </button>
-            
-            <!-- Collapsible Container (Closed by Default) -->
-            <div id="ukeChordsContent" class="hidden border-t border-stone-300 dark:border-stone-800 p-3 bg-stone-100 dark:bg-stone-900/50 flex flex-col gap-5">
-                
-                <!-- Legend Banner -->
-                <div class="px-3 py-2 bg-white dark:bg-stone-950/70 rounded-lg border border-stone-200 dark:border-stone-800 flex flex-wrap items-center justify-between text-[11px] text-slate-600 dark:text-slate-400 gap-2">
-                    <div class="flex items-center gap-3">
-                        <span class="inline-flex items-center gap-1 font-bold text-teal-600 dark:text-teal-400">
-                            <span class="w-2.5 h-2.5 rounded-full bg-teal-500 inline-block"></span> Standard Voicing
-                        </span>
-                        <span class="inline-flex items-center gap-1 font-bold text-purple-600 dark:text-purple-400">
-                            <span class="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block"></span> Alternative Voicing
-                        </span>
+
+                <!-- Sub-Panel A: Chromatic Instrument Tuner -->
+                <div id="tunerContent">
+                    <!-- Tuner Control Header (Adjustable A4 Hz & Live Mic Toggle) -->
+                    <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center justify-between mb-4">
+                        <!-- A4 Hz Calibration Controls -->
+                        <div class="flex items-center gap-2 bg-stone-200 dark:bg-stone-800 px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700">
+                            <i class="fa-solid fa-sliders text-green-700 text-xs"></i>
+                            <span class="text-xs font-bold text-stone-800 dark:text-stone-300">A4 Calibration:</span>
+                            <button onclick="adjustA4(-1)" class="w-6 h-6 rounded bg-stone-300 dark:bg-stone-700 hover:bg-green-700 hover:text-[#E6E0D8] text-stone-800 dark:text-stone-200 font-bold text-xs flex items-center justify-center transition active:scale-95">-</button>
+                            <input type="number" id="a4CalibInput" min="410" max="470" value="442" onchange="updateA4Calibration(this.value)" class="w-16 bg-[#E6E0D8] dark:bg-stone-900 border border-stone-300 dark:border-stone-700 rounded text-center text-green-700 dark:text-green-400 font-mono text-xs font-bold focus:outline-none focus:border-green-600 py-0.5">
+                            <span class="text-xs font-mono font-bold text-stone-600">Hz</span>
+                            <button onclick="adjustA4(1)" class="w-6 h-6 rounded bg-stone-300 dark:bg-stone-700 hover:bg-green-700 hover:text-[#E6E0D8] text-stone-800 dark:text-stone-200 font-bold text-xs flex items-center justify-center transition active:scale-95">+</button>
+                        </div>
+
+                        <!-- Live Mic Toggle Button -->
+                        <button id="btnMicTuner" onclick="toggleMicTuner()" class="w-full sm:w-auto px-4 py-1.5 rounded-lg bg-green-700 hover:bg-green-600 text-[#E6E0D8] font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-teal-700/20">
+                            <i id="micTunerIcon" class="fa-solid fa-microphone"></i>
+                            <span id="micTunerText">Start Live Mic Tuner</span>
+                        </button>
                     </div>
-                    <div class="font-mono text-[10px] text-slate-500">
-                        Strings: g - C - E - A (Left to Right)
+
+                    <!-- Digital Gauge & Chromatic Visual Display Panel -->
+                    <div id="liveMicPanel" class="p-4 rounded-2xl bg-stone-900 text-[#E6E0D8] border border-stone-800 shadow-xl relative overflow-hidden">
+                        <div class="absolute -right-10 -top-10 w-40 h-40 bg-green-700/10 rounded-full blur-2xl pointer-events-none"></div>
+                        
+                        <div class="flex flex-col items-center justify-center gap-2">
+                            <!-- Top Bar Status -->
+                            <div class="w-full flex items-center justify-between text-[11px] font-mono text-stone-400 border-b border-stone-800/80 pb-2 mb-1">
+                                <span class="flex items-center gap-1.5">
+                                    <span id="micPulseDot" class="w-2 h-2 rounded-full bg-teal-500"></span>
+                                    CHROMATIC TUNER
+                                </span>
+                                <span id="micStatusBadge" class="font-bold text-teal-400 bg-teal-950/60 border border-teal-500/30 px-2 py-0.5 rounded-md">Ready</span>
+                                <span id="micFreqDisplay" class="font-mono text-stone-300">0.0 Hz</span>
+                            </div>
+
+                            <!-- Semi-Circular Arc Dial Tuner -->
+                            <div class="relative w-full max-w-[280px] h-[130px] flex items-center justify-center my-1 select-none">
+                                <svg viewBox="0 0 200 110" class="w-full h-full">
+                                    <!-- Dial Arc Track -->
+                                    <path d="M 20 100 A 80 80 0 0 1 180 100" fill="none" stroke="#292524" stroke-width="8" stroke-linecap="round"/>
+                                    
+                                    <!-- Center Target Arc (In Tune Zone) -->
+                                    <path d="M 90 20.6 A 80 80 0 0 1 110 20.6" fill="none" stroke="#14B8A6" stroke-width="10" stroke-linecap="round"/>
+                                    
+                                    <!-- Flat & Sharp Gradient Ticks -->
+                                    <path d="M 30 92 A 80 80 0 0 1 85 22" fill="none" stroke="#84CC16" stroke-width="4" stroke-dasharray="2, 6"/>
+                                    <path d="M 115 22 A 80 80 0 0 1 170 92" fill="none" stroke="#D97706" stroke-width="4" stroke-dasharray="2, 6"/>
+
+                                    <!-- Center Anchor Point -->
+                                    <circle cx="100" cy="100" r="6" fill="#1C1917" stroke="#84CC16" stroke-width="3"/>
+
+                                    <!-- Swinging Needle -->
+                                    <g id="tunerNeedle" style="transform: rotate(0deg); transform-origin: 100px 100px;">
+                                        <line x1="100" y1="100" x2="100" y2="24" stroke="#84CC16" stroke-width="3" stroke-linecap="round"/>
+                                        <polygon points="100,16 96,26 104,26" fill="#84CC16"/>
+                                    </g>
+                                </svg>
+
+                                <!-- Center Big Chromatic Note Display -->
+                                <div class="absolute bottom-1 left-1/2 -translate-x-1/2 flex flex-col items-center">
+                                    <span id="micNoteDisplay" class="font-display font-extrabold text-4xl text-[#E6E0D8] tracking-tight drop-shadow-[0_0_12px_rgba(132,204,22,0.5)]">--</span>
+                                </div>
+                            </div>
+
+                            <!-- Cents Bar Meter -->
+                            <div class="w-full max-w-md mt-1">
+                                <div class="w-full flex justify-between text-[10px] font-mono text-stone-400 mb-1">
+                                    <span>-50c FLAT</span>
+                                    <span id="centsDisplay" class="font-bold text-stone-300">0 cents</span>
+                                    <span>+50c SHARP</span>
+                                </div>
+                                <div class="w-full h-2.5 bg-stone-800 rounded-full relative overflow-hidden border border-stone-700">
+                                    <div class="absolute left-1/2 top-0 bottom-0 w-0.5 bg-teal-400 z-10"></div>
+                                    <div id="micNeedle" class="absolute top-0 bottom-0 left-1/2 w-2 bg-teal-400 -translate-x-1/2 transition-all duration-100 rounded-full"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Guitar and Ukulele String Note Reference Section -->
+                    <div class="mt-4 pt-3 border-t border-stone-300 dark:border-stone-800/80 space-y-3">
+                        <div class="text-center">
+                            <span class="text-[11px] text-stone-600 dark:text-stone-400 font-medium">
+                                <i class="fa-solid fa-circle-info mr-1 text-green-700"></i>Click any string note below to play reference audio (calibrated to A4 = <span id="refA4Label">442</span> Hz).
+                            </span>
+                        </div>
+
+                        <!-- Guitar Reference Notes -->
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-guitar text-green-700 text-xs"></i>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-stone-800 dark:text-stone-300">Guitar String Notes Reference</h4>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-6 gap-2">
+                                <button id="ref_guitar_E2" onclick="playRefNote(40, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
+                                    <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">6th String</span>
+                                    <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">E2</span>
+                                    <span id="freq_guitar_40" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">82.8 Hz</span>
+                                </button>
+                                <button id="ref_guitar_A2" onclick="playRefNote(45, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
+                                    <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">5th String</span>
+                                    <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">A2</span>
+                                    <span id="freq_guitar_45" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">110.5 Hz</span>
+                                </button>
+                                <button id="ref_guitar_D3" onclick="playRefNote(50, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
+                                    <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">4th String</span>
+                                    <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">D3</span>
+                                    <span id="freq_guitar_50" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">147.5 Hz</span>
+                                </button>
+                                <button id="ref_guitar_G3" onclick="playRefNote(55, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
+                                    <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">3rd String</span>
+                                    <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">G3</span>
+                                    <span id="freq_guitar_55" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">196.9 Hz</span>
+                                </button>
+                                <button id="ref_guitar_B3" onclick="playRefNote(59, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
+                                    <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">2nd String</span>
+                                    <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">B3</span>
+                                    <span id="freq_guitar_59" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">248.1 Hz</span>
+                                </button>
+                                <button id="ref_guitar_E4" onclick="playRefNote(64, 'guitar')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
+                                    <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">1st String</span>
+                                    <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">E4</span>
+                                    <span id="freq_guitar_64" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">331.1 Hz</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Ukulele Reference Notes -->
+                        <div>
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fa-solid fa-music text-green-700 text-xs"></i>
+                                <h4 class="text-xs font-bold uppercase tracking-wider text-stone-800 dark:text-stone-300">Ukulele String Notes Reference</h4>
+                            </div>
+                            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2">
+                                <button id="ref_ukulele_G4" onclick="playRefNote(67, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
+                                    <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">4th String</span>
+                                    <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">G4</span>
+                                    <span id="freq_ukulele_67" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">393.8 Hz</span>
+                                </button>
+                                <button id="ref_ukulele_C4" onclick="playRefNote(60, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
+                                    <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">3rd String</span>
+                                    <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">C4</span>
+                                    <span id="freq_ukulele_60" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">262.8 Hz</span>
+                                </button>
+                                <button id="ref_ukulele_E4" onclick="playRefNote(64, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
+                                    <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">2nd String</span>
+                                    <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">E4</span>
+                                    <span id="freq_ukulele_64" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">331.1 Hz</span>
+                                </button>
+                                <button id="ref_ukulele_A4" onclick="playRefNote(69, 'ukulele')" class="tuner-ref-btn flex flex-col items-center justify-center p-2 rounded-xl border-2 border-stone-300 dark:border-stone-800 bg-[#E6E0D8] dark:bg-stone-800/80 hover:border-green-700 hover:bg-green-50 dark:hover:bg-green-950/40 transition-all group active:scale-95 shadow-sm">
+                                    <span class="text-[9px] font-bold uppercase text-stone-500 dark:text-stone-500">1st String</span>
+                                    <span class="font-display font-extrabold text-lg text-stone-800 dark:text-[#E6E0D8] group-hover:text-green-700">A4</span>
+                                    <span id="freq_ukulele_69" class="text-[10px] font-mono text-stone-500 dark:text-stone-500">442.0 Hz</span>
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Dynamic Container where Diagrams are Rendered -->
-                <div id="ukeChordLibraryGrid" class="flex flex-col gap-5"></div>
+                <!-- Sub-Panel B: Metronome -->
+                <div id="metronomeContent" class="hidden pt-1">
+                    <div class="bg-[#F9F8F5] dark:bg-stone-950/70 p-3.5 rounded-xl border border-stone-200 dark:border-stone-800 flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <!-- Controls -->
+                        <div class="flex items-center gap-3 flex-wrap w-full sm:w-auto">
+                            <button id="btnPlayMetronome" onclick="togglePlayMetronome()" class="px-4 py-2 rounded-lg bg-orange-700 hover:bg-orange-600 text-[#E6E0D8] font-bold text-xs flex items-center justify-center gap-2 transition shadow-sm">
+                                <i id="metronomePlayIcon" class="fa-solid fa-play"></i>
+                                <span id="metronomePlayText">Start Metronome</span>
+                            </button>
 
-            </div>
+                            <div class="flex items-center gap-2 bg-[#E6E0D8] dark:bg-stone-800 px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700">
+                                <span class="text-xs font-bold text-stone-600 dark:text-stone-400">Beats:</span>
+                                <select id="metroTimeSigSelect" onchange="updateMetronomeTimeSig(this.value)" class="bg-transparent text-orange-800 dark:text-orange-400 text-xs font-bold focus:outline-none cursor-pointer">
+                                    <option value="2">2/4</option>
+                                    <option value="3">3/4</option>
+                                    <option value="4" selected>4/4</option>
+                                    <option value="6">6/8</option>
+                                </select>
+                            </div>
+
+                            <div class="flex items-center gap-2 bg-[#E6E0D8] dark:bg-stone-800 px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700">
+                                <i class="fa-solid fa-gauge-high text-xs text-orange-700"></i>
+                                <span id="metroBpmDisplay" class="font-mono text-orange-800 dark:text-orange-400 font-bold text-xs w-14 text-center">90 BPM</span>
+                                <input type="range" id="metroBpmSlider" min="40" max="220" value="90" oninput="updateMetronomeBPM(this.value)" class="w-24 accent-orange-700 cursor-pointer">
+                            </div>
+                        </div>
+
+                        <!-- Visual Beats Indicator -->
+                        <div class="flex items-center gap-2" id="metronomeDotsContainer">
+                            <!-- Beat dots generated dynamically -->
+                        </div>
+                    </div>
+                </div>
         </section>
 
-        <!-- SECTION: GUITAR CHORD LIBRARY & HEADSTOCK REFERENCE -->
-        <section class="bg-[#F9F8F5] dark:bg-stone-900/90 rounded-xl border border-stone-300 dark:border-stone-800 shadow-sm transition-colors mb-2 overflow-hidden">
-            <button onclick="toggleGuitarChords()" class="w-full flex items-center justify-between p-2.5 sm:p-3 hover:bg-stone-200/50 dark:hover:bg-stone-800/50 transition text-left group">
-                <div class="flex items-center gap-2">
-                    <div class="w-7 h-7 rounded bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 flex items-center justify-center">
-                        <i class="fa-solid fa-guitar text-sm group-hover:scale-110 transition-transform"></i>
-                    </div>
-                    <div>
-                        <h2 class="font-display font-bold text-[13px] text-stone-900 dark:text-[#E6E0D8] leading-tight">Guitar Chord Chart</h2>
-                        <p class="text-[10px] text-stone-600 dark:text-stone-400">Landscape headstock & fretboard reference with standard 6-string chord diagrams (EADGBE)</p>
-                    </div>
-                </div>
-                <div class="text-stone-500 border border-stone-300 dark:border-stone-700 rounded-full w-6 h-6 flex items-center justify-center bg-[#E6E0D8] dark:bg-stone-800">
-                    <i id="guitarChordsChevron" class="fa-solid fa-chevron-down text-xs transition-transform duration-300"></i>
-                </div>
-            </button>
-            
-            <!-- Collapsible Container -->
-            <div id="guitarChordsContent" class="hidden border-t border-stone-300 dark:border-stone-800 p-3 sm:p-4 bg-stone-100 dark:bg-stone-900/50 flex flex-col gap-5">
-                
-                <!-- Landscape Headstock & Fretboard Diagram -->
-                <div class="bg-white dark:bg-stone-950/70 p-3.5 rounded-xl border border-stone-200 dark:border-stone-800 flex flex-col items-center">
-                    <h3 class="text-xs font-bold text-stone-800 dark:text-stone-200 uppercase tracking-wider mb-2">Guitar Neck, Headstock & String Tuning (mirror image)</h3>
-                    <div class="w-full max-w-2xl">
-                        <svg viewBox="0 0 650 215" class="w-full h-auto select-none">
-                            <!-- Fretboard (Wood Body) -->
-                            <rect x="180" y="45" width="390" height="130" fill="#2A1810" rx="2"/>
-
-                            <!-- Fret Position Markers (Inlay Dots) -->
-                            <circle cx="360" cy="110" r="5" fill="#E7E5E4" opacity="0.65"/> <!-- Fret 3 -->
-                            <circle cx="470" cy="110" r="5" fill="#E7E5E4" opacity="0.65"/> <!-- Fret 5 -->
-
-                            <!-- Fret Wires -->
-                            <line x1="260" y1="45" x2="260" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
-                            <line x1="330" y1="45" x2="330" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
-                            <line x1="390" y1="45" x2="390" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
-                            <line x1="445" y1="45" x2="445" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
-                            <line x1="495" y1="45" x2="495" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
-                            <line x1="540" y1="45" x2="540" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
-
-                            <!-- Headstock Wood Body -->
-                            <path d="M 180 40 L 50 25 C 25 25 15 55 15 110 C 15 165 25 195 50 195 L 180 180 Z" fill="#78350F" stroke="#451A03" stroke-width="3"/>
-
-                            <!-- Nut -->
-                            <rect x="174" y="42" width="10" height="136" fill="#F5F5F4" stroke="#78716C" stroke-width="1.5" rx="2"/>
-
-                            <!-- Tuning Machine Pegs (Top - 6th, 5th, 4th) -->
-                            <circle cx="60" cy="20" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
-                            <line x1="60" y1="20" x2="60" y2="38" stroke="#78716C" stroke-width="3"/>
-                            <circle cx="60" cy="38" r="4" fill="#A8A29E"/>
-
-                            <circle cx="100" cy="20" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
-                            <line x1="100" y1="20" x2="100" y2="38" stroke="#78716C" stroke-width="3"/>
-                            <circle cx="100" cy="38" r="4" fill="#A8A29E"/>
-
-                            <circle cx="140" cy="20" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
-                            <line x1="140" y1="20" x2="140" y2="38" stroke="#78716C" stroke-width="3"/>
-                            <circle cx="140" cy="38" r="4" fill="#A8A29E"/>
-
-                            <!-- Tuning Machine Pegs (Bottom - 3rd, 2nd, 1st) -->
-                            <circle cx="140" cy="200" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
-                            <line x1="140" y1="200" x2="140" y2="182" stroke="#78716C" stroke-width="3"/>
-                            <circle cx="140" cy="182" r="4" fill="#A8A29E"/>
-
-                            <circle cx="100" cy="200" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
-                            <line x1="100" y1="200" x2="100" y2="182" stroke="#78716C" stroke-width="3"/>
-                            <circle cx="100" cy="182" r="4" fill="#A8A29E"/>
-
-                            <circle cx="60" cy="200" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
-                            <line x1="60" y1="200" x2="60" y2="182" stroke="#78716C" stroke-width="3"/>
-                            <circle cx="60" cy="182" r="4" fill="#A8A29E"/>
-
-                            <!-- Strings Across Headstock & Fretboard -->
-                            <!-- 6th String (E2) -->
-                            <line x1="60" y1="38" x2="178" y2="55" stroke="#E7E5E4" stroke-width="3.5"/>
-                            <line x1="178" y1="55" x2="570" y2="55" stroke="#E7E5E4" stroke-width="3.5"/>
-
-                            <!-- 5th String (A2) -->
-                            <line x1="100" y1="38" x2="178" y2="77" stroke="#E7E5E4" stroke-width="3"/>
-                            <line x1="178" y1="77" x2="570" y2="77" stroke="#E7E5E4" stroke-width="3"/>
-
-                            <!-- 4th String (D3) -->
-                            <line x1="140" y1="38" x2="178" y2="99" stroke="#E7E5E4" stroke-width="2.5"/>
-                            <line x1="178" y1="99" x2="570" y2="99" stroke="#E7E5E4" stroke-width="2.5"/>
-
-                            <!-- 3rd String (G3) -->
-                            <line x1="140" y1="182" x2="178" y2="121" stroke="#E7E5E4" stroke-width="2"/>
-                            <line x1="178" y1="121" x2="570" y2="121" stroke="#E7E5E4" stroke-width="2"/>
-
-                            <!-- 2nd String (B3) -->
-                            <line x1="100" y1="182" x2="178" y2="143" stroke="#E7E5E4" stroke-width="1.5"/>
-                            <line x1="178" y1="143" x2="570" y2="143" stroke="#E7E5E4" stroke-width="1.5"/>
-
-                            <!-- 1st String (E4) -->
-                            <line x1="60" y1="182" x2="178" y2="165" stroke="#E7E5E4" stroke-width="1"/>
-                            <line x1="178" y1="165" x2="570" y2="165" stroke="#E7E5E4" stroke-width="1"/>
-
-                            <!-- Right-side Pitch & String Labels -->
-                            <text x="578" y="58" font-size="10" font-weight="bold" fill="#B45309">6th (E2)</text>
-                            <text x="578" y="80" font-size="10" font-weight="bold" fill="#B45309">5th (A2)</text>
-                            <text x="578" y="102" font-size="10" font-weight="bold" fill="#B45309">4th (D3)</text>
-                            <text x="578" y="124" font-size="10" font-weight="bold" fill="#B45309">3rd (G3)</text>
-                            <text x="578" y="146" font-size="10" font-weight="bold" fill="#B45309">2nd (B3)</text>
-                            <text x="578" y="168" font-size="10" font-weight="bold" fill="#B45309">1st (E4)</text>
-
-                            <!-- Fret Number Labels -->
-                            <text x="218" y="195" font-size="9" font-weight="bold" fill="#78716C">Fret 1</text>
-                            <text x="293" y="195" font-size="9" font-weight="bold" fill="#78716C">Fret 2</text>
-                            <text x="358" y="195" font-size="9" font-weight="bold" fill="#78716C">Fret 3</text>
-                            <text x="415" y="195" font-size="9" font-weight="bold" fill="#78716C">Fret 4</text>
-                            <text x="468" y="195" font-size="9" font-weight="bold" fill="#78716C">Fret 5</text>
-                        </svg>
-                    </div>
+        <!-- TAB PANEL 3: CHORD REFERENCE CHARTS (UKULELE & GUITAR) -->
+        <section id="chordLibraryContent" class="hidden bg-[#F9F8F5] dark:bg-stone-900/90 rounded-xl border border-stone-300 dark:border-stone-800 shadow-sm transition-colors mb-2 overflow-hidden p-3 sm:p-4">
+                <!-- Sub-Tab Switcher: Ukulele vs Guitar -->
+                <div class="grid grid-cols-2 gap-1.5 p-1 rounded-xl bg-stone-200/90 dark:bg-stone-950/80 border border-stone-300 dark:border-stone-800 mb-3.5">
+                    <button id="tabBtnUkeChords" onclick="switchChordLibraryTab('ukulele')" class="py-1.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 bg-[#F9F8F5] dark:bg-stone-800 text-teal-700 dark:text-teal-400 shadow-sm border border-stone-300/80 dark:border-stone-700 transition-all">
+                        <span>🪕</span>
+                        <span>Ukulele Chord Chart (gCEA)</span>
+                    </button>
+                    <button id="tabBtnGuitarChords" onclick="switchChordLibraryTab('guitar')" class="py-1.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition-all">
+                        <span>🎸</span>
+                        <span>Guitar Chord Chart (EADGBE)</span>
+                    </button>
                 </div>
 
-                <!-- Guitar Chord Grid Container -->
-                <div id="guitarChordLibraryGrid" class="flex flex-col gap-5"></div>
+                <!-- Sub-Panel A: Master Ukulele Chord Library -->
+                <div id="ukeChordsContent" class="flex flex-col gap-5">
+                    <!-- Legend Banner -->
+                    <div class="px-3 py-2 bg-white dark:bg-stone-950/70 rounded-lg border border-stone-200 dark:border-stone-800 flex flex-wrap items-center justify-between text-[11px] text-slate-600 dark:text-slate-400 gap-2">
+                        <div class="flex items-center gap-3">
+                            <span class="inline-flex items-center gap-1 font-bold text-teal-600 dark:text-teal-400">
+                                <span class="w-2.5 h-2.5 rounded-full bg-teal-500 inline-block"></span> Standard Voicing
+                            </span>
+                            <span class="inline-flex items-center gap-1 font-bold text-purple-600 dark:text-purple-400">
+                                <span class="w-2.5 h-2.5 rounded-full bg-purple-500 inline-block"></span> Alternative Voicing
+                            </span>
+                        </div>
+                        <div class="font-mono text-[10px] text-slate-500">
+                            Strings: g - C - E - A (Left to Right)
+                        </div>
+                    </div>
+
+                    <!-- Dynamic Container where Diagrams are Rendered -->
+                    <div id="ukeChordLibraryGrid" class="flex flex-col gap-5"></div>
+                </div>
+
+                <!-- Sub-Panel B: Master Guitar Chord Library & Headstock Reference -->
+                <div id="guitarChordsContent" class="hidden flex flex-col gap-5">
+                    <!-- Landscape Headstock & Fretboard Diagram -->
+                    <div class="bg-white dark:bg-stone-950/70 p-3.5 rounded-xl border border-stone-200 dark:border-stone-800 flex flex-col items-center">
+                        <h3 class="text-xs font-bold text-stone-800 dark:text-stone-200 uppercase tracking-wider mb-2">Guitar Neck, Headstock & String Tuning (mirror image)</h3>
+                        <div class="w-full max-w-2xl">
+                            <svg viewBox="0 0 650 215" class="w-full h-auto select-none">
+                                <!-- Fretboard (Wood Body) -->
+                                <rect x="180" y="45" width="390" height="130" fill="#2A1810" rx="2"/>
+
+                                <!-- Fret Position Markers (Inlay Dots) -->
+                                <circle cx="360" cy="110" r="5" fill="#E7E5E4" opacity="0.65"/> <!-- Fret 3 -->
+                                <circle cx="470" cy="110" r="5" fill="#E7E5E4" opacity="0.65"/> <!-- Fret 5 -->
+
+                                <!-- Fret Wires -->
+                                <line x1="260" y1="45" x2="260" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
+                                <line x1="330" y1="45" x2="330" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
+                                <line x1="390" y1="45" x2="390" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
+                                <line x1="445" y1="45" x2="445" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
+                                <line x1="495" y1="45" x2="495" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
+                                <line x1="540" y1="45" x2="540" y2="175" stroke="#A8A29E" stroke-width="2.5"/>
+
+                                <!-- Headstock Wood Body -->
+                                <path d="M 180 40 L 50 25 C 25 25 15 55 15 110 C 15 165 25 195 50 195 L 180 180 Z" fill="#78350F" stroke="#451A03" stroke-width="3"/>
+
+                                <!-- Nut -->
+                                <rect x="174" y="42" width="10" height="136" fill="#F5F5F4" stroke="#78716C" stroke-width="1.5" rx="2"/>
+
+                                <!-- Tuning Machine Pegs (Top - 6th, 5th, 4th) -->
+                                <circle cx="60" cy="20" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
+                                <line x1="60" y1="20" x2="60" y2="38" stroke="#78716C" stroke-width="3"/>
+                                <circle cx="60" cy="38" r="4" fill="#A8A29E"/>
+
+                                <circle cx="100" cy="20" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
+                                <line x1="100" y1="20" x2="100" y2="38" stroke="#78716C" stroke-width="3"/>
+                                <circle cx="100" cy="38" r="4" fill="#A8A29E"/>
+
+                                <circle cx="140" cy="20" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
+                                <line x1="140" y1="20" x2="140" y2="38" stroke="#78716C" stroke-width="3"/>
+                                <circle cx="140" cy="38" r="4" fill="#A8A29E"/>
+
+                                <!-- Tuning Machine Pegs (Bottom - 3rd, 2nd, 1st) -->
+                                <circle cx="140" cy="200" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
+                                <line x1="140" y1="200" x2="140" y2="182" stroke="#78716C" stroke-width="3"/>
+                                <circle cx="140" cy="182" r="4" fill="#A8A29E"/>
+
+                                <circle cx="100" cy="200" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
+                                <line x1="100" y1="200" x2="100" y2="182" stroke="#78716C" stroke-width="3"/>
+                                <circle cx="100" cy="182" r="4" fill="#A8A29E"/>
+
+                                <circle cx="60" cy="200" r="8" fill="#D6D3D1" stroke="#44403C" stroke-width="1.5"/>
+                                <line x1="60" y1="200" x2="60" y2="182" stroke="#78716C" stroke-width="3"/>
+                                <circle cx="60" cy="182" r="4" fill="#A8A29E"/>
+
+                                <!-- Strings Across Headstock & Fretboard -->
+                                <!-- 6th String (E2) -->
+                                <line x1="60" y1="38" x2="178" y2="55" stroke="#E7E5E4" stroke-width="3.5"/>
+                                <line x1="178" y1="55" x2="570" y2="55" stroke="#E7E5E4" stroke-width="3.5"/>
+
+                                <!-- 5th String (A2) -->
+                                <line x1="100" y1="38" x2="178" y2="77" stroke="#E7E5E4" stroke-width="3"/>
+                                <line x1="178" y1="77" x2="570" y2="77" stroke="#E7E5E4" stroke-width="3"/>
+
+                                <!-- 4th String (D3) -->
+                                <line x1="140" y1="38" x2="178" y2="99" stroke="#E7E5E4" stroke-width="2.5"/>
+                                <line x1="178" y1="99" x2="570" y2="99" stroke="#E7E5E4" stroke-width="2.5"/>
+
+                                <!-- 3rd String (G3) -->
+                                <line x1="140" y1="182" x2="178" y2="121" stroke="#E7E5E4" stroke-width="2"/>
+                                <line x1="178" y1="121" x2="570" y2="121" stroke="#E7E5E4" stroke-width="2"/>
+
+                                <!-- 2nd String (B3) -->
+                                <line x1="100" y1="182" x2="178" y2="143" stroke="#E7E5E4" stroke-width="1.5"/>
+                                <line x1="178" y1="143" x2="570" y2="143" stroke="#E7E5E4" stroke-width="1.5"/>
+
+                                <!-- 1st String (E4) -->
+                                <line x1="60" y1="182" x2="178" y2="165" stroke="#E7E5E4" stroke-width="1"/>
+                                <line x1="178" y1="165" x2="570" y2="165" stroke="#E7E5E4" stroke-width="1"/>
+
+                                <!-- Right-side Pitch & String Labels -->
+                                <text x="578" y="58" font-size="10" font-weight="bold" fill="#B45309">6th (E2)</text>
+                                <text x="578" y="80" font-size="10" font-weight="bold" fill="#B45309">5th (A2)</text>
+                                <text x="578" y="102" font-size="10" font-weight="bold" fill="#B45309">4th (D3)</text>
+                                <text x="578" y="124" font-size="10" font-weight="bold" fill="#B45309">3rd (G3)</text>
+                                <text x="578" y="146" font-size="10" font-weight="bold" fill="#B45309">2nd (B3)</text>
+                                <text x="578" y="168" font-size="10" font-weight="bold" fill="#B45309">1st (E4)</text>
+
+                                <!-- Fret Number Labels -->
+                                <text x="218" y="195" font-size="9" font-weight="bold" fill="#78716C">Fret 1</text>
+                                <text x="293" y="195" font-size="9" font-weight="bold" fill="#78716C">Fret 2</text>
+                                <text x="358" y="195" font-size="9" font-weight="bold" fill="#78716C">Fret 3</text>
+                                <text x="415" y="195" font-size="9" font-weight="bold" fill="#78716C">Fret 4</text>
+                                <text x="468" y="195" font-size="9" font-weight="bold" fill="#78716C">Fret 5</text>
+                            </svg>
+                        </div>
+                    </div>
+
+                    <!-- Guitar Chord Grid Container -->
+                    <div id="guitarChordLibraryGrid" class="flex flex-col gap-5"></div>
+                </div>
+        </section>
+
+        <!-- TAB PANEL 4: NOTE RECOGNITION -->
+        <section id="noteRecognitionContent" class="hidden bg-[#F9F8F5] dark:bg-stone-900/90 rounded-xl border border-stone-300 dark:border-stone-800 shadow-sm transition-colors mb-2 overflow-hidden p-3 sm:p-4">
+            <div class="flex flex-col gap-3.5">
+                <!-- Header & Clef Controls -->
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 border-b border-stone-300 dark:border-stone-800 pb-3">
+                    <div class="flex items-center gap-2.5">
+                        <div class="w-8 h-8 rounded-lg bg-rose-100 dark:bg-rose-900/50 text-[#CB1517] dark:text-rose-400 flex items-center justify-center">
+                            <i class="fa-solid fa-music text-sm"></i>
+                        </div>
+                        <div>
+                            <h2 class="font-display font-bold text-base text-stone-900 dark:text-[#E6E0D8] leading-tight">Note Recognition Trainer</h2>
+                            <p class="text-[11px] text-stone-600 dark:text-stone-400">Identify the note shown on the musical staff and hear its pitch</p>
+                        </div>
+                    </div>
+
+                    <div class="flex items-center gap-2 flex-wrap">
+                        <!-- Clef Selector -->
+                        <div class="flex items-center gap-1 p-1 rounded-lg bg-stone-200 dark:bg-stone-800 border border-stone-300 dark:border-stone-700">
+                            <button id="nrClefTrebleBtn" onclick="nrSetClef('treble')" class="px-2.5 py-1 rounded-md text-xs font-bold bg-[#F9F8F5] dark:bg-stone-900 text-[#CB1517] dark:text-rose-400 shadow-sm transition">Treble Clef</button>
+                            <button id="nrClefBassBtn" onclick="nrSetClef('bass')" class="px-2.5 py-1 rounded-md text-xs font-bold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition">Bass Clef</button>
+                        </div>
+
+                        <!-- Score & Streak Badge -->
+                        <div class="flex items-center gap-2 bg-stone-200/80 dark:bg-stone-800 px-3 py-1.5 rounded-lg border border-stone-300 dark:border-stone-700 text-xs font-mono font-bold">
+                            <span class="text-emerald-700 dark:text-emerald-400">Score: <span id="nrScoreDisplay">0</span></span>
+                            <span class="text-stone-400">|</span>
+                            <span class="text-amber-700 dark:text-amber-400">Streak: <span id="nrStreakDisplay">0</span></span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Musical Staff Display Card -->
+                <div class="bg-white dark:bg-stone-950/80 rounded-xl p-4 border border-stone-200 dark:border-stone-800 flex flex-col items-center justify-center gap-2 shadow-inner">
+                    <div class="w-full max-w-md flex items-center justify-between text-xs">
+                        <span id="nrClefLabel" class="font-bold uppercase tracking-wider text-stone-500 dark:text-stone-400">Treble Clef (G Clef)</span>
+                        <button onclick="nrPlayCurrentNote()" class="px-2.5 py-1 rounded-md bg-stone-200 hover:bg-stone-300 dark:bg-stone-800 dark:hover:bg-stone-700 text-stone-800 dark:text-stone-200 font-bold text-[11px] flex items-center gap-1.5 transition">
+                            <i class="fa-solid fa-volume-high text-[#CB1517]"></i>
+                            <span>Hear Pitch</span>
+                        </button>
+                    </div>
+
+                    <!-- Dynamic SVG Staff Container -->
+                    <div id="nrStaffContainer" class="w-full max-w-md my-1"></div>
+
+                    <!-- Feedback Prompt -->
+                    <div id="nrFeedbackBanner" class="text-xs font-bold px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-900 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800 text-center">
+                        Select the correct note letter (C – B) below!
+                    </div>
+                </div>
+
+                <!-- Answer Note Buttons (C D E F G A B) -->
+                <div class="grid grid-cols-7 gap-1.5 sm:gap-2.5">
+                    <button onclick="nrCheckAnswer('C')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">C</button>
+                    <button onclick="nrCheckAnswer('D')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">D</button>
+                    <button onclick="nrCheckAnswer('E')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">E</button>
+                    <button onclick="nrCheckAnswer('F')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">F</button>
+                    <button onclick="nrCheckAnswer('G')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">G</button>
+                    <button onclick="nrCheckAnswer('A')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">A</button>
+                    <button onclick="nrCheckAnswer('B')" class="nr-note-btn p-3 rounded-xl bg-white dark:bg-stone-800 hover:bg-rose-50 dark:hover:bg-rose-950/40 border-2 border-stone-300 dark:border-stone-700 hover:border-[#CB1517] font-display font-extrabold text-base sm:text-lg text-stone-900 dark:text-[#E6E0D8] transition active:scale-95 shadow-sm">B</button>
+                </div>
             </div>
         </section>
 
@@ -783,27 +826,159 @@
 
     <script>
         // ==========================================
-        // UI ACCORDION HELPER FUNCTION
+        // GLOBAL STATE & AUDIO ENGINE INITIALIZATION
         // ==========================================
-        function closeAllTabsExcept(currentContentId) {
-            const allTabs = [
-                { content: 'tunerContent', chevron: 'tunerChevron' },
-                { content: 'metronomeContent', chevron: 'metronomeChevron' },
-                { content: 'songWritingContent', chevron: 'songWritingChevron' },
-                { content: 'ukeChordsContent', chevron: 'ukeChordsChevron' },
-                { content: 'guitarChordsContent', chevron: 'guitarChordsChevron' }
-            ];
+        let audioCtx = null;
 
-            allTabs.forEach(tab => {
-                if (tab.content !== currentContentId) {
-                    const contentEl = document.getElementById(tab.content);
-                    const chevronEl = document.getElementById(tab.chevron);
-                    if (contentEl && !contentEl.classList.contains('hidden')) {
-                        contentEl.classList.add('hidden');
-                        if (chevronEl) chevronEl.classList.remove('rotate-180');
-                    }
+        // Chromatic Tuner & Calibration State
+        let a4ReferenceHz = 442;
+        const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+        let isMicTunerActive = false;
+        let micStream = null;
+        let micAudioCtx = null;
+        let micAnalyser = null;
+        let micAnimationId = null;
+
+        // Metronome State
+        let metronomeBpm = 90;
+        let metronomeBeatsPerBar = 4;
+        let currentMetronomeBeat = 0;
+        let isPlayingMetronome = false;
+        let metronomeInterval = null;
+
+        // Songwriting & Chord Progression State
+        let currentInstrument = 'piano';
+        let currentProgressionIndex = 0;
+        let currentKey = 'C';
+        let chordBeats = 4;
+        let bpm = 90;
+        let isPlayingProgression = false;
+        let progressionInterval = null;
+        let activeChordIndex = null;
+        let activeBeatInChord = 0;
+
+        // Cajon Studio State
+        let activeCajonBeatIndex = 0;
+        let isPlayingCajon = false;
+        let cajonInterval = null;
+        let currentCajonStep = 0;
+
+        function initAudio() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        document.body.addEventListener('click', () => { initAudio(); }, { once: true });
+
+        // ==========================================
+        // BANNER & SUB-TAB NAVIGATION
+        // ==========================================
+        const BANNER_TABS = {
+            songwriting: {
+                btnId: 'bannerTabSongwriting',
+                panelId: 'songWritingContent',
+                activeBorder: 'border-blue-600 bg-blue-50/90 dark:bg-blue-950/40'
+            },
+            practice: {
+                btnId: 'bannerTabPractice',
+                panelId: 'practiceToolsContent',
+                activeBorder: 'border-emerald-600 bg-emerald-50/90 dark:bg-emerald-950/40'
+            },
+            chords: {
+                btnId: 'bannerTabChords',
+                panelId: 'chordLibraryContent',
+                activeBorder: 'border-amber-600 bg-amber-50/90 dark:bg-amber-950/40'
+            },
+            noterec: {
+                btnId: 'bannerTabNoteRec',
+                panelId: 'noteRecognitionContent',
+                activeBorder: 'border-[#CB1517] bg-rose-50/90 dark:bg-rose-950/40'
+            }
+        };
+
+        function switchBannerTab(tabKey) {
+            const baseBtnClasses = "banner-tab-btn px-2.5 xl:px-3 py-2 rounded-xl border-2 text-left transition-all flex items-center gap-2 xl:gap-2.5";
+
+            Object.entries(BANNER_TABS).forEach(([key, cfg]) => {
+                const btn = document.getElementById(cfg.btnId);
+                const panel = document.getElementById(cfg.panelId);
+                if (!btn || !panel) return;
+
+                if (key === tabKey) {
+                    btn.className = `${baseBtnClasses} ${cfg.activeBorder} shadow-sm opacity-100`;
+                    panel.classList.remove('hidden');
+                } else {
+                    btn.className = `${baseBtnClasses} border-transparent hover:bg-stone-200/70 dark:hover:bg-stone-800/70 opacity-80 hover:opacity-100`;
+                    panel.classList.add('hidden');
                 }
             });
+
+            if (tabKey === 'practice') {
+                renderMetronomeDots();
+            } else if (tabKey === 'chords') {
+                renderMasterUkeChordLibrary();
+                renderGuitarChordLibrary();
+            } else if (tabKey === 'noterec') {
+                if (!nrCurrentNote) {
+                    nrNextNote();
+                } else {
+                    nrRenderStaff();
+                }
+            }
+        }
+
+        function switchPracticeTab(subTab) {
+            const btnTuner = document.getElementById('tabBtnTuner');
+            const btnMetro = document.getElementById('tabBtnMetronome');
+            const panelTuner = document.getElementById('tunerContent');
+            const panelMetro = document.getElementById('metronomeContent');
+
+            const activeClass = "py-1.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 bg-[#F9F8F5] dark:bg-stone-800 shadow-sm border border-stone-300/80 dark:border-stone-700 transition-all";
+            const inactiveClass = "py-1.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition-all";
+
+            if (subTab === 'tuner') {
+                btnTuner.className = `${activeClass} text-emerald-700 dark:text-emerald-400`;
+                btnMetro.className = inactiveClass;
+                panelTuner.classList.remove('hidden');
+                panelMetro.classList.add('hidden');
+            } else {
+                btnMetro.className = `${activeClass} text-orange-700 dark:text-orange-400`;
+                btnTuner.className = inactiveClass;
+                panelMetro.classList.remove('hidden');
+                panelTuner.classList.add('hidden');
+                renderMetronomeDots();
+            }
+        }
+
+        function switchChordLibraryTab(subTab) {
+            const btnUke = document.getElementById('tabBtnUkeChords');
+            const btnGuitar = document.getElementById('tabBtnGuitarChords');
+            const panelUke = document.getElementById('ukeChordsContent');
+            const panelGuitar = document.getElementById('guitarChordsContent');
+
+            const activeClass = "py-1.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 bg-[#F9F8F5] dark:bg-stone-800 shadow-sm border border-stone-300/80 dark:border-stone-700 transition-all";
+            const inactiveClass = "py-1.5 px-3 rounded-lg text-xs font-bold flex items-center justify-center gap-2 text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition-all";
+
+            if (subTab === 'ukulele') {
+                btnUke.className = `${activeClass} text-teal-700 dark:text-teal-400`;
+                btnGuitar.className = inactiveClass;
+                panelUke.classList.remove('hidden');
+                panelGuitar.classList.add('hidden');
+                renderMasterUkeChordLibrary();
+            } else {
+                btnGuitar.className = `${activeClass} text-amber-700 dark:text-amber-400`;
+                btnUke.className = inactiveClass;
+                panelGuitar.classList.remove('hidden');
+                panelUke.classList.add('hidden');
+                renderGuitarChordLibrary();
+            }
         }
 
         // ==========================================
@@ -1079,141 +1254,245 @@
             "B":  { "C": "B",  "G": "F#", "Am": "G#m", "F": "E",  "Em": "D#m" }
         };
 
-        // State Variables
-        let currentInstrument = 'piano';
-        let currentProgressionIndex = 0;
-        let currentKey = "C";
-        let bpm = 90;
-        let chordBeats = 4;
-        let isPlayingProgression = false;
-        let progressionInterval = null;
-        let activeChordIndex = null;
-        let activeBeatInChord = 0;
-        let a4ReferenceHz = 442;
-
-        // Metronome State
-        let isPlayingMetronome = false;
-        let metronomeInterval = null;
-        let metronomeBpm = 90;
-        let metronomeBeatsPerBar = 4;
-        let currentMetronomeBeat = 0;
-
-        // Cajon State
-        let activeCajonBeatIndex = 0;
-        let isPlayingCajon = false;
-        let cajonInterval = null;
-        let currentCajonStep = 0;
-
-        // Live Microphone Pitch Detection State
-        let isMicTunerActive = false;
-        let micStream = null;
-        let micAudioCtx = null;
-        let micAnalyser = null;
-        let micAnimationId = null;
-
-        const NOTE_NAMES = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-
-        let audioCtx = null;
-
-        function initAudio() {
-            if (!audioCtx) {
-                const AudioContext = window.AudioContext || window.webkitAudioContext;
-                audioCtx = new AudioContext();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-            const statusText = document.getElementById('audioStatusText');
-            const statusIcon = document.getElementById('audioStatusIcon');
-            if (statusText) statusText.innerText = "Audio Active";
-            if (statusIcon) statusIcon.className = "fa-solid fa-volume-high text-emerald-500";
+        // ==========================================
+        // CHROMATIC TUNER & A4 CALIBRATION
+        // ==========================================
+        function midiToFreq(midiNote) {
+            return a4ReferenceHz * Math.pow(2, (midiNote - 69) / 12);
         }
 
-        document.body.addEventListener('click', () => { initAudio(); }, { once: true });
-
-        // ==========================================
-        // A4 CALIBRATION & REFERENCE NOTE FUNCTIONS
-        // ==========================================
-        function getFreqFromMidi(midi) {
-            return a4ReferenceHz * Math.pow(2, (midi - 69) / 12);
+        function freqToNoteDetails(freq) {
+            const semitonesFromA4 = 12 * Math.log2(freq / a4ReferenceHz);
+            const nearestMidi = Math.round(semitonesFromA4) + 69;
+            const targetFreq = midiToFreq(nearestMidi);
+            const cents = Math.round(1200 * Math.log2(freq / targetFreq));
+            const noteIndex = ((nearestMidi % 12) + 12) % 12;
+            const octave = Math.floor(nearestMidi / 12) - 1;
+            return {
+                noteName: NOTE_NAMES[noteIndex],
+                fullNote: `${NOTE_NAMES[noteIndex]}${octave}`,
+                cents: cents,
+                targetFreq: targetFreq
+            };
         }
 
-        function adjustA4(delta) {
-            const input = document.getElementById('a4CalibInput');
-            if (!input) return;
-            const current = parseInt(input.value) || 442;
-            updateA4Calibration(current + delta);
+        function updateReferenceFrequencies() {
+            const label = document.getElementById('refA4Label');
+            if (label) label.innerText = a4ReferenceHz;
+
+            const refNotes = [
+                { id: 'freq_guitar_40', midi: 40 },
+                { id: 'freq_guitar_45', midi: 45 },
+                { id: 'freq_guitar_50', midi: 50 },
+                { id: 'freq_guitar_55', midi: 55 },
+                { id: 'freq_guitar_59', midi: 59 },
+                { id: 'freq_guitar_64', midi: 64 },
+                { id: 'freq_ukulele_67', midi: 67 },
+                { id: 'freq_ukulele_60', midi: 60 },
+                { id: 'freq_ukulele_64', midi: 64 },
+                { id: 'freq_ukulele_69', midi: 69 }
+            ];
+
+            refNotes.forEach(item => {
+                const el = document.getElementById(item.id);
+                if (el) {
+                    el.innerText = `${midiToFreq(item.midi).toFixed(1)} Hz`;
+                }
+            });
         }
 
         function updateA4Calibration(val) {
-            let hz = parseInt(val);
-            if (isNaN(hz)) hz = 442;
-            hz = Math.max(410, Math.min(470, hz));
-            a4ReferenceHz = hz;
-
+            let parsed = parseInt(val);
+            if (isNaN(parsed)) parsed = 442;
+            parsed = Math.max(410, Math.min(470, parsed));
+            a4ReferenceHz = parsed;
             const input = document.getElementById('a4CalibInput');
-            if (input) input.value = hz;
-            const refLabel = document.getElementById('refA4Label');
-            if (refLabel) refLabel.innerText = hz;
-
-            const guitarMidis = [40, 45, 50, 55, 59, 64];
-            guitarMidis.forEach(m => {
-                const el = document.getElementById(`freq_guitar_${m}`);
-                if (el) el.innerText = `${getFreqFromMidi(m).toFixed(1)} Hz`;
-            });
-
-            const ukeMidis = [67, 60, 64, 69];
-            ukeMidis.forEach(m => {
-                const el = document.getElementById(`freq_ukulele_${m}`);
-                if (el) el.innerText = `${getFreqFromMidi(m).toFixed(1)} Hz`;
-            });
+            if (input) input.value = a4ReferenceHz;
+            updateReferenceFrequencies();
         }
 
-        function playRefNote(midi, instType) {
-            const freq = getFreqFromMidi(midi);
+        function adjustA4(delta) {
+            updateA4Calibration(a4ReferenceHz + delta);
+        }
+
+        function playRefNote(midiNote, instType) {
+            initAudio();
+            const freq = midiToFreq(midiNote);
             playTone(freq, 2.2, instType, 0);
         }
 
-        function toggleTuner() {
-            closeAllTabsExcept('tunerContent');
-            const content = document.getElementById('tunerContent');
-            const chevron = document.getElementById('tunerChevron');
-            if(content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                chevron.classList.add('rotate-180');
+        async function toggleMicTuner() {
+            if (isMicTunerActive) {
+                stopMicTuner();
             } else {
-                content.classList.add('hidden');
-                chevron.classList.remove('rotate-180');
+                await startMicTuner();
             }
         }
 
-        function toggleMetronome() {
-            closeAllTabsExcept('metronomeContent');
-            const content = document.getElementById('metronomeContent');
-            const chevron = document.getElementById('metronomeChevron');
-            if(content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                chevron.classList.add('rotate-180');
-                renderMetronomeDots();
-            } else {
-                content.classList.add('hidden');
-                chevron.classList.remove('rotate-180');
+        async function startMicTuner() {
+            try {
+                micStream = await navigator.mediaDevices.getUserMedia({ 
+                    audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } 
+                });
+                
+                micAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const source = micAudioCtx.createMediaStreamSource(micStream);
+                micAnalyser = micAudioCtx.createAnalyser();
+                micAnalyser.fftSize = 2048;
+                source.connect(micAnalyser);
+
+                isMicTunerActive = true;
+                
+                document.getElementById('btnMicTuner').className = "w-full sm:w-auto px-4 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-red-600/20";
+                document.getElementById('micTunerIcon').className = "fa-solid fa-microphone-slash";
+                document.getElementById('micTunerText').innerText = "Stop Mic Tuner";
+
+                const dot = document.getElementById('micPulseDot');
+                if (dot) dot.classList.add('animate-ping');
+
+                processMicAudio();
+            } catch (err) {
+                console.error("Mic tuner error:", err);
+                const badge = document.getElementById('micStatusBadge');
+                if (badge) {
+                    badge.innerText = "Mic Blocked";
+                    badge.className = "font-bold text-red-400 bg-red-950 border border-red-500 px-2 py-0.5 rounded-md";
+                }
             }
         }
 
-        function toggleSongWriting() {
-            closeAllTabsExcept('songWritingContent');
-            const content = document.getElementById('songWritingContent');
-            const chevron = document.getElementById('songWritingChevron');
-            if(content.classList.contains('hidden')) {
-                content.classList.remove('hidden');
-                chevron.classList.add('rotate-180');
+        function stopMicTuner() {
+            isMicTunerActive = false;
+            if (micAnimationId) cancelAnimationFrame(micAnimationId);
+            if (micStream) {
+                micStream.getTracks().forEach(track => track.stop());
+                micStream = null;
+            }
+            if (micAudioCtx) {
+                micAudioCtx.close();
+                micAudioCtx = null;
+            }
+
+            document.getElementById('btnMicTuner').className = "w-full sm:w-auto px-4 py-1.5 rounded-lg bg-green-700 hover:bg-green-600 text-[#E6E0D8] font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-teal-700/20";
+            document.getElementById('micTunerIcon').className = "fa-solid fa-microphone";
+            document.getElementById('micTunerText').innerText = "Start Live Mic Tuner";
+
+            const dot = document.getElementById('micPulseDot');
+            if (dot) dot.classList.remove('animate-ping');
+            
+            document.getElementById('micNoteDisplay').innerText = "--";
+            document.getElementById('micFreqDisplay').innerText = "0.0 Hz";
+            document.getElementById('micStatusBadge').innerText = "Ready";
+            document.getElementById('micStatusBadge').className = "font-bold text-teal-400 bg-teal-950/60 border border-teal-500/30 px-2 py-0.5 rounded-md";
+            document.getElementById('centsDisplay').innerText = "0 cents";
+            document.getElementById('tunerNeedle').style.transform = `rotate(0deg)`;
+            document.getElementById('micNeedle').style.left = "50%";
+        }
+
+        function processMicAudio() {
+            if (!isMicTunerActive || !micAnalyser) return;
+
+            const buffer = new Float32Array(micAnalyser.fftSize);
+            micAnalyser.getFloatTimeDomainData(buffer);
+
+            const pitch = autoCorrelatePitch(buffer, micAudioCtx.sampleRate);
+
+            if (pitch !== -1 && pitch >= 55 && pitch <= 1200) {
+                updateMicTunerUI(pitch);
             } else {
-                content.classList.add('hidden');
-                chevron.classList.remove('rotate-180');
+                document.getElementById('micNoteDisplay').innerText = "--";
+                document.getElementById('micFreqDisplay').innerText = "Listening...";
+                document.getElementById('micStatusBadge').innerText = "Play sound...";
+                document.getElementById('micStatusBadge').className = "font-bold text-stone-400 bg-stone-800/80 border border-stone-700 px-2 py-0.5 rounded-md";
+                document.getElementById('centsDisplay').innerText = "0 cents";
+                document.getElementById('tunerNeedle').style.transform = `rotate(0deg)`;
+                document.getElementById('micNeedle').style.left = "50%";
+                document.getElementById('micNeedle').className = "absolute top-0 bottom-0 w-2 bg-stone-500 left-1/2 -translate-x-1/2 rounded-full";
+            }
+
+            micAnimationId = requestAnimationFrame(processMicAudio);
+        }
+
+        function autoCorrelatePitch(buf, sampleRate) {
+            let rms = 0;
+            for (let i = 0; i < buf.length; i++) {
+                rms += buf[i] * buf[i];
+            }
+            rms = Math.sqrt(rms / buf.length);
+            if (rms < 0.012) return -1;
+
+            let r1 = 0, r2 = buf.length - 1, thres = 0.2;
+            for (let i = 0; i < buf.length / 2; i++) {
+                if (Math.abs(buf[i]) < thres) { r1 = i; break; }
+            }
+            for (let i = 1; i < buf.length / 2; i++) {
+                if (Math.abs(buf[buf.length - i]) < thres) { r2 = buf.length - i; break; }
+            }
+
+            const slicedBuf = buf.slice(r1, r2);
+            const c = new Float32Array(slicedBuf.length);
+            for (let i = 0; i < slicedBuf.length; i++) {
+                for (let j = 0; j < slicedBuf.length - i; j++) {
+                    c[i] += slicedBuf[j] * slicedBuf[j + i];
+                }
+            }
+
+            let d = 0;
+            while (c[d] > c[d + 1]) d++;
+            let maxval = -1, maxpos = -1;
+            for (let i = d; i < slicedBuf.length; i++) {
+                if (c[i] > maxval) {
+                    maxval = c[i];
+                    maxpos = i;
+                }
+            }
+            let T0 = maxpos;
+
+            const x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
+            const a = (x1 + x3 - 2 * x2) / 2;
+            const b = (x3 - x1) / 2;
+            if (a) T0 = T0 - b / (2 * a);
+
+            return sampleRate / T0;
+        }
+
+        function updateMicTunerUI(freq) {
+            const details = freqToNoteDetails(freq);
+            const cents = details.cents;
+            const boundedCents = Math.max(-50, Math.min(50, cents));
+
+            document.getElementById('micNoteDisplay').innerText = details.fullNote;
+            document.getElementById('micFreqDisplay').innerText = `${freq.toFixed(1)} Hz`;
+            document.getElementById('centsDisplay').innerText = `${cents > 0 ? '+' : ''}${cents} cents`;
+
+            // Needle Rotation (-60deg to +60deg)
+            const angle = (boundedCents / 50) * 60;
+            document.getElementById('tunerNeedle').style.transform = `rotate(${angle}deg)`;
+
+            const needlePercent = 50 + boundedCents;
+            const needle = document.getElementById('micNeedle');
+            needle.style.left = `${needlePercent}%`;
+
+            const statusBadge = document.getElementById('micStatusBadge');
+
+            if (Math.abs(cents) <= 5) {
+                statusBadge.innerText = "IN TUNE! 🎯";
+                statusBadge.className = "font-bold text-emerald-400 bg-emerald-950 border border-emerald-500 px-2 py-0.5 rounded-md shadow-[0_0_10px_rgba(16,185,129,0.4)]";
+                needle.className = "absolute top-0 bottom-0 w-2.5 bg-emerald-400 left-1/2 -translate-x-1/2 rounded-full shadow-lg shadow-emerald-500/80";
+            } else if (cents < 0) {
+                statusBadge.innerText = `FLAT (${cents}c)`;
+                statusBadge.className = "font-bold text-sky-400 bg-sky-950 border border-sky-500 px-2 py-0.5 rounded-md";
+                needle.className = "absolute top-0 bottom-0 w-2 bg-sky-400 left-1/2 -translate-x-1/2 rounded-full";
+            } else {
+                statusBadge.innerText = `SHARP (+${cents}c)`;
+                statusBadge.className = "font-bold text-amber-400 bg-amber-950 border border-amber-500 px-2 py-0.5 rounded-md";
+                needle.className = "absolute top-0 bottom-0 w-2 bg-amber-400 left-1/2 -translate-x-1/2 rounded-full";
             }
         }
 
+        // ==========================================
+        // METRONOME ENGINE
+        // ==========================================
         function updateMetronomeBPM(val) {
             metronomeBpm = parseInt(val);
             const display = document.getElementById('metroBpmDisplay');
@@ -1241,7 +1520,7 @@
             for (let i = 0; i < metronomeBeatsPerBar; i++) {
                 const dot = document.createElement('div');
                 dot.id = `metroDot_${i}`;
-                dot.className = `w-4 h-4 rounded-full border-2 border-purple-500 flex items-center justify-center text-[9px] font-bold transition-all ${i === 0 ? 'bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300' : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'}`;
+                dot.className = `w-5 h-5 rounded-full border-2 border-orange-500 flex items-center justify-center text-[10px] font-bold transition-all ${i === 0 ? 'bg-orange-100 text-orange-800 dark:bg-orange-900 dark:text-orange-300' : 'bg-stone-100 text-stone-500 dark:bg-stone-800 dark:text-stone-400'}`;
                 dot.innerText = i + 1;
                 container.appendChild(dot);
             }
@@ -1300,9 +1579,9 @@
                 const dot = document.getElementById(`metroDot_${i}`);
                 if (dot) {
                     if (i === beatIndex) {
-                        dot.className = `w-4 h-4 rounded-full border-2 border-purple-500 flex items-center justify-center text-[9px] font-bold transition-all scale-125 ${i === 0 ? 'bg-purple-600 text-white shadow-md shadow-purple-500/50' : 'bg-pink-500 text-white shadow-md shadow-pink-500/50'}`;
+                        dot.className = `w-5 h-5 rounded-full border-2 border-orange-500 flex items-center justify-center text-[10px] font-bold transition-all scale-125 ${i === 0 ? 'bg-orange-600 text-white shadow-md shadow-orange-500/50' : 'bg-amber-500 text-white shadow-md shadow-amber-500/50'}`;
                     } else {
-                        dot.className = `w-4 h-4 rounded-full border-2 border-purple-300 dark:border-purple-800 flex items-center justify-center text-[9px] font-bold transition-all ${i === 0 ? 'bg-purple-100 text-purple-700 dark:bg-purple-900/50 dark:text-purple-300' : 'bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400'}`;
+                        dot.className = `w-5 h-5 rounded-full border-2 border-orange-300 dark:border-orange-800 flex items-center justify-center text-[10px] font-bold transition-all ${i === 0 ? 'bg-orange-100 text-orange-800 dark:bg-orange-900/50 dark:text-orange-300' : 'bg-stone-100 text-stone-500 dark:bg-stone-800 dark:text-stone-400'}`;
                     }
                 }
             }
@@ -1329,176 +1608,9 @@
             osc.stop(now + 0.06);
         }
 
-        async function toggleMicTuner() {
-            if (isMicTunerActive) {
-                stopMicTuner();
-            } else {
-                await startMicTuner();
-            }
-        }
-
-        async function startMicTuner() {
-            try {
-                micStream = await navigator.mediaDevices.getUserMedia({ 
-                    audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false } 
-                });
-                
-                micAudioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                const source = micAudioCtx.createMediaStreamSource(micStream);
-                micAnalyser = micAudioCtx.createAnalyser();
-                micAnalyser.fftSize = 2048;
-                source.connect(micAnalyser);
-
-                isMicTunerActive = true;
-                
-                document.getElementById('btnMicTuner').className = "w-full sm:w-auto px-4 py-1.5 rounded-lg bg-red-600 hover:bg-red-500 text-white font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-red-600/20";
-                document.getElementById('micTunerIcon').className = "fa-solid fa-microphone-slash";
-                document.getElementById('micTunerText').innerText = "Stop Mic Tuner";
-
-                const dot = document.getElementById('micPulseDot');
-                if (dot) dot.classList.add('animate-ping');
-
-                processMicAudio();
-            } catch (err) {
-                console.error("Mic tuner error:", err);
-                document.getElementById('micStatusBadge').innerText = "Mic Blocked";
-            }
-        }
-
-        function stopMicTuner() {
-            isMicTunerActive = false;
-            if (micAnimationId) cancelAnimationFrame(micAnimationId);
-            if (micStream) {
-                micStream.getTracks().forEach(track => track.stop());
-                micStream = null;
-            }
-            if (micAudioCtx) {
-                micAudioCtx.close();
-                micAudioCtx = null;
-            }
-
-            document.getElementById('btnMicTuner').className = "w-full sm:w-auto px-4 py-1.5 rounded-lg bg-green-700 hover:bg-green-600 text-[#E6E0D8] font-bold text-xs flex items-center justify-center gap-2 transition shadow-md shadow-teal-700/20";
-            document.getElementById('micTunerIcon').className = "fa-solid fa-microphone";
-            document.getElementById('micTunerText').innerText = "Start Live Mic Tuner";
-
-            const dot = document.getElementById('micPulseDot');
-            if (dot) dot.classList.remove('animate-ping');
-            
-            document.getElementById('micNoteDisplay').innerText = "--";
-            document.getElementById('micFreqDisplay').innerText = "0.0 Hz";
-            document.getElementById('micStatusBadge').innerText = "Ready";
-            document.getElementById('micStatusBadge').className = "font-bold text-teal-400 bg-teal-950/60 border border-teal-500/30 px-2 py-0.5 rounded-md";
-            document.getElementById('centsDisplay').innerText = "0 cents";
-            document.getElementById('tunerNeedle').style.transform = `rotate(0deg)`;
-            document.getElementById('micNeedle').style.left = "50%";
-        }
-
-        function processMicAudio() {
-            if (!isMicTunerActive || !micAnalyser) return;
-
-            const buffer = new Float32Array(micAnalyser.fftSize);
-            micAnalyser.getFloatTimeDomainData(buffer);
-
-            const pitch = autoCorrelatePitch(buffer, micAudioCtx.sampleRate);
-
-            if (pitch !== -1 && pitch >= 55 && pitch <= 1200) {
-                updateMicTunerUI(pitch);
-            } else {
-                document.getElementById('micNoteDisplay').innerText = "--";
-                document.getElementById('micFreqDisplay').innerText = "Listening...";
-                document.getElementById('micStatusBadge').innerText = "Play sound...";
-                document.getElementById('micStatusBadge').className = "font-bold text-slate-400 bg-slate-800/80 border border-slate-700 px-2 py-0.5 rounded-md";
-                document.getElementById('centsDisplay').innerText = "0 cents";
-                document.getElementById('tunerNeedle').style.transform = `rotate(0deg)`;
-                document.getElementById('micNeedle').style.left = "50%";
-                document.getElementById('micNeedle').className = "absolute top-0 bottom-0 w-2 bg-slate-500 left-1/2 -translate-x-1/2 rounded-full";
-            }
-
-            micAnimationId = requestAnimationFrame(processMicAudio);
-        }
-
-        function autoCorrelatePitch(buf, sampleRate) {
-            let rms = 0;
-            for (let i = 0; i < buf.length; i++) {
-                rms += buf[i] * buf[i];
-            }
-            rms = Math.sqrt(rms / buf.length);
-            if (rms < 0.012) return -1;
-
-            let r1 = 0, r2 = buf.length - 1, thres = 0.2;
-            for (let i = 0; i < buf.length / 2; i++) {
-                if (Math.abs(buf[i]) < thres) { r1 = i; break; }
-            }
-            for (let i = 1; i < buf.length / 2; i++) {
-                if (Math.abs(buf[buf.length - i]) < thres) { r2 = buf.length - i; break; }
-            }
-
-            const slicedBuf = buf.slice(r1, r2);
-            const c = new Float32Array(slicedBuf.length);
-            for (let i = 0; i < slicedBuf.length; i++) {
-                for (let j = 0; j < slicedBuf.length - i; j++) {
-                    c[i] += slicedBuf[j] * slicedBuf[j + i];
-                }
-            }
-
-            let d = 0;
-            while (c[d] > c[d + 1]) d++;
-            let maxval = -1, maxpos = -1;
-            for (let i = d; i < slicedBuf.length; i++) {
-                if (c[i] > maxval) {
-                    maxval = c[i];
-                    maxpos = i;
-                }
-            }
-            let T0 = maxpos;
-
-            const x1 = c[T0 - 1], x2 = c[T0], x3 = c[T0 + 1];
-            const a = (x1 + x3 - 2 * x2) / 2;
-            const b = (x3 - x1) / 2;
-            if (a) T0 = T0 - b / (2 * a);
-
-            return sampleRate / T0;
-        }
-
-        function updateMicTunerUI(freq) {
-            const exactMidi = 69 + 12 * Math.log2(freq / a4ReferenceHz);
-            const nearestMidi = Math.round(exactMidi);
-            const targetFreq = getFreqFromMidi(nearestMidi);
-            const noteName = NOTE_NAMES[((nearestMidi % 12) + 12) % 12];
-            const octave = Math.floor(nearestMidi / 12) - 1;
-
-            const cents = Math.round(1200 * Math.log2(freq / targetFreq));
-            const boundedCents = Math.max(-50, Math.min(50, cents));
-
-            document.getElementById('micNoteDisplay').innerText = `${noteName}${octave}`;
-            document.getElementById('micFreqDisplay').innerText = `${freq.toFixed(1)} Hz`;
-            document.getElementById('centsDisplay').innerText = `${cents > 0 ? '+' : ''}${cents} cents`;
-
-            // Needle Rotation (-60deg to +60deg)
-            const angle = (boundedCents / 50) * 60;
-            document.getElementById('tunerNeedle').style.transform = `rotate(${angle}deg)`;
-
-            const needlePercent = 50 + (boundedCents);
-            const needle = document.getElementById('micNeedle');
-            needle.style.left = `${needlePercent}%`;
-
-            const statusBadge = document.getElementById('micStatusBadge');
-
-            if (Math.abs(cents) <= 5) {
-                statusBadge.innerText = "IN TUNE! 🎯";
-                statusBadge.className = "font-bold text-emerald-400 bg-emerald-950 border border-emerald-500 px-2 py-0.5 rounded-md shadow-[0_0_10px_rgba(16,185,129,0.4)]";
-                needle.className = "absolute top-0 bottom-0 w-2.5 bg-emerald-400 left-1/2 -translate-x-1/2 rounded-full shadow-lg shadow-emerald-500/80";
-            } else if (cents < 0) {
-                statusBadge.innerText = `FLAT (${cents}c)`;
-                statusBadge.className = "font-bold text-sky-400 bg-sky-950 border border-sky-500 px-2 py-0.5 rounded-md";
-                needle.className = "absolute top-0 bottom-0 w-2 bg-sky-400 left-1/2 -translate-x-1/2 rounded-full";
-            } else {
-                statusBadge.innerText = `SHARP (+${cents}c)`;
-                statusBadge.className = "font-bold text-amber-400 bg-amber-950 border border-amber-500 px-2 py-0.5 rounded-md";
-                needle.className = "absolute top-0 bottom-0 w-2 bg-amber-400 left-1/2 -translate-x-1/2 rounded-full";
-            }
-        }
-
+        // ==========================================
+        // INSTRUMENT & CAJON AUDIO SYNTHESIS
+        // ==========================================
         function playTone(freq, duration = 1.8, instType = 'guitar', delay = 0) {
             if (!audioCtx) initAudio();
             if (!audioCtx) return;
@@ -1532,8 +1644,8 @@
                 filter.frequency.exponentialRampToValueAtTime(400, startTime + duration);
 
                 gainNode.gain.setValueAtTime(0, startTime);
-                gainNode.gain.linearRampToValueAtTime(0.4, startTime + 0.01);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.8);
+                gainNode.gain.linearRampToValueAtTime(0.35, startTime + 0.01);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, startTime + duration * 0.85);
             } 
             else { // Piano
                 osc1.type = 'sine';
@@ -1559,177 +1671,6 @@
             osc2.stop(startTime + duration + 0.1);
         }
 
-        // ==========================================
-        // MASTER UKULELE CHORD LIBRARY DATA & RENDERER
-        // ==========================================
-        const MASTER_UKE_CHORDS = {
-            "Major Chords": [
-                { name: "C Major", frets: [0, 0, 0, 3], fingers: ["", "", "", "3"] },
-                { name: "Db Major", frets: [1, 1, 1, 4], fingers: ["1", "1", "1", "4"] },
-                { name: "D Major", frets: [2, 2, 2, 0], fingers: ["1", "2", "3", ""] },
-                { name: "Eb Major", frets: [0, 3, 3, 1], fingers: ["", "2", "3", "1"] },
-                { name: "E Major", frets: [4, 4, 4, 2], fingers: ["2", "3", "4", "1"] },
-                { name: "F Major", frets: [2, 0, 1, 0], fingers: ["2", "", "1", ""] },
-                { name: "F# Major", frets: [3, 1, 2, 1], fingers: ["3", "1", "2", "1"] },
-                { name: "G Major", frets: [0, 2, 3, 2], fingers: ["", "1", "3", "2"] },
-                { name: "Ab Major", frets: [5, 3, 4, 3], fingers: ["4", "1", "3", "2"] },
-                { name: "A Major", frets: [2, 1, 0, 0], fingers: ["2", "1", "", ""] },
-                { name: "Bb Major", frets: [3, 2, 1, 1], fingers: ["3", "2", "1", "1"] },
-                { name: "B Major", frets: [4, 3, 2, 2], fingers: ["3", "2", "1", "1"] }
-            ],
-            "Minor Chords": [
-                { name: "C Minor (Cm)", frets: [0, 3, 3, 3], fingers: ["", "1", "2", "3"] },
-                { name: "C# Minor (C#m)", frets: [6, 4, 4, 4], fingers: ["3", "1", "1", "1"] },
-                { name: "D Minor (Dm)", frets: [2, 2, 1, 0], fingers: ["2", "3", "1", ""] },
-                { name: "Eb Minor (Ebm)", frets: [3, 3, 2, 1], fingers: ["3", "4", "2", "1"] },
-                { name: "E Minor (Em)", frets: [0, 4, 3, 2], fingers: ["", "3", "2", "1"] },
-                { name: "F Minor (Fm)", frets: [1, 0, 1, 3], fingers: ["1", "", "2", "4"] },
-                { name: "F# Minor (F#m)", frets: [2, 1, 2, 0], fingers: ["2", "1", "3", ""] },
-                { name: "G Minor (Gm)", frets: [0, 2, 3, 1], fingers: ["", "2", "3", "1"] },
-                { name: "G# Minor (G#m)", frets: [4, 3, 4, 2], fingers: ["3", "2", "4", "1"] },
-                { name: "A Minor (Am)", frets: [2, 0, 0, 0], fingers: ["2", "", "", ""] },
-                { name: "Bb Minor (Bbm)", frets: [3, 1, 1, 1], fingers: ["3", "1", "1", "1"] },
-                { name: "B Minor (Bm)", frets: [4, 2, 2, 2], fingers: ["3", "1", "1", "1"] }
-            ],
-            "Dominant 7th Chords": [
-                { name: "C7", frets: [0, 0, 0, 1], fingers: ["", "", "", "1"] },
-                { name: "Db7", frets: [1, 1, 1, 2], fingers: ["1", "1", "1", "2"] },
-                { name: "D7", frets: [2, 0, 2, 0], fingers: ["1", "", "2", ""] },
-                { name: "Eb7", frets: [3, 3, 3, 4], fingers: ["1", "1", "1", "2"] },
-                { name: "E7", frets: [1, 2, 0, 2], fingers: ["1", "2", "", "3"] },
-                { name: "F7", frets: [2, 3, 1, 0], fingers: ["2", "3", "1", ""] },
-                { name: "F#7", frets: [3, 4, 2, 4], fingers: ["2", "3", "1", "4"] },
-                { name: "G7", frets: [0, 2, 1, 2], fingers: ["", "2", "1", "3"] },
-                { name: "Ab7", frets: [1, 0, 2, 3], fingers: ["1", "", "2", "3"] },
-                { name: "A7", frets: [0, 1, 0, 0], fingers: ["", "1", "", ""] },
-                { name: "Bb7", frets: [1, 2, 1, 1], fingers: ["1", "2", "1", "1"] },
-                { name: "B7", frets: [2, 3, 2, 2], fingers: ["1", "3", "1", "1"] }
-            ]
-        };
-
-        // SVG Diagram Generator for Ukulele Fretboard (gCEA)
-        function generateUkeChordSVG(frets, fingers) {
-            const stringX = [20, 40, 60, 80];
-            const numFrets = 4;
-            
-            const validFrets = frets.filter(f => typeof f === 'number' && f > 0);
-            const maxFret = validFrets.length ? Math.max(...validFrets) : 0;
-            const minFret = validFrets.length ? Math.min(...validFrets) : 1;
-            const baseFret = maxFret > 4 ? minFret : 1;
-
-            let svg = `<svg viewBox="0 0 100 120" class="w-24 h-28 mx-auto select-none">`;
-            
-            const strokeWidth = baseFret === 1 ? 4 : 1.5;
-            svg += `<line x1="20" y1="25" x2="80" y2="25" stroke="currentColor" stroke-width="${strokeWidth}" />`;
-            
-            for (let i = 1; i <= numFrets; i++) {
-                const y = 25 + i * 20;
-                svg += `<line x1="20" y1="${y}" x2="80" y2="${y}" stroke="currentColor" stroke-width="1.5" class="opacity-40" />`;
-            }
-            
-            stringX.forEach(x => {
-                svg += `<line x1="${x}" y1="25" x2="${x}" y2="105" stroke="currentColor" stroke-width="1.5" class="opacity-60" />`;
-            });
-
-            if (baseFret > 1) {
-                svg += `<text x="5" y="42" font-size="10" font-weight="bold" fill="currentColor">${baseFret}fr</text>`;
-            }
-
-            frets.forEach((fret, stringIdx) => {
-                const x = stringX[stringIdx];
-                const finger = fingers[stringIdx] || '';
-
-                if (fret === 0) {
-                    svg += `<circle cx="${x}" cy="15" r="4" fill="none" stroke="currentColor" stroke-width="1.5" />`;
-                } else if (fret === 'X' || fret === 'x') {
-                    svg += `<text x="${x}" y="18" font-size="11" text-anchor="middle" font-weight="bold" fill="currentColor">✕</text>`;
-                } else {
-                    const relFret = fret - baseFret + 1;
-                    const y = 25 + (relFret - 0.5) * 20;
-                    
-                    svg += `<circle cx="${x}" cy="${y}" r="7" class="fill-teal-600 dark:fill-teal-400" />`;
-                    if (finger) {
-                        svg += `<text x="${x}" y="${y + 3.5}" font-size="9" text-anchor="middle" font-weight="bold" fill="#ffffff">${finger}</text>`;
-                    }
-                }
-            });
-
-            svg += `</svg>`;
-            return svg;
-        }
-
-        // Master Render Function
-        function renderMasterUkeChordLibrary() {
-            const container = document.getElementById('ukeChordLibraryGrid');
-            if (!container) return;
-
-            let html = '';
-
-            for (const [category, chords] of Object.entries(MASTER_UKE_CHORDS)) {
-                html += `
-                    <div class="bg-white dark:bg-stone-900/90 rounded-xl p-3.5 border border-stone-200 dark:border-stone-800 shadow-sm">
-                        <h3 class="font-display font-bold text-sm text-stone-800 dark:text-stone-200 mb-3 flex items-center gap-2 border-b border-stone-200 dark:border-stone-800 pb-2">
-                            <span class="w-2 h-2 rounded-full bg-teal-500"></span>
-                            ${category}
-                        </h3>
-                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
-                `;
-
-                chords.forEach(chord => {
-                    const svg = generateUkeChordSVG(chord.frets, chord.fingers);
-                    html += `
-                        <div onclick="playUkeChordPreview([${chord.frets.join(',')}])" 
-                             class="p-2.5 rounded-lg border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50 hover:border-teal-500 dark:hover:border-teal-400 hover:shadow-md transition cursor-pointer text-center group active:scale-95">
-                            <div class="font-display font-bold text-sm text-stone-900 dark:text-stone-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 mb-1">
-                                ${chord.name}
-                            </div>
-                            <div class="text-stone-700 dark:text-stone-300">
-                                ${svg}
-                            </div>
-                        </div>
-                    `;
-                });
-
-                html += `
-                        </div>
-                    </div>
-                `;
-            }
-
-            container.innerHTML = html;
-        }
-
-        // Interactive Strum Audio Preview
-        function playUkeChordPreview(frets) {
-            if (typeof initAudio === 'function') initAudio();
-            const openFreqs = [392.00, 261.63, 329.63, 440.00]; // g4, C4, E4, A4
-            frets.forEach((fret, idx) => {
-                if (fret !== 'X' && fret !== 'x') {
-                    const noteFreq = openFreqs[idx] * Math.pow(2, fret / 12);
-                    if (typeof playTone === 'function') {
-                        playTone(noteFreq, 1.5, 'ukulele', idx * 0.05);
-                    }
-                }
-            });
-        }
-
-        // Toggle function for Ukulele Chord Library
-        function toggleUkeChords() {
-            closeAllTabsExcept('ukeChordsContent');
-            const content = document.getElementById('ukeChordsContent');
-            const chevron = document.getElementById('ukeChordsChevron');
-            if (content && chevron) {
-                content.classList.toggle('hidden');
-                chevron.classList.toggle('rotate-180');
-                if (!content.classList.contains('hidden')) {
-                    renderMasterUkeChordLibrary();
-                }
-            }
-        }
-
-        // ==========================================
-        // CAJON AUDIO SYNTHESIS & VISUAL FLASHING
-        // ==========================================
         function playCajonSound(type) {
             if (!audioCtx) initAudio();
             if (!audioCtx) return;
@@ -1810,6 +1751,9 @@
             });
         }
 
+        // ==========================================
+        // THEME, SONGWRITING & PROGRESSION CONTROLS
+        // ==========================================
         function toggleTheme() {
             const html = document.documentElement;
             if (html.classList.contains('dark')) {
@@ -1933,6 +1877,7 @@
             isPlayingProgression = true;
             document.getElementById('playProgIcon').className = "fa-solid fa-square text-[10px]";
             document.getElementById('playProgText').innerText = "Stop";
+            document.getElementById('btnPlayProgression').classList.replace('bg-red-700', 'bg-red-600');
 
             let totalBeatCount = 0;
             const totalProgressionBeats = 4 * chordBeats;
@@ -1961,6 +1906,7 @@
             if (progressionInterval) clearInterval(progressionInterval);
             document.getElementById('playProgIcon').className = "fa-solid fa-play text-[10px]";
             document.getElementById('playProgText').innerText = "Play All";
+            document.getElementById('btnPlayProgression').classList.replace('bg-red-600', 'bg-red-700');
             
             activeChordIndex = null;
             activeBeatInChord = 0;
@@ -2347,21 +2293,160 @@
             });
         }
 
-        // Toggle Collapsible Guitar Tab
-        function toggleGuitarChords() {
-            closeAllTabsExcept('guitarChordsContent');
-            const content = document.getElementById('guitarChordsContent');
-            const chevron = document.getElementById('guitarChordsChevron');
-            if (content && chevron) {
-                content.classList.toggle('hidden');
-                chevron.classList.toggle('rotate-180');
+        // ==========================================
+        // MASTER UKULELE CHORD LIBRARY DATA & RENDERER
+        // ==========================================
+        const MASTER_UKE_CHORDS = {
+            "Major Chords": [
+                { name: "C Major", frets: [0, 0, 0, 3], fingers: ["", "", "", "3"] },
+                { name: "Db Major", frets: [1, 1, 1, 4], fingers: ["1", "1", "1", "4"] },
+                { name: "D Major", frets: [2, 2, 2, 0], fingers: ["1", "2", "3", ""] },
+                { name: "Eb Major", frets: [0, 3, 3, 1], fingers: ["", "2", "3", "1"] },
+                { name: "E Major", frets: [4, 4, 4, 2], fingers: ["2", "3", "4", "1"] },
+                { name: "F Major", frets: [2, 0, 1, 0], fingers: ["2", "", "1", ""] },
+                { name: "F# Major", frets: [3, 1, 2, 1], fingers: ["3", "1", "2", "1"] },
+                { name: "G Major", frets: [0, 2, 3, 2], fingers: ["", "1", "3", "2"] },
+                { name: "Ab Major", frets: [5, 3, 4, 3], fingers: ["4", "1", "3", "2"] },
+                { name: "A Major", frets: [2, 1, 0, 0], fingers: ["2", "1", "", ""] },
+                { name: "Bb Major", frets: [3, 2, 1, 1], fingers: ["3", "2", "1", "1"] },
+                { name: "B Major", frets: [4, 3, 2, 2], fingers: ["3", "2", "1", "1"] }
+            ],
+            "Minor Chords": [
+                { name: "C Minor (Cm)", frets: [0, 3, 3, 3], fingers: ["", "1", "2", "3"] },
+                { name: "C# Minor (C#m)", frets: [6, 4, 4, 4], fingers: ["3", "1", "1", "1"] },
+                { name: "D Minor (Dm)", frets: [2, 2, 1, 0], fingers: ["2", "3", "1", ""] },
+                { name: "Eb Minor (Ebm)", frets: [3, 3, 2, 1], fingers: ["3", "4", "2", "1"] },
+                { name: "E Minor (Em)", frets: [0, 4, 3, 2], fingers: ["", "3", "2", "1"] },
+                { name: "F Minor (Fm)", frets: [1, 0, 1, 3], fingers: ["1", "", "2", "4"] },
+                { name: "F# Minor (F#m)", frets: [2, 1, 2, 0], fingers: ["2", "1", "3", ""] },
+                { name: "G Minor (Gm)", frets: [0, 2, 3, 1], fingers: ["", "2", "3", "1"] },
+                { name: "G# Minor (G#m)", frets: [4, 3, 4, 2], fingers: ["3", "2", "4", "1"] },
+                { name: "A Minor (Am)", frets: [2, 0, 0, 0], fingers: ["2", "", "", ""] },
+                { name: "Bb Minor (Bbm)", frets: [3, 1, 1, 1], fingers: ["3", "1", "1", "1"] },
+                { name: "B Minor (Bm)", frets: [4, 2, 2, 2], fingers: ["3", "1", "1", "1"] }
+            ],
+            "Dominant 7th Chords": [
+                { name: "C7", frets: [0, 0, 0, 1], fingers: ["", "", "", "1"] },
+                { name: "Db7", frets: [1, 1, 1, 2], fingers: ["1", "1", "1", "2"] },
+                { name: "D7", frets: [2, 0, 2, 0], fingers: ["1", "", "2", ""] },
+                { name: "Eb7", frets: [3, 3, 3, 4], fingers: ["1", "1", "1", "2"] },
+                { name: "E7", frets: [1, 2, 0, 2], fingers: ["1", "2", "", "3"] },
+                { name: "F7", frets: [2, 3, 1, 0], fingers: ["2", "3", "1", ""] },
+                { name: "F#7", frets: [3, 4, 2, 4], fingers: ["2", "3", "1", "4"] },
+                { name: "G7", frets: [0, 2, 1, 2], fingers: ["", "2", "1", "3"] },
+                { name: "Ab7", frets: [1, 0, 2, 3], fingers: ["1", "", "2", "3"] },
+                { name: "A7", frets: [0, 1, 0, 0], fingers: ["", "1", "", ""] },
+                { name: "Bb7", frets: [1, 2, 1, 1], fingers: ["1", "2", "1", "1"] },
+                { name: "B7", frets: [2, 3, 2, 2], fingers: ["1", "3", "1", "1"] }
+            ]
+        };
+
+        function generateUkeChordSVG(frets, fingers) {
+            const stringX = [20, 40, 60, 80];
+            const numFrets = 4;
+            
+            const validFrets = frets.filter(f => typeof f === 'number' && f > 0);
+            const maxFret = validFrets.length ? Math.max(...validFrets) : 0;
+            const minFret = validFrets.length ? Math.min(...validFrets) : 1;
+            const baseFret = maxFret > 4 ? minFret : 1;
+
+            let svg = `<svg viewBox="0 0 100 120" class="w-24 h-28 mx-auto select-none">`;
+            
+            const strokeWidth = baseFret === 1 ? 4 : 1.5;
+            svg += `<line x1="20" y1="25" x2="80" y2="25" stroke="currentColor" stroke-width="${strokeWidth}" />`;
+            
+            for (let i = 1; i <= numFrets; i++) {
+                const y = 25 + i * 20;
+                svg += `<line x1="20" y1="${y}" x2="80" y2="${y}" stroke="currentColor" stroke-width="1.5" class="opacity-40" />`;
             }
+            
+            stringX.forEach(x => {
+                svg += `<line x1="${x}" y1="25" x2="${x}" y2="105" stroke="currentColor" stroke-width="1.5" class="opacity-60" />`;
+            });
+
+            if (baseFret > 1) {
+                svg += `<text x="5" y="42" font-size="10" font-weight="bold" fill="currentColor">${baseFret}fr</text>`;
+            }
+
+            frets.forEach((fret, stringIdx) => {
+                const x = stringX[stringIdx];
+                const finger = fingers[stringIdx] || '';
+
+                if (fret === 0) {
+                    svg += `<circle cx="${x}" cy="15" r="4" fill="none" stroke="currentColor" stroke-width="1.5" />`;
+                } else if (fret === 'X' || fret === 'x') {
+                    svg += `<text x="${x}" y="18" font-size="11" text-anchor="middle" font-weight="bold" fill="currentColor">✕</text>`;
+                } else {
+                    const relFret = fret - baseFret + 1;
+                    const y = 25 + (relFret - 0.5) * 20;
+                    
+                    svg += `<circle cx="${x}" cy="${y}" r="7" class="fill-teal-600 dark:fill-teal-400" />`;
+                    if (finger) {
+                        svg += `<text x="${x}" y="${y + 3.5}" font-size="9" text-anchor="middle" font-weight="bold" fill="#ffffff">${finger}</text>`;
+                    }
+                }
+            });
+
+            svg += `</svg>`;
+            return svg;
         }
 
-        // State tracker for active chord variation index
+        function renderMasterUkeChordLibrary() {
+            const container = document.getElementById('ukeChordLibraryGrid');
+            if (!container) return;
+
+            let html = '';
+
+            for (const [category, chords] of Object.entries(MASTER_UKE_CHORDS)) {
+                html += `
+                    <div class="bg-white dark:bg-stone-900/90 rounded-xl p-3.5 border border-stone-200 dark:border-stone-800 shadow-sm">
+                        <h3 class="font-display font-bold text-sm text-stone-800 dark:text-stone-200 mb-3 flex items-center gap-2 border-b border-stone-200 dark:border-stone-800 pb-2">
+                            <span class="w-2 h-2 rounded-full bg-teal-500"></span>
+                            ${category}
+                        </h3>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-3">
+                `;
+
+                chords.forEach(chord => {
+                    const svg = generateUkeChordSVG(chord.frets, chord.fingers);
+                    html += `
+                        <div onclick="playUkeChordPreview([${chord.frets.join(',')}])" 
+                             class="p-2.5 rounded-lg border border-stone-200 dark:border-stone-800 bg-stone-50 dark:bg-stone-800/50 hover:border-teal-500 dark:hover:border-teal-400 hover:shadow-md transition cursor-pointer text-center group active:scale-95">
+                            <div class="font-display font-bold text-sm text-stone-900 dark:text-stone-100 group-hover:text-teal-600 dark:group-hover:text-teal-400 mb-1">
+                                ${chord.name}
+                            </div>
+                            <div class="text-stone-700 dark:text-stone-300">
+                                ${svg}
+                            </div>
+                        </div>
+                    `;
+                });
+
+                html += `
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        function playUkeChordPreview(frets) {
+            initAudio();
+            const openFreqs = [392.00, 261.63, 329.63, 440.00]; // g4, C4, E4, A4
+            frets.forEach((fret, idx) => {
+                if (fret !== 'X' && fret !== 'x') {
+                    const noteFreq = openFreqs[idx] * Math.pow(2, fret / 12);
+                    playTone(noteFreq, 1.5, 'ukulele', idx * 0.05);
+                }
+            });
+        }
+
+        // ==========================================
+        // MASTER GUITAR CHORD LIBRARY & VARIATIONS
+        // ==========================================
         const activeChordIndices = {};
 
-        // Master Guitar Chord Data (6th to 1st String: EADGBE)
         const MASTER_GUITAR_CHORDS = {
             "Major Chords": [
                 {
@@ -2488,7 +2573,6 @@
             ]
         };
 
-        // Cycle through chord variations
         function cycleChordVariation(chordId, step) {
             let foundChord = null;
             for (const cat in MASTER_GUITAR_CHORDS) {
@@ -2504,7 +2588,17 @@
             renderGuitarChordLibrary();
         }
 
-        // Generate Calibrated SVG String
+        function playGuitarVariationPreview(frets) {
+            initAudio();
+            const openFreqs = [82.41, 110.00, 146.83, 196.00, 246.94, 329.63]; // E2, A2, D3, G3, B3, E4
+            frets.forEach((fret, idx) => {
+                if (typeof fret === 'number') {
+                    const noteFreq = openFreqs[idx] * Math.pow(2, fret / 12);
+                    playTone(noteFreq, 1.5, 'guitar', idx * 0.04);
+                }
+            });
+        }
+
         function createChordSVG(variation) {
             const stringX = [20, 36, 52, 68, 84, 100];
             const fretYCenters = [42, 66, 90, 114];
@@ -2563,7 +2657,6 @@
             `;
         }
 
-        // Render Guitar Chord Grid
         function renderGuitarChordLibrary() {
             const grid = document.getElementById('guitarChordLibraryGrid');
             if (!grid) return;
@@ -2583,7 +2676,8 @@
                     const hasMultiple = chord.variations.length > 1;
 
                     const card = document.createElement('div');
-                    card.className = 'bg-white dark:bg-stone-900 p-2.5 rounded-xl border border-stone-200 dark:border-stone-800 flex flex-col items-center justify-between shadow-sm hover:border-amber-500 transition-all relative group touch-pan-y';
+                    card.className = 'bg-white dark:bg-stone-900 p-2.5 rounded-xl border border-stone-200 dark:border-stone-800 flex flex-col items-center justify-between shadow-sm hover:border-amber-500 transition-all relative group touch-pan-y cursor-pointer';
+                    card.onclick = () => playGuitarVariationPreview(variation.frets);
 
                     // Swipe Gestures
                     let touchStartX = 0;
@@ -2606,10 +2700,10 @@
                         <!-- SVG Diagram & Compact Arrow Buttons -->
                         <div class="relative w-full flex items-center justify-center my-1">
                             ${hasMultiple ? `
-                                <button onclick="cycleChordVariation('${chord.id}', -1)" aria-label="Previous variation" class="absolute left-0 z-10 w-5 h-5 rounded-full bg-stone-200/90 dark:bg-stone-800/90 text-stone-700 dark:text-stone-300 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all shadow-sm">
+                                <button onclick="event.stopPropagation(); cycleChordVariation('${chord.id}', -1)" aria-label="Previous variation" class="absolute left-0 z-10 w-5 h-5 rounded-full bg-stone-200/90 dark:bg-stone-800/90 text-stone-700 dark:text-stone-300 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all shadow-sm">
                                     <i class="fa-solid fa-chevron-left text-[8px]"></i>
                                 </button>
-                                <button onclick="cycleChordVariation('${chord.id}', 1)" aria-label="Next variation" class="absolute right-0 z-10 w-5 h-5 rounded-full bg-stone-200/90 dark:bg-stone-800/90 text-stone-700 dark:text-stone-300 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all shadow-sm">
+                                <button onclick="event.stopPropagation(); cycleChordVariation('${chord.id}', 1)" aria-label="Next variation" class="absolute right-0 z-10 w-5 h-5 rounded-full bg-stone-200/90 dark:bg-stone-800/90 text-stone-700 dark:text-stone-300 flex items-center justify-center hover:bg-amber-500 hover:text-white transition-all shadow-sm">
                                     <i class="fa-solid fa-chevron-right text-[8px]"></i>
                                 </button>
                             ` : ''}
@@ -2634,12 +2728,195 @@
             }
         }
 
-        // Initialize App State
+        // ==========================================
+        // NOTE RECOGNITION TRAINER (TREBLE & BASS)
+        // ==========================================
+        const NR_NOTES = {
+            treble: [
+                { letter: 'C', label: 'C4 (Middle C)', step: -2, midi: 60 },
+                { letter: 'D', label: 'D4', step: -1, midi: 62 },
+                { letter: 'E', label: 'E4 (Line 1)', step: 0, midi: 64 },
+                { letter: 'F', label: 'F4 (Space 1)', step: 1, midi: 65 },
+                { letter: 'G', label: 'G4 (Line 2)', step: 2, midi: 67 },
+                { letter: 'A', label: 'A4 (Space 2)', step: 3, midi: 69 },
+                { letter: 'B', label: 'B4 (Line 3)', step: 4, midi: 71 },
+                { letter: 'C', label: 'C5 (Space 3)', step: 5, midi: 72 },
+                { letter: 'D', label: 'D5 (Line 4)', step: 6, midi: 74 },
+                { letter: 'E', label: 'E5 (Space 4)', step: 7, midi: 76 },
+                { letter: 'F', label: 'F5 (Line 5)', step: 8, midi: 77 },
+                { letter: 'G', label: 'G5', step: 9, midi: 79 },
+                { letter: 'A', label: 'A5', step: 10, midi: 81 }
+            ],
+            bass: [
+                { letter: 'E', label: 'E2', step: -2, midi: 40 },
+                { letter: 'F', label: 'F2', step: -1, midi: 41 },
+                { letter: 'G', label: 'G2 (Line 1)', step: 0, midi: 43 },
+                { letter: 'A', label: 'A2 (Space 1)', step: 1, midi: 45 },
+                { letter: 'B', label: 'B2 (Line 2)', step: 2, midi: 47 },
+                { letter: 'C', label: 'C3 (Space 2)', step: 3, midi: 48 },
+                { letter: 'D', label: 'D3 (Line 3)', step: 4, midi: 50 },
+                { letter: 'E', label: 'E3 (Space 3)', step: 5, midi: 52 },
+                { letter: 'F', label: 'F3 (Line 4)', step: 6, midi: 53 },
+                { letter: 'G', label: 'G3 (Space 4)', step: 7, midi: 55 },
+                { letter: 'A', label: 'A3 (Line 5)', step: 8, midi: 57 },
+                { letter: 'B', label: 'B3', step: 9, midi: 59 },
+                { letter: 'C', label: 'C4 (Middle C)', step: 10, midi: 60 }
+            ]
+        };
+
+        let nrCurrentClef = 'treble';
+        let nrCurrentNote = null;
+        let nrScore = 0;
+        let nrStreak = 0;
+        let nrLocked = false;
+
+        function nrSetClef(clef) {
+            nrCurrentClef = clef;
+            const btnTreble = document.getElementById('nrClefTrebleBtn');
+            const btnBass = document.getElementById('nrClefBassBtn');
+            const label = document.getElementById('nrClefLabel');
+
+            if (clef === 'treble') {
+                btnTreble.className = "px-2.5 py-1 rounded-md text-xs font-bold bg-[#F9F8F5] dark:bg-stone-900 text-[#CB1517] dark:text-rose-400 shadow-sm transition";
+                btnBass.className = "px-2.5 py-1 rounded-md text-xs font-bold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition";
+                if (label) label.innerText = "Treble Clef (G Clef)";
+            } else {
+                btnBass.className = "px-2.5 py-1 rounded-md text-xs font-bold bg-[#F9F8F5] dark:bg-stone-900 text-[#CB1517] dark:text-rose-400 shadow-sm transition";
+                btnTreble.className = "px-2.5 py-1 rounded-md text-xs font-bold text-stone-600 dark:text-stone-400 hover:text-stone-900 dark:hover:text-stone-200 transition";
+                if (label) label.innerText = "Bass Clef (F Clef)";
+            }
+            nrNextNote();
+        }
+
+        function nrNextNote() {
+            const pool = NR_NOTES[nrCurrentClef];
+            let candidate = pool[Math.floor(Math.random() * pool.length)];
+            if (nrCurrentNote && pool.length > 1) {
+                while (candidate.label === nrCurrentNote.label) {
+                    candidate = pool[Math.floor(Math.random() * pool.length)];
+                }
+            }
+            nrCurrentNote = candidate;
+            nrLocked = false;
+
+            const feedback = document.getElementById('nrFeedbackBanner');
+            if (feedback) {
+                feedback.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-stone-100 dark:bg-stone-900 text-stone-700 dark:text-stone-300 border border-stone-200 dark:border-stone-800 text-center";
+                feedback.innerText = "Select the correct note letter (C – B) below!";
+            }
+
+            nrRenderStaff();
+        }
+
+        function nrRenderStaff() {
+            const container = document.getElementById('nrStaffContainer');
+            if (!container) return;
+            if (!nrCurrentNote) {
+                nrNextNote();
+                return;
+            }
+
+            // Bottom line (step 0) is y = 96; each step up is -6px (line spacing = 12px)
+            const noteY = 96 - (nrCurrentNote.step * 6);
+            const noteX = 185;
+
+            let ledgerSvg = '';
+            if (nrCurrentNote.step <= -2) {
+                ledgerSvg += `<line x1="${noteX - 18}" y1="108" x2="${noteX + 18}" y2="108" stroke="currentColor" stroke-width="2" />`;
+            }
+            if (nrCurrentNote.step >= 10) {
+                ledgerSvg += `<line x1="${noteX - 18}" y1="36" x2="${noteX + 18}" y2="36" stroke="currentColor" stroke-width="2" />`;
+            }
+
+            // Stem up if below middle line (step < 4), stem down if on or above middle line
+            const stemSvg = nrCurrentNote.step < 4
+                ? `<line x1="${noteX + 7.5}" y1="${noteY}" x2="${noteX + 7.5}" y2="${noteY - 34}" stroke="#CB1517" stroke-width="2.2" />`
+                : `<line x1="${noteX - 7.5}" y1="${noteY}" x2="${noteX - 7.5}" y2="${noteY + 34}" stroke="#CB1517" stroke-width="2.2" />`;
+
+            const clefSymbol = nrCurrentClef === 'treble'
+                ? `<text x="42" y="96" font-size="68" fill="currentColor" font-family="serif" class="select-none">𝄞</text>`
+                : `<text x="44" y="84" font-size="52" fill="currentColor" font-family="serif" class="select-none">𝄢</text>`;
+
+            container.innerHTML = `
+                <svg viewBox="0 0 320 136" class="w-full h-36 text-stone-800 dark:text-stone-200 select-none">
+                    <!-- 5 Staff Lines -->
+                    <line x1="28" y1="48" x2="292" y2="48" stroke="currentColor" stroke-width="1.5" class="opacity-70" />
+                    <line x1="28" y1="60" x2="292" y2="60" stroke="currentColor" stroke-width="1.5" class="opacity-70" />
+                    <line x1="28" y1="72" x2="292" y2="72" stroke="currentColor" stroke-width="1.5" class="opacity-70" />
+                    <line x1="28" y1="84" x2="292" y2="84" stroke="currentColor" stroke-width="1.5" class="opacity-70" />
+                    <line x1="28" y1="96" x2="292" y2="96" stroke="currentColor" stroke-width="1.5" class="opacity-70" />
+
+                    <!-- Left & Right Barlines -->
+                    <line x1="28" y1="48" x2="28" y2="96" stroke="currentColor" stroke-width="2" />
+                    <line x1="292" y1="48" x2="292" y2="96" stroke="currentColor" stroke-width="2" />
+
+                    <!-- Clef -->
+                    ${clefSymbol}
+
+                    <!-- Ledger Lines (if needed) -->
+                    ${ledgerSvg}
+
+                    <!-- Note Head & Stem -->
+                    ${stemSvg}
+                    <ellipse cx="${noteX}" cy="${noteY}" rx="8.5" ry="6" transform="rotate(-15 ${noteX} ${noteY})" fill="#CB1517" />
+                </svg>
+            `;
+        }
+
+        function nrPlayCurrentNote() {
+            if (!nrCurrentNote) return;
+            initAudio();
+            const freq = midiToFreq(nrCurrentNote.midi);
+            playTone(freq, 1.4, 'piano', 0);
+        }
+
+        function nrCheckAnswer(guessedLetter) {
+            if (!nrCurrentNote || nrLocked) return;
+            initAudio();
+
+            const feedback = document.getElementById('nrFeedbackBanner');
+            const scoreEl = document.getElementById('nrScoreDisplay');
+            const streakEl = document.getElementById('nrStreakDisplay');
+
+            if (guessedLetter === nrCurrentNote.letter) {
+                nrLocked = true;
+                nrScore += 10;
+                nrStreak += 1;
+                if (scoreEl) scoreEl.innerText = nrScore;
+                if (streakEl) streakEl.innerText = nrStreak;
+
+                nrPlayCurrentNote();
+
+                if (feedback) {
+                    feedback.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-emerald-100 dark:bg-emerald-950/80 text-emerald-800 dark:text-emerald-300 border border-emerald-400 dark:border-emerald-700 text-center";
+                    feedback.innerText = `Correct! That is ${nrCurrentNote.label}. Next note coming up...`;
+                }
+
+                setTimeout(() => {
+                    nrNextNote();
+                }, 1100);
+            } else {
+                nrStreak = 0;
+                if (streakEl) streakEl.innerText = nrStreak;
+
+                if (feedback) {
+                    feedback.className = "text-xs font-bold px-3 py-1.5 rounded-lg bg-red-100 dark:bg-red-950/80 text-red-800 dark:text-red-300 border border-red-400 dark:border-red-700 text-center";
+                    feedback.innerText = `Not quite (${guessedLetter}) — try again!`;
+                }
+            }
+        }
+
+        // ==========================================
+        // INITIALIZE APPLICATION ON LOAD
+        // ==========================================
         window.addEventListener('DOMContentLoaded', () => {
-            selectProgression(0);
+            updateReferenceFrequencies();
             renderMetronomeDots();
+            selectProgression(0);
             renderMasterUkeChordLibrary();
             renderGuitarChordLibrary();
+            nrNextNote();
+            switchBannerTab('songwriting');
         });
     </script>
 </body>
