@@ -3050,7 +3050,7 @@
                 return svg;
             }
 
-            function nrRenderStaff() {
+function nrRenderStaff() {
                 const container = document.getElementById('nrStaffContainer');
                 if (!container) return;
 
@@ -3096,13 +3096,13 @@
                     ? `<text x="52" y="116" font-size="72" fill="currentColor" font-family="serif" class="select-none">𝄞</text>`
                     : `<text x="54" y="103" font-size="56" fill="currentColor" font-family="serif" class="select-none">𝄢</text>`;
 
-                // Dynamically adjusting vertical bounds to ensure large ranges don't overflow
-                let topBound = Math.min(40, noteY - 45);
-                let bottomBound = Math.max(172, noteY + 45); 
+                // FIXED HEIGHT: Set static boundaries to ensure the highest Treble F6 and lowest Bass C1 fit perfectly without adjusting the container
+                let topBound = -10;
+                let bottomBound = 230; 
                 let vbHeight = bottomBound - topBound;
 
                 container.innerHTML = `
-                    <svg id="nrInteractiveStaffSvg" viewBox="0 ${topBound} 460 ${vbHeight}" class="w-full h-auto min-h-[176px] max-h-64 text-stone-800 dark:text-stone-200 select-none">
+                    <svg id="nrInteractiveStaffSvg" viewBox="0 ${topBound} 460 ${vbHeight}" class="w-full h-auto min-h-[176px] text-stone-800 dark:text-stone-200 select-none">
                         <line x1="28" y1="68"  x2="432" y2="68"  stroke="currentColor" stroke-width="1.5" opacity="0.75" />
                         <line x1="28" y1="80"  x2="432" y2="80"  stroke="currentColor" stroke-width="1.5" opacity="0.75" />
                         <line x1="28" y1="92"  x2="432" y2="92"  stroke="currentColor" stroke-width="1.5" opacity="0.75" />
@@ -3130,7 +3130,7 @@
                     const getStepFromClientY = (clientY) => {
                         const rect = svgEl.getBoundingClientRect();
                         if (!rect.height) return nrSelectedStep;
-                        // Project Y back through the dynamically created viewBox height
+                        // Project Y back through the fixed viewBox height
                         const svgY = ((clientY - rect.top) / rect.height) * vbHeight + topBound;
                         const rawStep = Math.round((line1Y - svgY) / stepH);
                         return nrClampStepToRange(rawStep);
